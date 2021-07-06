@@ -284,7 +284,30 @@ def basisfunction_return_N_at_xi(N_xi, xi, knot, l, n):
     return N_xi
 
 
-def weight_basisfunction_3D_return_R(R, N, M, L, w, delta, n, l):
+def weight_basisfunction_1parameter_return_R(R, N, w, delta, n, l):
+    a = np.zeros((delta[0]))
+    for i in range(delta[0]):
+        for p in range(l[0]):
+            a[i] += N[n[0]][i][p] * w[p]
+        for p in range(l[0]):
+            R[i][p] = (N[n[0]][i][p] * w[p]) / a[i]
+    return R
+
+
+def weight_basisfunction_2parameter_return_R(R, N, M, w, delta, n, l):
+    a = np.zeros((delta[0], delta[1]))
+    for i in range(delta[0]):
+        for j in range(delta[1]):
+            for p in range(l[0]):
+                for q in range(l[1]):
+                    a[i][j] += N[n[0]][i][p] * M[n[1]][j][q] * w[p][q]
+            for p in range(l[0]):
+                for q in range(l[1]):
+                    R[i][j][p][q] = (N[n[0]][i][p] * M[n[1]][j][q] * w[p][q]) / a[i][j]
+    return R
+
+
+def weight_basisfunction_3parameter_return_R(R, N, M, L, w, delta, n, l):
     a = np.zeros((delta[0], delta[1], delta[2]))
     for i in range(delta[0]):
         for j in range(delta[1]):

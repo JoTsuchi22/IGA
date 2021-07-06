@@ -165,7 +165,7 @@ M = bpf.basisfunction_return_N(M, delta[1], knot_j, l_j, m[1], n[1])
 L = bpf.basisfunction_return_N(L, delta[2], knot_k, l_k, m[2], n[2])
 
 # 重み付き基底関数の計算
-R = bpf.weight_basisfunction_3D_return_R(R, N, M, L, w, delta, n, l)
+R = bpf.weight_basisfunction_3parameter_return_R(R, N, M, L, w, delta, n, l)
 
 # 描写
 fig = plt.figure(figsize=(10, 10))

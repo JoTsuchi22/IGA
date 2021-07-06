@@ -76,10 +76,6 @@ y = np.zeros((l_i, l_j))
 for i in range(l_j):
     x[:, i] = CP_surface[:, i, 0]
     y[:, i] = CP_surface[:, i, 1]
-    print("x")
-    print(x)
-    print("y")
-    print(y)
 ax1.plot(x, y, c=color[2], marker="", linewidth=1)
 ax1.plot(x.T, y.T, c=color[2], marker="", linewidth=1)
 
