@@ -99,7 +99,7 @@ CP_matrix = np.array([[ 1.,   0.,   4. ],
                       [ 3.,   0.,   0. ]])
 
 # Define 刻み幅
-delta = np.array([4, 9, 20])
+delta = np.array([4, 31, 20])
 
 # Define polynomial order:n
 n = np.array([1, 2, 2])   # n次のB-スプライン曲線

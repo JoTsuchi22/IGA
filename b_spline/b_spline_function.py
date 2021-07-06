@@ -285,24 +285,22 @@ def basisfunction_return_N_at_xi(N_xi, xi, knot, l, n):
 
 
 def weight_basisfunction_3D_return_R(R, N, M, L, w, delta, n, l):
-    a = np.zeros((delta[0], delta[1], delta[2], 3))
+    a = np.zeros((delta[0], delta[1], delta[2]))
     for i in range(delta[0]):
         for j in range(delta[1]):
             for k in range(delta[2]):
                 for p in range(l[0]):
                     for q in range(l[1]):
                         for r in range(l[2]):
-                            a[i][j][k][0] += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][0]
-                            a[i][j][k][1] += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][1]
-                            a[i][j][k][2] += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][2]
+                            a[i][j][k] += N[n[0]][i][p] * \
+                                M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r]
                 for p in range(l[0]):
                     for q in range(l[1]):
                         for r in range(l[2]):
-                            R[i][j][k][p][q][r][0] = (N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][0]) / a[i][j][k][0]
-                            R[i][j][k][p][q][r][1] = (N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][1]) / a[i][j][k][1]
-                            R[i][j][k][p][q][r][2] = (N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][2]) / a[i][j][k][2]
+                            R[i][j][k][p][q][r] = (
+                                N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r]) / a[i][j][k]
     return R
-    
+
 
 def trans(a, b, c):
     d = np.array([[a],
@@ -376,4 +374,24 @@ def affine_transformation_2D(CP, l, stretch_x, stretch_y, stretch_z, trans_x, tr
     for i in range(l):
         for j in range(2):
             CP[i][j] = CP_3D[i][j]
+    return CP
+
+
+def affine_transformation_3D(CP, l, stretch_x, stretch_y, stretch_z, trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y):
+    CP_3D = np.zeros((l, 3))
+    for i in range(l):
+        for j in range(3):
+            CP_3D[i][j] = CP[i][j]
+    CP_new = np.zeros((l, 3))
+    rotxyz = np.dot(np.dot(rotx(theta_x), roty(theta_y)), rotz(theta_z))
+    shearxy = np.dot(shearx(shear_x), sheary(shear_y))
+
+    for i in range(l):
+        a = np.dot(np.dot(np.dot(shearxy, rotxyz), stretchxyz(
+            stretch_x, stretch_y, stretch_z)), (CP_3D[i, :]).reshape(-1, 1))
+        b = trans(trans_x, trans_y, trans_z)
+        CP_new[i][0] = (a + b)[0][0]
+        CP_new[i][1] = (a + b)[1][0]
+        CP_new[i][2] = (a + b)[2][0]
+    CP = CP_new
     return CP
