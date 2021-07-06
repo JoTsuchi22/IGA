@@ -226,7 +226,7 @@ def order_elevation(CP, n, l, knot, elevation_degree):
 
 def basisfunction_return_N(N, delta, knot, l, m, n):
     for i in range(delta):
-        nowknot = (i/(delta - 1)) * knot[m-1]
+        nowknot = (i / (delta - 1)) * knot[m-1]
         for k in range(n+1):
             for j in range(l):
                 if k == 0:
@@ -283,6 +283,26 @@ def basisfunction_return_N_at_xi(N_xi, xi, knot, l, n):
                     N_xi[k][i][j] = a + b
     return N_xi
 
+
+def weight_basisfunction_3D_return_R(R, N, M, L, w, delta, n, l):
+    a = np.zeros((delta[0], delta[1], delta[2], 3))
+    for i in range(delta[0]):
+        for j in range(delta[1]):
+            for k in range(delta[2]):
+                for p in range(l[0]):
+                    for q in range(l[1]):
+                        for r in range(l[2]):
+                            a[i][j][k][0] += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][0]
+                            a[i][j][k][1] += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][1]
+                            a[i][j][k][2] += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][2]
+                for p in range(l[0]):
+                    for q in range(l[1]):
+                        for r in range(l[2]):
+                            R[i][j][k][p][q][r][0] = (N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][0]) / a[i][j][k][0]
+                            R[i][j][k][p][q][r][1] = (N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][1]) / a[i][j][k][1]
+                            R[i][j][k][p][q][r][2] = (N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * w[p][q][r][2]) / a[i][j][k][2]
+    return R
+    
 
 def trans(a, b, c):
     d = np.array([[a],

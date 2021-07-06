@@ -32,7 +32,7 @@ l_j = 3
 l = np.array([l_i, l_j])
 
 # reshape CP_surface
-CP_surface = np.reshape(CP_matrix, (l_i, l_j*CP_matrix.shape[1]))
+CP_surface = np.reshape(CP_matrix, (l_i, l_j, 2))
 
 # Define number of knots 各方向ノットの個数
 m = np.array([l_i+n[0]+1, l_j+n[1]+1])
@@ -62,8 +62,8 @@ for i in range(delta[0]):
         Sy = 0
         for p in range(l_i):
             for q in range(l_j):
-                Sx += N[n[0]][i][p] * M[n[1]][j][q] * CP_surface[p][q*2]
-                Sy += N[n[0]][i][p] * M[n[1]][j][q] * CP_surface[p][q*2+1]
+                Sx += N[n[0]][i][p] * M[n[1]][j][q] * CP_surface[p][q][0]
+                Sy += N[n[0]][i][p] * M[n[1]][j][q] * CP_surface[p][q][1]
         Sx_vec[i][j] = Sx
         Sy_vec[i][j] = Sy
 ax1.plot(Sx_vec, Sy_vec, c=color[0], marker="", linewidth=0.7)
@@ -74,8 +74,8 @@ ax1.scatter(CP_matrix[:, 0], CP_matrix[:, 1], c=color[2], s=10)
 x = np.zeros((l_i, l_j))
 y = np.zeros((l_i, l_j))
 for i in range(l_j):
-    x[:, i] = CP_surface[:, i*2]
-    y[:, i] = CP_surface[:, i*2+1]
+    x[:, i] = CP_surface[:, i, 0]
+    y[:, i] = CP_surface[:, i, 1]
     print("x")
     print(x)
     print("y")

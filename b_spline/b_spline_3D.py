@@ -111,7 +111,7 @@ l_k = 5
 l = np.array([l_i, l_j, l_k])
 
 # reshape CP_surface
-CP_3D = np.reshape(CP_matrix, (l_i, l_j, l_k*CP_matrix.shape[1]))
+CP_3D = np.reshape(CP_matrix, (l_i, l_j, l_k, 3))
 
 # Define number of knots 各方向ノットの個数
 m = np.array([l_i+n[0]+1, l_j+n[1]+1, l_k+n[2]+1])
@@ -152,9 +152,9 @@ for i in range(delta[0]):
             for p in range(l_i):
                 for q in range(l_j):
                     for r in range(l_k):
-                        Sx += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * CP_3D[p][q][r*3]
-                        Sy += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * CP_3D[p][q][r*3+1]
-                        Sz += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * CP_3D[p][q][r*3+2]
+                        Sx += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * CP_3D[p][q][r][0]
+                        Sy += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * CP_3D[p][q][r][1]
+                        Sz += N[n[0]][i][p] * M[n[1]][j][q] * L[n[2]][k][r] * CP_3D[p][q][r][2]
             Sx_vec[i][j][k] = Sx
             Sy_vec[i][j][k] = Sy
             Sz_vec[i][j][k] = Sz
@@ -183,9 +183,9 @@ z = np.zeros((l_i, l_j, l_k))
 for i in range(l_i):
     for j in range(l_j):
         for k in range(l_k):
-            x[i,j,k] = CP_3D[i,j,k*3]
-            y[i,j,k] = CP_3D[i,j,k*3+1]
-            z[i,j,k] = CP_3D[i,j,k*3+2]
+            x[i,j,k] = CP_3D[i,j,k,0]
+            y[i,j,k] = CP_3D[i,j,k,1]
+            z[i,j,k] = CP_3D[i,j,k,2]
 for i in range(l_i):
     for j in range(l_j):
         ax1.plot(x[i,j,:], y[i,j,:], z[i,j,:], c=color[2], linewidth=0.6)
