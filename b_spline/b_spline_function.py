@@ -418,3 +418,161 @@ def affine_transformation_3D(CP, l, stretch_x, stretch_y, stretch_z, trans_x, tr
         CP_new[i][2] = (a + b)[2][0]
     CP = CP_new
     return CP
+
+
+def get_4element_2D(Sx_vec , Sy_vec, Sz_vec, point_vec, a, b):
+    for i in range(a):
+        for j in range(b):
+            point_vec[i,j,0,:] = np.array([Sx_vec[i+1,j], Sy_vec[i+1,j], Sz_vec[i+1,j]])
+            point_vec[i,j,1,:] = np.array([Sx_vec[i,j], Sy_vec[i,j], Sz_vec[i,j]])
+            point_vec[i,j,2,:] = np.array([Sx_vec[i,j+1], Sy_vec[i,j+1], Sz_vec[i,j+1]])
+            point_vec[i,j,3,:] = np.array([Sx_vec[i+1,j+1], Sy_vec[i+1,j+1], Sz_vec[i+1,j+1]])
+    return point_vec
+
+
+def get_4element_3D(Sx_vec, Sy_vec, Sz_vec, point_vec_i1, point_vec_i2, point_vec_j1, point_vec_j2, point_vec_k1, point_vec_k2, a, b, c):
+    point_vec_i1 = get_4element_2D(Sx_vec[:,:,0], Sy_vec[:,:,0], Sz_vec[:,:,0], point_vec_i1, a, b)
+    point_vec_i2 = get_4element_2D(Sx_vec[:,:,-1], Sy_vec[:,:,-1], Sz_vec[:,:,-1], point_vec_i2, a, b)
+    point_vec_j1 = get_4element_2D(Sx_vec[0,:,:], Sy_vec[0,:,:], Sz_vec[0,:,:], point_vec_j1, b, c)
+    point_vec_j2 = get_4element_2D(Sx_vec[-1,:,:], Sy_vec[-1,:,:], Sz_vec[-1,:,:], point_vec_j2, b, c)
+    point_vec_k1 = get_4element_2D(Sx_vec[:,0,:], Sy_vec[:,0,:], Sz_vec[:,0,:], point_vec_k1, a, c)
+    point_vec_k2 = get_4element_2D(Sx_vec[:,-1,:], Sy_vec[:,-1,:], Sz_vec[:,-1,:], point_vec_k2, a, c)
+    return point_vec_i1, point_vec_i2, point_vec_j1, point_vec_j2, point_vec_k1, point_vec_k2
+
+
+def transform_triangle_2D(a, b, point_vec, mesh, n_vec):
+    for i in range(a):
+        for j in range(b):
+            for k in range(3):
+                mesh[i][j][0][0][k] = point_vec[i][j][0][k]
+                mesh[i][j][0][1][k] = point_vec[i][j][1][k]
+                mesh[i][j][0][2][k] = point_vec[i][j][2][k]
+            for k in range(3):
+                mesh[i][j][1][0][k] = point_vec[i][j][2][k]
+                mesh[i][j][1][1][k] = point_vec[i][j][3][k]
+                mesh[i][j][1][2][k] = point_vec[i][j][0][k]
+    p = np.zeros((2, 3))
+    for i in range(a):
+        for j in range(b):
+            for k in range(2):
+                for l in range(3):
+                    p[0][l] = mesh[i][j][k][0][l] - mesh[i][j][k][1][l]
+                    p[1][l] = mesh[i][j][k][1][l] - mesh[i][j][k][2][l]
+                    q = np.cross(p[0,:], p[1,:])
+                    r = np.linalg.norm(q)
+                    if r != 0:
+                        n_vec[i,j,k,:] = q / r
+                    if r == 0:
+                        n_vec[i,j,k,0] = 1.0
+                        n_vec[i,j,k,1] = 0.0
+                        n_vec[i,j,k,2] = 0.0
+    return mesh, n_vec
+
+
+def write_stl_header(solid_name):
+    solid_name_stl = solid_name + ".stl"
+    f = open(solid_name_stl, 'w')
+    f.write('solid ')
+    f.write(solid_name)
+    f.write('\n')
+
+
+def write_stl_main(solid_name, a, b, mesh, n_vec):
+    solid_name_stl = solid_name + ".stl"
+    f = open(solid_name_stl, 'a')
+    for i in range(a):
+        for j in range(b):
+            for k in range(2):
+                f.write('   facet nomal ')
+                f.write(str(n_vec[i,j,k,0]))
+                f.write(' ')
+                f.write(str(n_vec[i,j,k,1]))
+                f.write(' ')
+                f.write(str(n_vec[i,j,k,2]))
+                f.write('\n')
+                f.write('       outer loop\n')
+                f.write('           vertex ')
+                f.write(str(mesh[i][j][k][0][0]))
+                f.write(' ')
+                f.write(str(mesh[i][j][k][0][1]))
+                f.write(' ')
+                f.write(str(mesh[i][j][k][0][2]))
+                f.write('\n')
+                f.write('           vertex ')
+                f.write(str(mesh[i][j][k][1][0]))
+                f.write(' ')
+                f.write(str(mesh[i][j][k][1][1]))
+                f.write(' ')
+                f.write(str(mesh[i][j][k][1][2]))
+                f.write('\n')
+                f.write('           vertex ')
+                f.write(str(mesh[i][j][k][2][0]))
+                f.write(' ')
+                f.write(str(mesh[i][j][k][2][1]))
+                f.write(' ')
+                f.write(str(mesh[i][j][k][2][2]))
+                f.write('\n')
+                f.write('      endlooop\n')
+                f.write('   endfacet\n')
+
+
+def write_stl_footer(solid_name):
+    solid_name_stl = solid_name + ".stl"
+    f = open(solid_name_stl, 'a')
+    f.write('endsolid')
+    f.close()
+
+
+def make_stl_2D(solid_name, delta, Sx_vec, Sy_vec, Sz_vec):
+    a = int(delta[0] - 1)
+    b = int(delta[1] - 1)
+    point_vec = np.zeros((a, b, 4, 3))
+    point_vec = get_4element_2D(Sx_vec, Sy_vec, Sz_vec, point_vec, a, b)
+    mesh = np.zeros((a, b, 2, 3, 3))
+    n_vec = np.zeros((a, b, 2, 3))
+    mesh, n_vec = transform_triangle_2D(a, b, point_vec, mesh, n_vec)
+    write_stl_header(solid_name)
+    write_stl_main(solid_name, a, b, mesh, n_vec)
+    write_stl_footer(solid_name)
+
+
+def make_stl_3D(solid_name, delta, Sx_vec, Sy_vec, Sz_vec):
+    a = int(delta[0] - 1)
+    b = int(delta[1] - 1)
+    c = int(delta[2] - 1)
+    point_vec_i1 = np.zeros((a, b, 4, 3))
+    point_vec_i2 = np.zeros((a, b, 4, 3))
+    point_vec_j1 = np.zeros((b, c, 4, 3))
+    point_vec_j2 = np.zeros((b, c, 4, 3))
+    point_vec_k1 = np.zeros((a, c, 4, 3))
+    point_vec_k2 = np.zeros((a, c, 4, 3))
+    point_vec_i1, point_vec_i2, point_vec_j1, point_vec_j2, point_vec_k1, point_vec_k2 = get_4element_3D(Sx_vec, Sy_vec, Sz_vec, point_vec_i1, point_vec_i2, point_vec_j1, point_vec_j2, point_vec_k1, point_vec_k2, a, b, c)
+    mesh_i1 = np.zeros((a, b, 2, 3, 3))
+    n_vec_i1 = np.zeros((a, b, 2, 3))
+    mesh_i2 = np.zeros((a, b, 2, 3, 3))
+    n_vec_i2 = np.zeros((a, b, 2, 3))
+    mesh_j1 = np.zeros((b, c, 2, 3, 3))
+    n_vec_j1 = np.zeros((b, c, 2, 3))
+    mesh_j2 = np.zeros((b, c, 2, 3, 3))
+    n_vec_j2 = np.zeros((b, c, 2, 3))
+    mesh_k1 = np.zeros((a, c, 2, 3, 3))
+    n_vec_k1 = np.zeros((a, c, 2, 3))
+    mesh_k2 = np.zeros((a, c, 2, 3, 3))
+    n_vec_k2 = np.zeros((a, c, 2, 3))
+    mesh_i1, n_vec_i1 = transform_triangle_2D(a, b, point_vec_i1, mesh_i1, n_vec_i1)
+    mesh_i2, n_vec_i2 = transform_triangle_2D(a, b, point_vec_i2, mesh_i2, n_vec_i2)
+    mesh_j1, n_vec_j1 = transform_triangle_2D(b, c, point_vec_j1, mesh_j1, n_vec_j1)
+    mesh_j2, n_vec_j2 = transform_triangle_2D(b, c, point_vec_j2, mesh_j2, n_vec_j2)
+    mesh_k1, n_vec_k1 = transform_triangle_2D(a, c, point_vec_k1, mesh_k1, n_vec_k1)
+    mesh_k2, n_vec_k2 = transform_triangle_2D(a, c, point_vec_k2, mesh_k2, n_vec_k2)
+    write_stl_header(solid_name)
+    if np.any(mesh_i1 != mesh_i2):
+        write_stl_main(solid_name, a, b, mesh_i1, n_vec_i1)
+        write_stl_main(solid_name, a, b, mesh_i2, n_vec_i2)
+    if np.any(mesh_j1 != mesh_j2):
+        write_stl_main(solid_name, b, c, mesh_j1, n_vec_j1)
+        write_stl_main(solid_name, b, c, mesh_j2, n_vec_j2)
+    if np.any(mesh_k1 != mesh_k2):
+        write_stl_main(solid_name, a, c, mesh_k1, n_vec_k1)
+        write_stl_main(solid_name, a, c, mesh_k2, n_vec_k2)
+    write_stl_footer(solid_name)
