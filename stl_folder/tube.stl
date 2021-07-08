@@ -1,4 +1,4 @@
-solid Circular_tube
+solid tube
    facet nomal -1.0 0.0 0.0
        outer loop
            vertex 0.0 1.2000000000000002 0.0

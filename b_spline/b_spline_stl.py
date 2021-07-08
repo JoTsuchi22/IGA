@@ -195,5 +195,5 @@ fig.set_figheight(9)
 fig.set_figwidth(12)
 plt.show()
 
-solid_name = "Circular_tube"
+solid_name = "tube"
 bpf.make_stl_3D(solid_name, delta, Sx_vec , Sy_vec, Sz_vec)

@@ -173,5 +173,5 @@ fig.set_figheight(9)
 fig.set_figwidth(12)
 plt.show()
 
-solid_name = "Cube_2parameter"
+solid_name = "sphere_2parameter"
 bpf.make_stl_2D(solid_name, delta, Sx_vec , Sy_vec, Sz_vec)
