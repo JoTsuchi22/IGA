@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-import b_spline_function as bpf
+import function_of_NURBS as fn
 
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
@@ -120,7 +120,7 @@ theta_z = 0.0
 shear_x = 0.0
 shear_y = 0.0
 
-CP_matrix = bpf.affine_transformation_3D(CP_matrix, CP_matrix.shape[0], stretch_x, stretch_y, stretch_z,
+CP_matrix = fn.affine_transformation_3D(CP_matrix, CP_matrix.shape[0], stretch_x, stretch_y, stretch_z,
                                          trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
 
 # Define 刻み幅
@@ -145,9 +145,9 @@ w = np.reshape(weight, (l_i, l_j, l_k))
 m = np.array([l_i+n[0]+1, l_j+n[1]+1, l_k+n[2]+1])
 
 # Difine knot vector
-# knot_i = bpf.def_knot(m[0], n[0])
-knot_j = bpf.def_knot(m[1], n[1])
-# knot_k = bpf.def_knot(m[2], n[2])
+# knot_i = fn.def_knot(m[0], n[0])
+knot_j = fn.def_knot(m[1], n[1])
+# knot_k = fn.def_knot(m[2], n[2])
 # ノットの置き方 特殊
 knot_i = np.array([0, 0, 0, 1, 1, 2, 2, 2])
 knot_k = np.array([0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4])
@@ -159,12 +159,12 @@ L = np.zeros((n[2]+1, delta[2], l_k))
 R = np.zeros((delta[0], delta[1], delta[2], l_i, l_j, l_k))
 
 # 基底関数の計算
-N = bpf.basisfunction_return_N(N, delta[0], knot_i, l_i, m[0], n[0])
-M = bpf.basisfunction_return_N(M, delta[1], knot_j, l_j, m[1], n[1])
-L = bpf.basisfunction_return_N(L, delta[2], knot_k, l_k, m[2], n[2])
+N = fn.basisfunction_return_N(N, delta[0], knot_i, l_i, m[0], n[0])
+M = fn.basisfunction_return_N(M, delta[1], knot_j, l_j, m[1], n[1])
+L = fn.basisfunction_return_N(L, delta[2], knot_k, l_k, m[2], n[2])
 
 # 重み付き基底関数の計算
-R = bpf.weight_basisfunction_3parameter_return_R(R, N, M, L, w, delta, n, l)
+R = fn.weight_basisfunction_3parameter_return_R(R, N, M, L, w, delta, n, l)
 
 # 描写
 fig = plt.figure(figsize=(10,10))
@@ -242,4 +242,4 @@ fig.set_figwidth(12)
 plt.show()
 
 solid_name = "torus"
-bpf.make_stl_3D(solid_name, delta, Sx_vec , Sy_vec, Sz_vec)
+fn.make_stl_3D(solid_name, delta, Sx_vec , Sy_vec, Sz_vec)

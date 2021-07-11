@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-import b_spline_function as bpf
+import function_of_NURBS as fn
 
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
@@ -15,10 +15,6 @@ CP = np.array([[1.0, 2.0],
                [6.0, 5.0],
                [3.0, 6.0],
                [2.0, 4.0]])
-
-# CP = np.array([[1.0, 0.0],
-#                [1.0, 1.0],
-#                [0.0, 1.0]])
 
 # Define polynomial order
 n = 2
@@ -41,28 +37,28 @@ theta_z = 0.0
 shear_x = 0.0
 shear_y = 0.0
 
-CP = bpf.affine_transformation_2D(CP, l, stretch_x, stretch_y, stretch_z,
+CP = fn.affine_transformation_2D(CP, l, stretch_x, stretch_y, stretch_z,
                                   trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
 
 # Define knot vector
 make_C0_CP = np.array([])  # C0連続にするコントロールポイント番号1個のみ(2個以上はバグる)，かつn=2のみ使える
-knot = bpf.def_knot_C0(m, n, make_C0_CP)
+knot = fn.def_knot_C0(m, n, make_C0_CP)
 
 # knot insertion A
 new_knot_position = np.array([])  # ノットを挿入するコントロールポイント番号，0, 1, 2...
-CP, l, m, knot = bpf.knot_insertion_A(CP, n, l, knot, new_knot_position)
+CP, l, m, knot = fn.knot_insertion_A(CP, n, l, knot, new_knot_position)
 
 # knot insertion B
 insert_knot = np.array([])  # 挿入するノットの値(0.0 < insert_knot < 1.0)
-CP, l, m, knot = bpf.knot_insertion_B(CP, n, l, knot, insert_knot)
+CP, l, m, knot = fn.knot_insertion_B(CP, n, l, knot, insert_knot)
 
 # knot removal
 removal_knot = np.array([])  # 除去するノットの値(0.0 < insert_knot < 1.0)
-CP, l, m, knot = bpf.knot_removal(CP, n, l, knot, removal_knot)
+CP, l, m, knot = fn.knot_removal(CP, n, l, knot, removal_knot)
 
 # order elevation
 elevation_degree = 0  # order elevationを行う回数
-CP, l, m, n, knot = bpf.order_elevation(CP, n, l, knot, elevation_degree)
+CP, l, m, n, knot = fn.order_elevation(CP, n, l, knot, elevation_degree)
 
 # print(CP)
 print("CP = ")
@@ -92,7 +88,7 @@ ax3 = fig.add_subplot(2, 3, 5)      # ax4ありの時
 ax4 = fig.add_subplot(2, 3, 6)      # ax4ありの時
 
 # 基底関数の計算
-N = bpf.basisfunction_return_N(N, delta, knot, l, m, n)
+N = fn.basisfunction_return_N(N, delta, knot, l, m, n)
 
 # 基底関数の描写
 for i in range(delta):
@@ -141,7 +137,7 @@ xi = np.unique(knot)
 N_xi = np.zeros((n+1, xi.shape[0], l))
 Cx_vec_xi = np.zeros((xi.shape[0]))
 Cy_vec_xi = np.zeros((xi.shape[0]))
-N_xi = bpf.basisfunction_return_N_at_xi(N_xi, xi, knot, l, n)
+N_xi = fn.basisfunction_return_N_at_xi(N_xi, xi, knot, l, n)
 for i in range(xi.shape[0]):
     Cx_xi = 0
     Cy_xi = 0
@@ -173,17 +169,17 @@ n = 2
 l = CP.shape[0]  # 制御点の個数
 m = l + n + 1   # ノットの個数
 # affine transformation
-CP = bpf.affine_transformation_2D(CP, l, stretch_x, stretch_y, stretch_z,
+CP = fn.affine_transformation_2D(CP, l, stretch_x, stretch_y, stretch_z,
                                   trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
 # Define knot vector
 make_C0_CP = np.array([5])  # C0連続にするコントロールポイント番号1個のみ(2個以上はバグる)，かつn=2のみ使える
-knot = bpf.def_knot_C0(m, n, make_C0_CP)
+knot = fn.def_knot_C0(m, n, make_C0_CP)
 # 変数宣言
 N = np.zeros((n+1, delta, l))
 Cx_vec = np.zeros((delta))
 Cy_vec = np.zeros((delta))
 # 基底関数の計算
-N = bpf.basisfunction_return_N(N, delta, knot, l, m, n)
+N = fn.basisfunction_return_N(N, delta, knot, l, m, n)
 # Bスプラインの描写
 for i in range(delta):
     Cx = 0

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-import b_spline_function as bpf
+import function_of_NURBS as fn
 
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
@@ -18,11 +18,11 @@ m = l + n + 1   # ノットの個数
 
 # Define knot vector
 make_C0_CP = np.array([])  # C0連続にするコントロールポイント番号1個のみ(2個以上はバグる)，かつn=2のみ使える
-knot = bpf.def_knot_C0(m, n, make_C0_CP)
+knot = fn.def_knot_C0(m, n, make_C0_CP)
 
 # knot insertion B
 insert_knot = np.array([])  # 挿入するノットの値(0.0 < insert_knot < 1.0)
-CP, l, m, knot = bpf.knot_insertion_B(CP, n, l, knot, insert_knot)
+CP, l, m, knot = fn.knot_insertion_B(CP, n, l, knot, insert_knot)
 
 # Define 刻み幅
 delta = 1000
@@ -43,7 +43,7 @@ ax2 = fig.add_subplot(2, 2, 3)
 ax3 = fig.add_subplot(2, 2, 4)
 
 # 基底関数の計算
-N = bpf.basisfunction_return_N(N, delta, knot, l, m, n)
+N = fn.basisfunction_return_N(N, delta, knot, l, m, n)
 
 # 基底関数の描写
 for i in range(delta):
@@ -92,7 +92,7 @@ xi = np.unique(knot)
 N_xi = np.zeros((n+1, xi.shape[0], l))
 Cx_vec_xi = np.zeros((xi.shape[0]))
 Cy_vec_xi = np.zeros((xi.shape[0]))
-N_xi = bpf.basisfunction_return_N_at_xi(N_xi, xi, knot, l, n)
+N_xi = fn.basisfunction_return_N_at_xi(N_xi, xi, knot, l, n)
 for i in range(xi.shape[0]):
     Cx_xi = 0
     Cy_xi = 0
@@ -139,8 +139,8 @@ R = np.zeros((delta, l))
 Cx_vec_1 = np.zeros((delta))
 Cy_vec_1 = np.zeros((delta))
 Cy_vec_2 = np.zeros((delta))
-N = bpf.basisfunction_return_N(N, delta, knot, l, m, n)
-R = bpf.weight_basisfunction_1parameter_return_R(R, N, w, delta, n, l)
+N = fn.basisfunction_return_N(N, delta, knot, l, m, n)
+R = fn.weight_basisfunction_1parameter_return_R(R, N, w, delta, n, l)
 # 重み付き近似スプライン
 for i in range(delta):
     Cx = 0

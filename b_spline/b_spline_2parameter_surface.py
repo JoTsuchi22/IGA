@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-import b_spline_function as bpf
+import function_of_NURBS as fn
 
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
@@ -38,16 +38,16 @@ CP_surface = np.reshape(CP_matrix, (l_i, l_j, 2))
 m = np.array([l_i+n[0]+1, l_j+n[1]+1])
 
 # Difine knot vector
-knot_i = bpf.def_knot(m[0], n[0])
-knot_j = bpf.def_knot(m[1], n[1])
+knot_i = fn.def_knot(m[0], n[0])
+knot_j = fn.def_knot(m[1], n[1])
 
 # 変数宣言
 N = np.zeros((n[0]+1, delta[0], l_i))
 M = np.zeros((n[1]+1, delta[1], l_j))
 
 # 基底関数の計算
-N = bpf.basisfunction_return_N(N, delta[0], knot_i, l_i, m[0], n[0])
-M = bpf.basisfunction_return_N(M, delta[1], knot_j, l_j, m[1], n[1])
+N = fn.basisfunction_return_N(N, delta[0], knot_i, l_i, m[0], n[0])
+M = fn.basisfunction_return_N(M, delta[1], knot_j, l_j, m[1], n[1])
 
 # 描写
 fig = plt.figure()

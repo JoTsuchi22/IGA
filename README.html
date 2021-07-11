@@ -1,536 +1,431 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>README.md</title>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-
-<style>
-/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-
-body {
-	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
-	font-size: var(--vscode-markdown-font-size, 14px);
-	padding: 0 26px;
-	line-height: var(--vscode-markdown-line-height, 22px);
-	word-wrap: break-word;
-}
-
-#code-csp-warning {
-	position: fixed;
-	top: 0;
-	right: 0;
-	color: white;
-	margin: 16px;
-	text-align: center;
-	font-size: 12px;
-	font-family: sans-serif;
-	background-color:#444444;
-	cursor: pointer;
-	padding: 6px;
-	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
-}
-
-#code-csp-warning:hover {
-	text-decoration: none;
-	background-color:#007acc;
-	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
-}
-
-body.scrollBeyondLastLine {
-	margin-bottom: calc(100vh - 22px);
-}
-
-body.showEditorSelection .code-line {
-	position: relative;
-}
-
-body.showEditorSelection .code-active-line:before,
-body.showEditorSelection .code-line:hover:before {
-	content: "";
-	display: block;
-	position: absolute;
-	top: 0;
-	left: -12px;
-	height: 100%;
-}
-
-body.showEditorSelection li.code-active-line:before,
-body.showEditorSelection li.code-line:hover:before {
-	left: -30px;
-}
-
-.vscode-light.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.15);
-}
-
-.vscode-light.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.40);
-}
-
-.vscode-light.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-.vscode-dark.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.4);
-}
-
-.vscode-dark.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.60);
-}
-
-.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-.vscode-high-contrast.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 160, 0, 0.7);
-}
-
-.vscode-high-contrast.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 160, 0, 1);
-}
-
-.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-img {
-	max-width: 100%;
-	max-height: 100%;
-}
-
-a {
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-	outline: 1px solid -webkit-focus-ring-color;
-	outline-offset: -1px;
-}
-
-hr {
-	border: 0;
-	height: 2px;
-	border-bottom: 2px solid;
-}
-
-h1 {
-	padding-bottom: 0.3em;
-	line-height: 1.2;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-}
-
-h1, h2, h3 {
-	font-weight: normal;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-table > thead > tr > th {
-	text-align: left;
-	border-bottom: 1px solid;
-}
-
-table > thead > tr > th,
-table > thead > tr > td,
-table > tbody > tr > th,
-table > tbody > tr > td {
-	padding: 5px 10px;
-}
-
-table > tbody > tr + tr > td {
-	border-top: 1px solid;
-}
-
-blockquote {
-	margin: 0 7px 0 5px;
-	padding: 0 16px 0 10px;
-	border-left-width: 5px;
-	border-left-style: solid;
-}
-
-code {
-	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
-	font-size: 1em;
-	line-height: 1.357em;
-}
-
-body.wordWrap pre {
-	white-space: pre-wrap;
-}
-
-pre:not(.hljs),
-pre.hljs code > div {
-	padding: 16px;
-	border-radius: 3px;
-	overflow: auto;
-}
-
-pre code {
-	color: var(--vscode-editor-foreground);
-	tab-size: 4;
-}
-
-/** Theming */
-
-.vscode-light pre {
-	background-color: rgba(220, 220, 220, 0.4);
-}
-
-.vscode-dark pre {
-	background-color: rgba(10, 10, 10, 0.4);
-}
-
-.vscode-high-contrast pre {
-	background-color: rgb(0, 0, 0);
-}
-
-.vscode-high-contrast h1 {
-	border-color: rgb(0, 0, 0);
-}
-
-.vscode-light table > thead > tr > th {
-	border-color: rgba(0, 0, 0, 0.69);
-}
-
-.vscode-dark table > thead > tr > th {
-	border-color: rgba(255, 255, 255, 0.69);
-}
-
-.vscode-light h1,
-.vscode-light hr,
-.vscode-light table > tbody > tr + tr > td {
-	border-color: rgba(0, 0, 0, 0.18);
-}
-
-.vscode-dark h1,
-.vscode-dark hr,
-.vscode-dark table > tbody > tr + tr > td {
-	border-color: rgba(255, 255, 255, 0.18);
-}
-
-</style>
-
-<style>
-/* Tomorrow Theme */
-/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
-/* Original theme - https://github.com/chriskempson/tomorrow-theme */
-
-/* Tomorrow Comment */
-.hljs-comment,
-.hljs-quote {
-	color: #8e908c;
-}
-
-/* Tomorrow Red */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-regexp,
-.hljs-deletion {
-	color: #c82829;
-}
-
-/* Tomorrow Orange */
-.hljs-number,
-.hljs-built_in,
-.hljs-builtin-name,
-.hljs-literal,
-.hljs-type,
-.hljs-params,
-.hljs-meta,
-.hljs-link {
-	color: #f5871f;
-}
-
-/* Tomorrow Yellow */
-.hljs-attribute {
-	color: #eab700;
-}
-
-/* Tomorrow Green */
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-addition {
-	color: #718c00;
-}
-
-/* Tomorrow Blue */
-.hljs-title,
-.hljs-section {
-	color: #4271ae;
-}
-
-/* Tomorrow Purple */
-.hljs-keyword,
-.hljs-selector-tag {
-	color: #8959a8;
-}
-
-.hljs {
-	display: block;
-	overflow-x: auto;
-	color: #4d4d4c;
-	padding: 0.5em;
-}
-
-.hljs-emphasis {
-	font-style: italic;
-}
-
-.hljs-strong {
-	font-weight: bold;
-}
-</style>
-
-<style>
-/*
- * Markdown PDF CSS
+<!DOCTYPE html><html><head>
+      <title>README</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\t_c_y\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.5.22\node_modules\@shd101wyy\mume\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
  */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
 
- body {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
-	padding: 0 12px;
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
 }
 
-pre {
-	background-color: #f8f8f8;
-	border: 1px solid #cccccc;
-	border-radius: 3px;
-	overflow-x: auto;
-	white-space: pre-wrap;
-	overflow-wrap: break-word;
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
 }
 
-pre:not(.hljs) {
-	padding: 23px;
-	line-height: 19px;
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
 }
 
-blockquote {
-	background: rgba(127, 127, 127, 0.1);
-	border-color: rgba(0, 122, 204, 0.5);
+.token.comment,
+.token.blockquote {
+  color: #969896;
 }
 
-.emoji {
-	height: 1.4em;
+.token.cdata {
+  color: #183691;
 }
 
-code {
-	font-size: 14px;
-	line-height: 19px;
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
 }
 
-/* for inline code */
-:not(pre):not(.hljs) > code {
-	color: #C9AE75; /* Change the old color so it seems less like an error */
-	font-size: inherit;
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
 }
 
-/* Page Break : use <div class="page"/> to insert page break
--------------------------------------------------------- */
-.page {
-	page-break-after: always;
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
 }
 
-</style>
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
 
-<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
-</head>
-<body>
-  <script>
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
-          ? 'dark'
-          : 'default'
-    });
-  </script>
-<h1 id="%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A%E6%96%B9%E6%B3%95%E3%81%A8%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E8%AA%AC%E6%98%8Estl%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E8%BF%BD%E8%A8%98%E6%9C%89%E3%82%8A">環境設定方法とコードの説明(stlについて追記有り)</h1>
-<h2 id="%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A%E6%96%B9%E6%B3%95">環境設定方法</h2>
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 class="mume-header" id="%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A%E6%96%B9%E6%B3%95%E3%81%A8%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E8%AA%AC%E6%98%8Estl%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E8%BF%BD%E8%A8%98%E6%9C%89%E3%82%8A">&#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x65B9;&#x6CD5;&#x3068;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x8AAC;&#x660E;(stl&#x306B;&#x3064;&#x3044;&#x3066;&#x8FFD;&#x8A18;&#x6709;&#x308A;)</h1>
+
+<h2 class="mume-header" id="%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A%E6%96%B9%E6%B3%95">&#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x65B9;&#x6CD5;</h2>
+
 <hr>
 <ol>
 <li>
-<p>Pythonのダウンロードとインストール
-<a href="https://www.python.org/">Pythonホームページ</a>
-インストール時にAdd Python 3.9 to PATHにチェックを入れてください
-<img src="https://www.javadrive.jp/python/install/img/p1-9.png" alt="">
-<a href="https://www.javadrive.jp/python/install/index1.html">参考ページ</a></p>
+<p>Python&#x306E;&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;&#x3068;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;<br>
+<a href="https://www.python.org/">Python&#x30DB;&#x30FC;&#x30E0;&#x30DA;&#x30FC;&#x30B8;</a><br>
+&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;&#x6642;&#x306B;Add Python 3.9 to PATH&#x306B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3092;&#x5165;&#x308C;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;<br>
+<img src="https://www.javadrive.jp/python/install/img/p1-9.png" alt><br>
+<a href="https://www.javadrive.jp/python/install/index1.html">&#x53C2;&#x8003;&#x30DA;&#x30FC;&#x30B8;</a></p>
 </li>
 <li>
-<p>VSCodeのダウンロードとインストール
-<a href="https://code.visualstudio.com/Download">VSCode ダウンロードページ</a></p>
+<p>VSCode&#x306E;&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;&#x3068;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;<br>
+<a href="https://code.visualstudio.com/Download">VSCode &#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;&#x30DA;&#x30FC;&#x30B8;</a></p>
 </li>
 <li>
-<p>Python 拡張機能のインストール
-<img src="https://docs.microsoft.com/ja-jp/learn/language/python-install-vscode/media/visual-studio-code-extensions-install.png" alt="">
-正常にインストールされると.pyの拡張子ファイルで右上に実行ボタンが表示されるはずです
-<img src="https://i.imgur.com/5vixus9.png" alt="">
-出ない場合は，一度拡張機能をアンインストールしてからもう一度インストールしてください</p>
+<p>Python &#x62E1;&#x5F35;&#x6A5F;&#x80FD;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;<br>
+<img src="https://docs.microsoft.com/ja-jp/learn/language/python-install-vscode/media/visual-studio-code-extensions-install.png" alt><br>
+&#x6B63;&#x5E38;&#x306B;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;&#x3055;&#x308C;&#x308B;&#x3068;.py&#x306E;&#x62E1;&#x5F35;&#x5B50;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3067;&#x53F3;&#x4E0A;&#x306B;&#x5B9F;&#x884C;&#x30DC;&#x30BF;&#x30F3;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x308B;&#x306F;&#x305A;&#x3067;&#x3059;<br>
+<img src="https://i.imgur.com/5vixus9.png" alt><br>
+&#x51FA;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#xFF0C;&#x4E00;&#x5EA6;&#x62E1;&#x5F35;&#x6A5F;&#x80FD;&#x3092;&#x30A2;&#x30F3;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;&#x3057;&#x3066;&#x304B;&#x3089;&#x3082;&#x3046;&#x4E00;&#x5EA6;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;</p>
 </li>
 <li>
-<p>Pythonのライブラリのインストール
-VSCodeを開き画面上部にあるターミナルをクリックして
-新しいターミナルを適当な場所に作成してください(コマンドプロンプトでも多分大丈夫です)
-<img src="https://i.imgur.com/hXezxEB.png" alt=""></p>
+<p>Python&#x306E;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;<br>
+VSCode&#x3092;&#x958B;&#x304D;&#x753B;&#x9762;&#x4E0A;&#x90E8;&#x306B;&#x3042;&#x308B;&#x30BF;&#x30FC;&#x30DF;&#x30CA;&#x30EB;&#x3092;&#x30AF;&#x30EA;&#x30C3;&#x30AF;&#x3057;&#x3066;<br>
+&#x65B0;&#x3057;&#x3044;&#x30BF;&#x30FC;&#x30DF;&#x30CA;&#x30EB;&#x3092;&#x9069;&#x5F53;&#x306A;&#x5834;&#x6240;&#x306B;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;(&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30D7;&#x30ED;&#x30F3;&#x30D7;&#x30C8;&#x3067;&#x3082;&#x591A;&#x5206;&#x5927;&#x4E08;&#x592B;&#x3067;&#x3059;)<br>
+<img src="https://i.imgur.com/hXezxEB.png" alt></p>
 <ol>
-<li>pip自体のアップグレード
-コマンドラインで以下のコードを入力して実行してください<pre class="hljs"><code><div>py -m pip install -U pip
-</div></code></pre>
-</li>
-<li>NumPyのインストール
-コマンドラインで以下のコードを入力して実行してください<pre class="hljs"><code><div>py -m pip install numpy
-</div></code></pre>
-</li>
-<li>pandasのインストール
-コマンドラインで以下のコードを入力して実行してください<pre class="hljs"><code><div>py -m pip install pandas
-</div></code></pre>
-</li>
-<li>Matplotlibのインストール
-コマンドラインで以下のコードを入力して実行してください<pre class="hljs"><code><div>py -m pip install matplotlib
-</div></code></pre>
+<li>pip&#x81EA;&#x4F53;&#x306E;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;<br>
+&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x3067;&#x4EE5;&#x4E0B;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x5B9F;&#x884C;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;<pre data-role="codeBlock" data-info class="language-"><code>py -m pip install -U pip
+</code></pre></li>
+<li>NumPy&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;<br>
+&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x3067;&#x4EE5;&#x4E0B;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x5B9F;&#x884C;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;<pre data-role="codeBlock" data-info class="language-"><code>py -m pip install numpy
+</code></pre></li>
+<li>pandas&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;<br>
+&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x3067;&#x4EE5;&#x4E0B;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x5B9F;&#x884C;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;<pre data-role="codeBlock" data-info class="language-"><code>py -m pip install pandas
+</code></pre></li>
+<li>Matplotlib&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;<br>
+&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x3067;&#x4EE5;&#x4E0B;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x5B9F;&#x884C;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;<pre data-role="codeBlock" data-info class="language-"><code>py -m pip install matplotlib
+</code></pre></li>
+</ol>
+<p>&#x4EE5;&#x4E0A;&#x3067;&#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x5B8C;&#x4E86;&#x3067;&#x3059;&#x304A;&#x75B2;&#x308C;&#x3055;&#x307E;&#x3067;&#x3057;&#x305F;<br>
+<a href="https://gammasoft.jp/blog/install-numpy-pandas-matplotlib-by-pip/">&#x53C2;&#x8003;&#x30DA;&#x30FC;&#x30B8;</a></p>
 </li>
 </ol>
-<p>以上で環境設定完了ですお疲れさまでした
-<a href="https://gammasoft.jp/blog/install-numpy-pandas-matplotlib-by-pip/">参考ページ</a></p>
-</li>
-</ol>
-<h2 id="%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E8%AA%AC%E6%98%8E">コードの説明</h2>
+<h2 class="mume-header" id="%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E8%AA%AC%E6%98%8E">&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x8AAC;&#x660E;</h2>
+
 <hr>
-<pre class="hljs"><code><div>b_spline
-    b_spline_function.py        :   関数のモジュール，このファイルが実行ファイルと同じフォルダにないと正常に実行できません
-    b_spline_main.py            :   基本的なIGAのプログラムです
-    b_spline_surface.py         :   surfaceでのIGAプログラム，輪講本の例題を再現しています
-</div></code></pre>
-<p>以下<code>b_spline_main.py</code>について説明します
-行数(line)はデフォルトの値です</p>
+<pre data-role="codeBlock" data-info class="language-"><code>b_spline
+    function_of_NURBS.py      :   &#x95A2;&#x6570;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#xFF0C;&#x3053;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x5B9F;&#x884C;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3068;&#x540C;&#x3058;&#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x306B;&#x306A;&#x3044;&#x3068;&#x6B63;&#x5E38;&#x306B;&#x5B9F;&#x884C;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;
+    b_spline_1parameter.py    :   &#x57FA;&#x672C;&#x7684;&#x306A;IGA&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x3059;
+    b_spline_2parameter_surface.py         :   surface&#x3067;&#x306E;IGA&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#xFF0C;&#x8F2A;&#x8B1B;&#x672C;&#x306E;&#x4F8B;&#x984C;&#x3092;&#x518D;&#x73FE;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;
+    NURBS_2parameter_ ... .py :   &#x91CD;&#x307F;&#x3092;&#x5C0E;&#x5165;&#x3057;&#x305F;3&#x6B21;&#x5143;2&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306E;&#x5F62;&#x72B6;&#x306E;&#x7DF4;&#x7FD2;
+    NURBS_ ... .py            :   &#x91CD;&#x307F;&#x3092;&#x5C0E;&#x5165;&#x3057;&#x305F;3&#x6B21;&#x5143;3&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306E;&#x5F62;&#x72B6;&#x306E;&#x7DF4;&#x7FD2;
+</code></pre><p>&#x4EE5;&#x4E0B;<code>b_spline_1parameter.py</code>&#x306B;&#x3064;&#x3044;&#x3066;&#x8AAC;&#x660E;&#x3057;&#x307E;&#x3059;<br>
+&#x884C;&#x6570;(line)&#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x5024;&#x3067;&#x3059;</p>
 <ul>
 <li>
-<p>line 9~
-CP(コントロールポイント)の座標入力，座標は任意</p>
+<p>line 9~<br>
+CP(&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;)&#x306E;&#x5EA7;&#x6A19;&#x5165;&#x529B;&#xFF0C;&#x5EA7;&#x6A19;&#x306F;&#x4EFB;&#x610F;</p>
 </li>
 <li>
-<p>line 20
-次数入力</p>
+<p>line 20<br>
+&#x6B21;&#x6570;&#x5165;&#x529B;</p>
 </li>
 <li>
-<p>line 24~
-アフィン変換(基本的には変更しなくてよい)</p>
+<p>line 24~<br>
+&#x30A2;&#x30D5;&#x30A3;&#x30F3;&#x5909;&#x63DB;(&#x57FA;&#x672C;&#x7684;&#x306B;&#x306F;&#x5909;&#x66F4;&#x3057;&#x306A;&#x304F;&#x3066;&#x3088;&#x3044;)</p>
 </li>
 <li>
-<p>line 44
-0連続となるコントロールポイント番号を入力
-2次以上はできないし，最大1点までしか入力できません
-(ファンクション適当に作った)
-コントロールポイント番号は0から始まることに注意してください
-エラーメッセージが出たらとりあえずこの行列を</p>
-<pre class="hljs"><code><div>make_C0_CP = np.array([])
-</div></code></pre>
-<p>に変更したら上手くいくかもしれません</p>
+<p>line 44<br>
+0&#x9023;&#x7D9A;&#x3068;&#x306A;&#x308B;&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x756A;&#x53F7;&#x3092;&#x5165;&#x529B;<br>
+2&#x6B21;&#x4EE5;&#x4E0A;&#x306F;&#x3067;&#x304D;&#x306A;&#x3044;&#x3057;&#xFF0C;&#x6700;&#x5927;1&#x70B9;&#x307E;&#x3067;&#x3057;&#x304B;&#x5165;&#x529B;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;<br>
+(&#x30D5;&#x30A1;&#x30F3;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x9069;&#x5F53;&#x306B;&#x4F5C;&#x3063;&#x305F;)<br>
+&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x756A;&#x53F7;&#x306F;0&#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;<br>
+&#x30A8;&#x30E9;&#x30FC;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x304C;&#x51FA;&#x305F;&#x3089;&#x3068;&#x308A;&#x3042;&#x3048;&#x305A;&#x3053;&#x306E;&#x884C;&#x5217;&#x3092;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>make_C0_CP = np.array([])
+</code></pre><p>&#x306B;&#x5909;&#x66F4;&#x3057;&#x305F;&#x3089;&#x4E0A;&#x624B;&#x304F;&#x3044;&#x304F;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;</p>
 </li>
 <li>
-<p>line 47~
-knot insertion Aはコントロールポイント番号を入力してその位置でノットインサーションを行います
-通常ノットインサーションの入力値は挿入したいノットの値ですが，コントロールポイントが多いといちいちノットの値を計算するのが面倒なので作りました
-例えばコントロールポイントの総数が8個で</p>
-<pre class="hljs"><code><div>knot = [0. 0. 0. 0.2 0.4 0.6 0.8 0.8 1. 1. 1.]
-</div></code></pre>
-<p>のとき，コントロールポイント番号2を入力すると</p>
-<pre class="hljs"><code><div>new_knot_position = np.array([2])
-</div></code></pre>
-<p>となり，</p>
-<pre class="hljs"><code><div>knot = 0.3
-</div></code></pre>
-<p>が挿入された場合と同じ結果になります
-コントロール番号が0と最後の番号(この例では7)ではこのファンクションは使えません
-よくわからない場合は次のknot insertion Bで直接ノットの値を入力してください</p>
+<p>line 47~<br>
+knot insertion A&#x306F;&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x756A;&#x53F7;&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x305D;&#x306E;&#x4F4D;&#x7F6E;&#x3067;&#x30CE;&#x30C3;&#x30C8;&#x30A4;&#x30F3;&#x30B5;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x884C;&#x3044;&#x307E;&#x3059;<br>
+&#x901A;&#x5E38;&#x30CE;&#x30C3;&#x30C8;&#x30A4;&#x30F3;&#x30B5;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x5165;&#x529B;&#x5024;&#x306F;&#x633F;&#x5165;&#x3057;&#x305F;&#x3044;&#x30CE;&#x30C3;&#x30C8;&#x306E;&#x5024;&#x3067;&#x3059;&#x304C;&#xFF0C;&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x304C;&#x591A;&#x3044;&#x3068;&#x3044;&#x3061;&#x3044;&#x3061;&#x30CE;&#x30C3;&#x30C8;&#x306E;&#x5024;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x306E;&#x304C;&#x9762;&#x5012;&#x306A;&#x306E;&#x3067;&#x4F5C;&#x308A;&#x307E;&#x3057;&#x305F;<br>
+&#x4F8B;&#x3048;&#x3070;&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306E;&#x7DCF;&#x6570;&#x304C;8&#x500B;&#x3067;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>knot = [0. 0. 0. 0.2 0.4 0.6 0.8 0.8 1. 1. 1.]
+</code></pre><p>&#x306E;&#x3068;&#x304D;&#xFF0C;&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x756A;&#x53F7;2&#x3092;&#x5165;&#x529B;&#x3059;&#x308B;&#x3068;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>new_knot_position = np.array([2])
+</code></pre><p>&#x3068;&#x306A;&#x308A;&#xFF0C;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>knot = 0.3
+</code></pre><p>&#x304C;&#x633F;&#x5165;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3068;&#x540C;&#x3058;&#x7D50;&#x679C;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;<br>
+&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x756A;&#x53F7;&#x304C;0&#x3068;&#x6700;&#x5F8C;&#x306E;&#x756A;&#x53F7;(&#x3053;&#x306E;&#x4F8B;&#x3067;&#x306F;7)&#x3067;&#x306F;&#x3053;&#x306E;&#x30D5;&#x30A1;&#x30F3;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x4F7F;&#x3048;&#x307E;&#x305B;&#x3093;<br>
+&#x3088;&#x304F;&#x308F;&#x304B;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x6B21;&#x306E;knot insertion B&#x3067;&#x76F4;&#x63A5;&#x30CE;&#x30C3;&#x30C8;&#x306E;&#x5024;&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;</p>
 </li>
 <li>
-<p>line 51~
-knot insertion Bは通常のノットインサーションです
-以下のように挿入したいノットを入力してください
-例：</p>
-<pre class="hljs"><code><div>insert_knot = np.array([1/3, 2/3])
-</div></code></pre>
-</li>
+<p>line 51~<br>
+knot insertion B&#x306F;&#x901A;&#x5E38;&#x306E;&#x30CE;&#x30C3;&#x30C8;&#x30A4;&#x30F3;&#x30B5;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3059;<br>
+&#x4EE5;&#x4E0B;&#x306E;&#x3088;&#x3046;&#x306B;&#x633F;&#x5165;&#x3057;&#x305F;&#x3044;&#x30CE;&#x30C3;&#x30C8;&#x3092;&#x5165;&#x529B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;<br>
+&#x4F8B;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>insert_knot = np.array([1/3, 2/3])
+</code></pre></li>
 <li>
-<p>line 59~
-オーダーエレベーションを行います
-オーダーエレベーションのファンクション内では，
-特定の位置でknot insertion →
-ベジェ曲線に分割し，分割後のコントロールポイント番号を取得 →
-各ベジェ曲線でオーダーエレベーション →
-knot insertionしたノットをremoval knot(knot insertionの逆の操作)
-の手順で次数をあげています
-詳しくはNURBS bookを参照してください
-removal knotについては詳しく書かれていなかったのですが，
-knot insertionの
-$$
-\overline{B} = {\bf T}B
-$$
-の式から($\overline{B}$と${\bf T}$が既知でコントロールポイントを減らしたい)
-$$
-B = {\bf T}^{-1}\overline{B}
-$$
-となります，ただし逆行列を求めるためには${\bf T}$が正則行列である必要があるのですが，${\bf T}$は正則行列ではないので疑似逆行列という概念を用いて計算しました
-詳しくは<code>b_spline_function.py</code>を見てみてください(超読みにくい)</p>
+<p>line 59~<br>
+&#x30AA;&#x30FC;&#x30C0;&#x30FC;&#x30A8;&#x30EC;&#x30D9;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x884C;&#x3044;&#x307E;&#x3059;<br>
+&#x30AA;&#x30FC;&#x30C0;&#x30FC;&#x30A8;&#x30EC;&#x30D9;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30D5;&#x30A1;&#x30F3;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x5185;&#x3067;&#x306F;&#xFF0C;<br>
+&#x7279;&#x5B9A;&#x306E;&#x4F4D;&#x7F6E;&#x3067;knot insertion &#x2192;<br>
+&#x30D9;&#x30B8;&#x30A7;&#x66F2;&#x7DDA;&#x306B;&#x5206;&#x5272;&#x3057;&#xFF0C;&#x5206;&#x5272;&#x5F8C;&#x306E;&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x756A;&#x53F7;&#x3092;&#x53D6;&#x5F97; &#x2192;<br>
+&#x5404;&#x30D9;&#x30B8;&#x30A7;&#x66F2;&#x7DDA;&#x3067;&#x30AA;&#x30FC;&#x30C0;&#x30FC;&#x30A8;&#x30EC;&#x30D9;&#x30FC;&#x30B7;&#x30E7;&#x30F3; &#x2192;<br>
+knot insertion&#x3057;&#x305F;&#x30CE;&#x30C3;&#x30C8;&#x3092;removal knot(knot insertion&#x306E;&#x9006;&#x306E;&#x64CD;&#x4F5C;)<br>
+&#x306E;&#x624B;&#x9806;&#x3067;&#x6B21;&#x6570;&#x3092;&#x3042;&#x3052;&#x3066;&#x3044;&#x307E;&#x3059;<br>
+&#x8A73;&#x3057;&#x304F;&#x306F;NURBS book&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;<br>
+removal knot&#x306B;&#x3064;&#x3044;&#x3066;&#x306F;&#x8A73;&#x3057;&#x304F;&#x66F8;&#x304B;&#x308C;&#x3066;&#x3044;&#x306A;&#x304B;&#x3063;&#x305F;&#x306E;&#x3067;&#x3059;&#x304C;&#xFF0C;<br>
+knot insertion&#x306E;<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover accent="true"><mi>B</mi><mo stretchy="true">&#x203E;</mo></mover><mo>=</mo><mi mathvariant="bold">T</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">\overline{B} = {\bf T}B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8833300000000001em;vertical-align:0em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833300000000001em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.80333em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68611em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">T</span></span></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span><br>
+&#x306E;&#x5F0F;&#x304B;&#x3089;(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>B</mi><mo stretchy="true">&#x203E;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{B}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8833300000000001em;vertical-align:0em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833300000000001em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.80333em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>&#x3068;<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">T</mi></mrow><annotation encoding="application/x-tex">{\bf T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68611em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">T</span></span></span></span></span></span>&#x304C;&#x65E2;&#x77E5;&#x3067;&#x30B3;&#x30F3;&#x30C8;&#x30ED;&#x30FC;&#x30EB;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092;&#x6E1B;&#x3089;&#x3057;&#x305F;&#x3044;)<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>B</mi><mo>=</mo><msup><mi mathvariant="bold">T</mi><mrow><mo>&#x2212;</mo><mn>1</mn></mrow></msup><mover accent="true"><mi>B</mi><mo stretchy="true">&#x203E;</mo></mover></mrow><annotation encoding="application/x-tex">B = {\bf T}^{-1}\overline{B}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8833300000000001em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathbf">T</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.864108em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">&#x2212;</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833300000000001em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.80333em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></span><br>
+&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#xFF0C;&#x305F;&#x3060;&#x3057;&#x9006;&#x884C;&#x5217;&#x3092;&#x6C42;&#x3081;&#x308B;&#x305F;&#x3081;&#x306B;&#x306F;<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">T</mi></mrow><annotation encoding="application/x-tex">{\bf T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68611em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">T</span></span></span></span></span></span>&#x304C;&#x6B63;&#x5247;&#x884C;&#x5217;&#x3067;&#x3042;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308B;&#x306E;&#x3067;&#x3059;&#x304C;&#xFF0C;<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">T</mi></mrow><annotation encoding="application/x-tex">{\bf T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68611em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">T</span></span></span></span></span></span>&#x306F;&#x6B63;&#x5247;&#x884C;&#x5217;&#x3067;&#x306F;&#x306A;&#x3044;&#x306E;&#x3067;&#x7591;&#x4F3C;&#x9006;&#x884C;&#x5217;&#x3068;&#x3044;&#x3046;&#x6982;&#x5FF5;&#x3092;&#x7528;&#x3044;&#x3066;&#x8A08;&#x7B97;&#x3057;&#x307E;&#x3057;&#x305F;<br>
+&#x8A73;&#x3057;&#x304F;&#x306F;<code>b_spline_function.py</code>&#x3092;&#x898B;&#x3066;&#x307F;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;(&#x8D85;&#x8AAD;&#x307F;&#x306B;&#x304F;&#x3044;)</p>
 </li>
 </ul>
-<p>以上で説明は終了です
-line 155~とかところどころax4ありとかなしとか書いてますが
-これはオーダーエレベーションしたときに元の曲線と一致してるか確認したかっただけなので，特に気にしなくていいです．</p>
-<p>気になる場合は</p>
-<pre class="hljs"><code><div># ax4なしの時
-</div></code></pre>
-<p>と書いてる行のコメントアウトを外して</p>
-<pre class="hljs"><code><div># ax4ありの時
-</div></code></pre>
-<p>と書いてる行を消すかコメントアウトにして</p>
-<pre class="hljs"><code><div># oeder elevation 前のスプライン(黒) 比較用
+<p>&#x4EE5;&#x4E0A;&#x3067;&#x8AAC;&#x660E;&#x306F;&#x7D42;&#x4E86;&#x3067;&#x3059;<br>
+line 155~&#x3068;&#x304B;&#x3068;&#x3053;&#x308D;&#x3069;&#x3053;&#x308D;ax4&#x3042;&#x308A;&#x3068;&#x304B;&#x306A;&#x3057;&#x3068;&#x304B;&#x66F8;&#x3044;&#x3066;&#x307E;&#x3059;&#x304C;<br>
+&#x3053;&#x308C;&#x306F;&#x30AA;&#x30FC;&#x30C0;&#x30FC;&#x30A8;&#x30EC;&#x30D9;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3057;&#x305F;&#x3068;&#x304D;&#x306B;&#x5143;&#x306E;&#x66F2;&#x7DDA;&#x3068;&#x4E00;&#x81F4;&#x3057;&#x3066;&#x308B;&#x304B;&#x78BA;&#x8A8D;&#x3057;&#x305F;&#x304B;&#x3063;&#x305F;&#x3060;&#x3051;&#x306A;&#x306E;&#x3067;&#xFF0C;&#x7279;&#x306B;&#x6C17;&#x306B;&#x3057;&#x306A;&#x304F;&#x3066;&#x3044;&#x3044;&#x3067;&#x3059;&#xFF0E;</p>
+<p>&#x6C17;&#x306B;&#x306A;&#x308B;&#x5834;&#x5408;&#x306F;</p>
+<pre data-role="codeBlock" data-info class="language-"><code># ax4&#x306A;&#x3057;&#x306E;&#x6642;
+</code></pre><p>&#x3068;&#x66F8;&#x3044;&#x3066;&#x308B;&#x884C;&#x306E;&#x30B3;&#x30E1;&#x30F3;&#x30C8;&#x30A2;&#x30A6;&#x30C8;&#x3092;&#x5916;&#x3057;&#x3066;</p>
+<pre data-role="codeBlock" data-info class="language-"><code># ax4&#x3042;&#x308A;&#x306E;&#x6642;
+</code></pre><p>&#x3068;&#x66F8;&#x3044;&#x3066;&#x308B;&#x884C;&#x3092;&#x6D88;&#x3059;&#x304B;&#x30B3;&#x30E1;&#x30F3;&#x30C8;&#x30A2;&#x30A6;&#x30C8;&#x306B;&#x3057;&#x3066;</p>
+<pre data-role="codeBlock" data-info class="language-"><code># oeder elevation &#x524D;&#x306E;&#x30B9;&#x30D7;&#x30E9;&#x30A4;&#x30F3;(&#x9ED2;) &#x6BD4;&#x8F03;&#x7528;
 #---------------------------------------------------------------#
 
 #---------------------------------------------------------------#
-</div></code></pre>
-<p>の間を全部消すかコメントアウトにすれば消えると思います</p>
-<h1 id="stl%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">stlについて</h1>
-<p>可視化方法としてstl出力するプログラムを作成しています
-3次元2or3パラメータのプログラムは基本的に実装されています
-プログラムを実行するとプログラムがあるディレクトリの一つ上にstlファイルが作成されます
-stlファイルは様々なアプリケーションで開けますが，
-法線ベクトルが反対になっている面があるため，blenderで開くことを強く推奨します</p>
-<p><a href="https://www.blender.org/download/">blender ダウンロードページ</a></p>
-<p>blenderを起動した後，左上に表示されているファイル→インポートから開くとモデルが表示されます
-blenderの簡単な操作をまとめておきます</p>
-<pre class="hljs"><code><div>ホイール押し込み          ビュー回転
-shift + ホイール押し込み  ビュー平行移動
-tab     オブジェクトモード，編集モード切替
+</code></pre><p>&#x306E;&#x9593;&#x3092;&#x5168;&#x90E8;&#x6D88;&#x3059;&#x304B;&#x30B3;&#x30E1;&#x30F3;&#x30C8;&#x30A2;&#x30A6;&#x30C8;&#x306B;&#x3059;&#x308C;&#x3070;&#x6D88;&#x3048;&#x308B;&#x3068;&#x601D;&#x3044;&#x307E;&#x3059;</p>
+<h1 class="mume-header" id="stl%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">stl&#x306B;&#x3064;&#x3044;&#x3066;</h1>
 
-以下編集モード中
+<p>&#x53EF;&#x8996;&#x5316;&#x65B9;&#x6CD5;&#x3068;&#x3057;&#x3066;stl&#x51FA;&#x529B;&#x3059;&#x308B;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;<br>
+3&#x6B21;&#x5143;2or3&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x57FA;&#x672C;&#x7684;&#x306B;&#x5B9F;&#x88C5;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;<br>
+&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x3068;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x3042;&#x308B;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306E;&#x4E00;&#x3064;&#x4E0A;&#x306B;stl&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;<br>
+stl&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306F;&#x69D8;&#x3005;&#x306A;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x958B;&#x3051;&#x307E;&#x3059;&#x304C;&#xFF0C;<br>
+&#x6CD5;&#x7DDA;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x304C;&#x53CD;&#x5BFE;&#x306B;&#x306A;&#x3063;&#x3066;&#x3044;&#x308B;&#x9762;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#xFF0C;blender&#x3067;&#x958B;&#x304F;&#x3053;&#x3068;&#x3092;&#x5F37;&#x304F;&#x63A8;&#x5968;&#x3057;&#x307E;&#x3059;</p>
+<p><a href="https://www.blender.org/download/">blender &#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;&#x30DA;&#x30FC;&#x30B8;</a></p>
+<p>blender&#x3092;&#x8D77;&#x52D5;&#x3057;&#x305F;&#x5F8C;&#xFF0C;&#x5DE6;&#x4E0A;&#x306B;&#x8868;&#x793A;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x2192;&#x30A4;&#x30F3;&#x30DD;&#x30FC;&#x30C8;&#x304B;&#x3089;&#x958B;&#x304F;&#x3068;&#x30E2;&#x30C7;&#x30EB;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;<br>
+blender&#x306E;&#x7C21;&#x5358;&#x306A;&#x64CD;&#x4F5C;&#x3092;&#x307E;&#x3068;&#x3081;&#x3066;&#x304A;&#x304D;&#x307E;&#x3059;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>&#x30DB;&#x30A4;&#x30FC;&#x30EB;&#x62BC;&#x3057;&#x8FBC;&#x307F;          &#x30D3;&#x30E5;&#x30FC;&#x56DE;&#x8EE2;
+shift + &#x30DB;&#x30A4;&#x30FC;&#x30EB;&#x62BC;&#x3057;&#x8FBC;&#x307F;  &#x30D3;&#x30E5;&#x30FC;&#x5E73;&#x884C;&#x79FB;&#x52D5;
+tab     &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30E2;&#x30FC;&#x30C9;&#xFF0C;&#x7DE8;&#x96C6;&#x30E2;&#x30FC;&#x30C9;&#x5207;&#x66FF;
 
-shift + tab   法線ベクトルをそろえる
-z長押し       ビューモード切替
-s (+ x or y or z) (+ 数値) 任意の方向，サイズに拡大
-g (+ x or y or z) (+ 数値) 任意の方向，距離に移動
-</div></code></pre>
+&#x4EE5;&#x4E0B;&#x7DE8;&#x96C6;&#x30E2;&#x30FC;&#x30C9;&#x4E2D;
 
-</body>
-</html>
+shift + tab   &#x6CD5;&#x7DDA;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x305D;&#x308D;&#x3048;&#x308B;
+z&#x9577;&#x62BC;&#x3057;       &#x30D3;&#x30E5;&#x30FC;&#x30E2;&#x30FC;&#x30C9;&#x5207;&#x66FF;
+s (+ x or y or z) (+ &#x6570;&#x5024;) &#x4EFB;&#x610F;&#x306E;&#x65B9;&#x5411;&#xFF0C;&#x30B5;&#x30A4;&#x30BA;&#x306B;&#x62E1;&#x5927;
+g (+ x or y or z) (+ &#x6570;&#x5024;) &#x4EFB;&#x610F;&#x306E;&#x65B9;&#x5411;&#xFF0C;&#x8DDD;&#x96E2;&#x306B;&#x79FB;&#x52D5;
+</code></pre>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
