@@ -285,12 +285,12 @@ def basisfunction_return_N_at_xi(N_xi, xi, knot, l, n):
 
 
 def weight_basisfunction_1parameter_return_R(R, N, w, delta, n, l):
-    a = np.zeros((delta[0]))
-    for i in range(delta[0]):
-        for p in range(l[0]):
-            a[i] += N[n[0]][i][p] * w[p]
-        for p in range(l[0]):
-            R[i][p] = (N[n[0]][i][p] * w[p]) / a[i]
+    a = np.zeros((delta))
+    for i in range(delta):
+        for p in range(l):
+            a[i] += N[n][i][p] * w[p]
+        for p in range(l):
+            R[i][p] = (N[n][i][p] * w[p]) / a[i]
     return R
 
 

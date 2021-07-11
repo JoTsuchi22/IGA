@@ -10,30 +10,29 @@ color = np.array(["r", "g", "b", "c", "m", "y", "k"])
 # weight value
 wv1 = 1 / math.sqrt(2)
 wv2 = wv1 + (1. - wv1)*(1./ 2.)
-# hight_rate = 1. / 2.
 hight_rate = math.sqrt(2) - 1.
-coswv1 = math.cos(math.atan(hight_rate / 1.))
-coswv2 = math.cos(math.atan(hight_rate / 1.))
+coswv1 = math.cos(math.atan(hight_rate / 1.)) * math.cos(math.atan(hight_rate / 1.))
+coswv2 = coswv1 * coswv1 + (1. - coswv1 * coswv1) * (1. / 2.)
 
 CP_matrix_weight = np.array([[1., 0., 0., 1.],
-                             [1., 1.*hight_rate, 0., 1.*wv1*coswv1],
-                             [1.*hight_rate, 1., 0., 1.*wv1*coswv1],
+                             [1., 1.*hight_rate, 0., 1.*coswv1],
+                             [1.*hight_rate, 1., 0., 1.*coswv1],
                              [0., 1., 0., 1.],
                              [2., 0., 0., 1.],
-                             [2., 2.*hight_rate, 0., 1.*wv2*coswv2],
-                             [2.*hight_rate, 2., 0., 1.*wv2*coswv2],
+                             [2., 2.*hight_rate, 0., 1.*coswv2],
+                             [2.*hight_rate, 2., 0., 1.*coswv2],
                              [0., 2., 0., 1.],
                              [3., 0., 0., 1.],
                              [3., 3., 0., 1.],
                              [3., 3., 0., 1.],
                              [0., 3., 0., 1.],
                              [1., 0., 1., 1.],
-                             [1., 1.*hight_rate, 1., 1.*wv1*coswv1],
-                             [1.*hight_rate, 1., 1., 1.*wv1*coswv1],
+                             [1., 1.*hight_rate, 1., 1.*coswv1],
+                             [1.*hight_rate, 1., 1., 1.*coswv1],
                              [0., 1., 1., 1.],
                              [2., 0., 1., 1.],
-                             [2., 2.*hight_rate, 1., 1.*wv2*coswv2],
-                             [2.*hight_rate, 2., 1., 1.*wv2*coswv2],
+                             [2., 2.*hight_rate, 1., 1.*coswv2],
+                             [2.*hight_rate, 2., 1., 1.*coswv2],
                              [0., 2., 1., 1.],
                              [3., 0., 1., 1.],
                              [3., 3., 1., 1.],
@@ -44,12 +43,12 @@ CP_matrix = CP_matrix_weight[:,:-1]
 weight = CP_matrix_weight[:,3:]
 
 # affine transformation (for CP)
-stretch_x = 1.0
-stretch_y = 1.0
-stretch_z = 1.0
+stretch_x = 2.
+stretch_y = 2.
+stretch_z = 2.
 
-trans_x = 0.0
-trans_y = 0.0
+trans_x = -2.
+trans_y = -2.
 trans_z = 0.0
 
 theta_x = 0.0
@@ -63,7 +62,7 @@ CP_matrix = bpf.affine_transformation_3D(CP_matrix, CP_matrix.shape[0], stretch_
                                          trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
 
 # Define 刻み幅
-delta = np.array([10, 20, 40])
+delta = np.array([10, 20, 41])
 
 # Define polynomial order:n
 n = np.array([1, 2, 2])   # n次のB-スプライン曲線
