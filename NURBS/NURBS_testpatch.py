@@ -60,7 +60,7 @@ CP_matrix = fn.affine_transformation_3D(CP_matrix, CP_matrix.shape[0], stretch_x
                                          trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
 
 # Define 刻み幅
-delta = np.array([10, 20, 41])
+delta = np.array([10, 40, 61])
 
 # Define polynomial order:n
 n = np.array([1, 2, 2])   # n次のB-スプライン曲線
