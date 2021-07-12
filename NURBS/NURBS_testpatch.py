@@ -65,7 +65,7 @@ delta = np.array([10, 40, 61])
 # Define polynomial order:n
 n = np.array([1, 2, 2])   # n次のB-スプライン曲線
 
-# (ξ, η，ζ)方向のコントロールポイントの数 # k, j, i
+# (ξ, η，ζ)方向のコントロールポイントの数 # k, j, i(t, r, Θ)
 l_i = 2
 l_j = 3
 l_k = 4
