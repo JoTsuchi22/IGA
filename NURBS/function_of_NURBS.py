@@ -100,6 +100,23 @@ def knot_insertion_B(CP, n, l, knot, insert_knot):
     return CP, l, m, knot
 
 
+# def knot_insertion_3parameter(CP_3D, w, n, l, knot_i, knot_j, knot_k, insert_axis, insert_knot):
+#     if insert_axis == 0:
+#         for j in range(l[1]):
+#             for k in range(l[2]):
+#                 knot_insertion_B(CP_3D[:][j][k][3], n[0], l[0], knot_i, insert_knot)
+#     if insert_axis == 1:
+#         for i in range(l[0]):
+#             for k in range(l[2]):
+#                 knot_insertion_B(CP_3D[:][j][k][3], n[1], l[1], knot_j, insert_knot)
+#     if insert_axis == 2:
+#         for i in range(l[0]):
+#             for j in range(l[1]):
+#                 knot_insertion_B(CP_3D[:][j][k][3], n[2], l[2], knot_k, insert_knot)
+#     return 
+
+
+
 def knot_removal(CP, n, l, knot, removal_knot):
     knot_bool_vec_1 = np.ones((knot.shape[0]), dtype=bool)
     knot_bool_vec_2 = np.zeros(

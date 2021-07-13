@@ -95,7 +95,7 @@ knot_i = fn.def_knot(m[0], n[0])
 knot_j = fn.def_knot(m[1], n[1])
 # knot_k = fn.def_knot(m[2], n[2])
 # ノットの置き方 特殊
-knot_k = np.array([0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4])
+knot_k = np.array([0, 0, 0, .25, .25, .5, .5, .75, .75, 1, 1, 1])
 
 # 変数宣言
 N = np.zeros((n[0]+1, delta[0], l_i))
