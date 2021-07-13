@@ -1,0 +1,21 @@
+コンパイル
+gcc -o test.x iga_analysis.c -lm -Wall
+gcc -o mul_pat_make_input_from_igs.x mul_pat_make_input_from_igs.c
+
+実行
+cd example_analysis
+../mkdir8.sh
+../test.x ../input_example.txt > test.dat
+
+cd test_analysis
+../mkdir8.sh
+../test.x ../input_test.txt > test.dat
+
+データ整理
+コンパイル
+g++ -o sort sort.cpp
+
+実行
+chcp 65001	//utf-8
+sort NURBS_disp.txt disp_y0.txt disp_y5.txt disp_y10.txt
+↑sort.exeと同じディレクトリにNURBS_disp.txt(NURBS_disp.datの右4列のコピー)を作成しておく
