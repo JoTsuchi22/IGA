@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import math
 
 # define CP each patch
@@ -1680,14 +1681,17 @@ length = int(globalpoint[globalpoint_bool].shape[0])
 a_g = length
 a_l_g = 0
 a_l_l = 0
+patch0_x = np.reshape(patch0[:,0], [patch0_info[1], patch0_info[2]]).T
+patch0_y = np.reshape(patch0[:,1], [patch0_info[1], patch0_info[2]]).T
+patch0_w = np.reshape(patch0[:,2], [patch0_info[1], patch0_info[2]]).T
 for j in range(patch0_info[2]):
     for i in range(patch0_info[1]):
         localpoint0[a_l_g] = length + a_l_l
         globalpoint[a_g] = a_g
         globalpoint_bool[a_g] = True
-        globalpoint_x[a_g] = patch0[a_l_l][0]
-        globalpoint_y[a_g] = patch0[a_l_l][0]
-        globalpoint_w[a_g] = patch0[a_l_l][0]
+        globalpoint_x[a_g] = patch0_x[i][j]
+        globalpoint_y[a_g] = patch0_y[i][j]
+        globalpoint_w[a_g] = patch0_w[i][j]
         a_g = a_g + 1
         a_l_g = a_l_g + 1
         a_l_l = a_l_l + 1
@@ -1709,6 +1713,9 @@ length = int(globalpoint[globalpoint_bool].shape[0])
 a_g = length
 a_l_g = 0
 a_l_l = 0
+patch1_x = np.reshape(patch1[:,0], [patch1_info[1], patch1_info[2]]).T
+patch1_y = np.reshape(patch1[:,1], [patch1_info[1], patch1_info[2]]).T
+patch1_w = np.reshape(patch1[:,2], [patch1_info[1], patch1_info[2]]).T
 for j in range(patch1_info[2]):
     for i in range(patch1_info[1]):
         if i == 0:
@@ -1718,9 +1725,9 @@ for j in range(patch1_info[2]):
             localpoint1[a_l_g] = length + a_l_l
             globalpoint[a_g] = a_g
             globalpoint_bool[a_g] = True
-            globalpoint_x[a_g] = patch1[a_l_l][0]
-            globalpoint_y[a_g] = patch1[a_l_l][0]
-            globalpoint_w[a_g] = patch1[a_l_l][0]
+            globalpoint_x[a_g] = patch1_x[i][j]
+            globalpoint_y[a_g] = patch1_y[i][j]
+            globalpoint_w[a_g] = patch1_w[i][j]
             a_g = a_g + 1
             a_l_g = a_l_g + 1
             a_l_l = a_l_l + 1
@@ -1742,6 +1749,9 @@ length = int(globalpoint[globalpoint_bool].shape[0])
 a_g = length
 a_l_g = 0
 a_l_l = 0
+patch2_x = np.reshape(patch2[:,0], [patch2_info[1], patch2_info[2]]).T
+patch2_y = np.reshape(patch2[:,1], [patch2_info[1], patch2_info[2]]).T
+patch2_w = np.reshape(patch2[:,2], [patch2_info[1], patch2_info[2]]).T
 for j in range(patch2_info[2]):
     for i in range(patch2_info[1]):
         if j == 0:
@@ -1751,9 +1761,9 @@ for j in range(patch2_info[2]):
             localpoint2[a_l_g] = length + a_l_l
             globalpoint[a_g] = a_g
             globalpoint_bool[a_g] = True
-            globalpoint_x[a_g] = patch2[a_l_l][0]
-            globalpoint_y[a_g] = patch2[a_l_l][0]
-            globalpoint_w[a_g] = patch2[a_l_l][0]
+            globalpoint_x[a_g] = patch2_x[i][j]
+            globalpoint_y[a_g] = patch2_y[i][j]
+            globalpoint_w[a_g] = patch2_w[i][j]
             a_g = a_g + 1
             a_l_g = a_l_g + 1
             a_l_l = a_l_l + 1
@@ -1775,6 +1785,9 @@ length = int(globalpoint[globalpoint_bool].shape[0])
 a_g = length
 a_l_g = 0
 a_l_l = 0
+patch3_x = np.reshape(patch3[:,0], [patch3_info[1], patch3_info[2]]).T
+patch3_y = np.reshape(patch3[:,1], [patch3_info[1], patch3_info[2]]).T
+patch3_w = np.reshape(patch3[:,2], [patch3_info[1], patch3_info[2]]).T
 for j in range(patch3_info[2]):
     for i in range(patch3_info[1]):
         if i == patch3_info[1] - 1:
@@ -1784,9 +1797,9 @@ for j in range(patch3_info[2]):
             localpoint3[a_l_g] = length + a_l_l
             globalpoint[a_g] = a_g
             globalpoint_bool[a_g] = True
-            globalpoint_x[a_g] = patch3[a_l_l][0]
-            globalpoint_y[a_g] = patch3[a_l_l][0]
-            globalpoint_w[a_g] = patch3[a_l_l][0]
+            globalpoint_x[a_g] = patch3_x[i][j]
+            globalpoint_y[a_g] = patch3_y[i][j]
+            globalpoint_w[a_g] = patch3_w[i][j]
             a_g = a_g + 1
             a_l_g = a_l_g + 1
             a_l_l = a_l_l + 1
@@ -1808,6 +1821,9 @@ length = int(globalpoint[globalpoint_bool].shape[0])
 a_g = length
 a_l_g = 0
 a_l_l = 0
+patch4_x = np.reshape(patch4[:,0], [patch4_info[1], patch4_info[2]]).T
+patch4_y = np.reshape(patch4[:,1], [patch4_info[1], patch4_info[2]]).T
+patch4_w = np.reshape(patch4[:,2], [patch4_info[1], patch4_info[2]]).T
 for j in range(patch4_info[2]):
     for i in range(patch4_info[1]):
         if i == patch4_info[1] - 1 and j == 0:
@@ -1823,9 +1839,9 @@ for j in range(patch4_info[2]):
             localpoint4[a_l_g] = length + a_l_l
             globalpoint[a_g] = a_g
             globalpoint_bool[a_g] = True
-            globalpoint_x[a_g] = patch4[a_l_l][0]
-            globalpoint_y[a_g] = patch4[a_l_l][0]
-            globalpoint_w[a_g] = patch4[a_l_l][0]
+            globalpoint_x[a_g] = patch4_x[i][j]
+            globalpoint_y[a_g] = patch4_y[i][j]
+            globalpoint_w[a_g] = patch4_w[i][j]
             a_g = a_g + 1
             a_l_g = a_l_g + 1
             a_l_l = a_l_l + 1
@@ -1864,7 +1880,7 @@ def write_date_localpoint(filename, localpoint):
             f.write(str(int(localpoint[i])))
             f.write('\n')
 
-def write_date_footer(filename, globalpoint, globalpoint_bool, globalpoint_x, globalpoint_y, globalpoint_w):
+def write_date_globalpoint(filename, globalpoint, globalpoint_bool, globalpoint_x, globalpoint_y, globalpoint_w):
     filename_txt = filename + ".txt"
     f = open(filename_txt, 'a')
     f.write('\n')
@@ -1895,4 +1911,28 @@ write_date_localpoint(filename, localpoint1)
 write_date_localpoint(filename, localpoint2)
 write_date_localpoint(filename, localpoint3)
 write_date_localpoint(filename, localpoint4)
-write_date_footer(filename, globalpoint, globalpoint_bool, globalpoint_x, globalpoint_y, globalpoint_w)
+write_date_globalpoint(filename, globalpoint, globalpoint_bool, globalpoint_x, globalpoint_y, globalpoint_w)
+
+# 描写
+color = np.array(["r", "g", "b", "c", "m", "y", "k"])
+fig = plt.figure()
+ax1 = fig.add_subplot(1, 1, 1)
+
+A = np.zeros((globalpoint[globalpoint_bool].shape[0],3))
+for i in range(globalpoint[globalpoint_bool].shape[0]):
+    A[i][0] = globalpoint[globalpoint_bool][i]
+    A[i][1] = globalpoint_x[globalpoint_bool][i]
+    A[i][2] = globalpoint_y[globalpoint_bool][i]
+ax1.plot(A[:,1], A[:,2], c=color[0], marker="", linewidth=0.7)
+for i in range(globalpoint[globalpoint_bool].shape[0]):
+    ax1.text(A[i,1], A[i,2], str(int(A[i,0])), c=color[3], fontsize=6)
+
+
+ax1.set_aspect('equal', adjustable='box')
+ax1.set_axisbelow(True)
+fig.set_figheight(9)
+fig.set_figwidth(12)
+ax1.grid()
+ax1.set_xlim(-1, 11)
+ax1.set_ylim(-1, 11)
+plt.show()
