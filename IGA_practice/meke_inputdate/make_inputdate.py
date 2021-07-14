@@ -2,9 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-# define CP each patch
-number_of_patch = 5
-
 # patch info (パッチ番号, ξ方向のコントロールポイント個数, η方向のコントロールポイント個数)
 patch0_info = np.array([0, 18, 18])
 patch1_info = np.array([1, 18, 18])
@@ -1651,7 +1648,7 @@ patch4 = np.array([
 
 # 重複ありの総コントロールポイント数
 allpointnumber_overlapping = patch0_info[1] * patch0_info[2] + patch1_info[1] * patch1_info[2] + patch2_info[1] * patch2_info[2] \
-                           + patch3_info[1] * patch3_info[2] + patch4_info[1] * patch4_info[2] 
+                           + patch3_info[1] * patch3_info[2] + patch4_info[1] * patch4_info[2]
 
 globalpoint = np.zeros((allpointnumber_overlapping))
 globalpoint_x = np.zeros((allpointnumber_overlapping))
