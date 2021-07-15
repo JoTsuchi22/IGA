@@ -144,20 +144,20 @@ knot_j = fn.def_knot(m[1], n[1])
 # knot_i = np.array([0, 0, 0, 1, 1, 1])
 knot_k = np.array([0., 0., 0., .25, .25, .5, .5, .75, .75, 1., 1., 1.])
 
-# knot removal
-removal_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
-removal_knot = np.array([])  # 除去するノットの値(0.0 < insert_knot < 1.0)
-CP_3D, l, m, knot_i, knot_j, knot_k = fn.knot_removal(CP_3D, n, l,  knot_i, knot_j, knot_k, removal_axis, removal_knot)
+# # knot removal
+# removal_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
+# removal_knot = np.array([])  # 除去するノットの値(0.0 < insert_knot < 1.0)
+# CP_3D, l, m, knot_i, knot_j, knot_k = fn.knot_removal(CP_3D, n, l,  knot_i, knot_j, knot_k, removal_axis, removal_knot)
 
-# order elevation
-elevation_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
-elevation_degree = 0  # order elevationを行う回数
-CP, l, m, n, knot_i, knot_j, knot_k = fn.order_elevation(CP_3D, n, l,  knot_i, knot_j, knot_k, elevation_axis, elevation_degree)
+# # order elevation
+# elevation_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
+# elevation_degree = 0  # order elevationを行う回数
+# CP, l, m, n, knot_i, knot_j, knot_k = fn.order_elevation(CP_3D, n, l,  knot_i, knot_j, knot_k, elevation_axis, elevation_degree)
 
-# knot insertion
-insert_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
-insert_knot = np.array([])  # 挿入するノットの値(0.0 < insert_knot < 1.0)
-CP, l, m, knot_i, knot_j, knot_k = fn.knot_insertion_3parameter(CP_3D, w, n, l, knot_i, knot_j, knot_k, insert_axis, insert_knot)
+# # knot insertion
+# insert_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
+# insert_knot = np.array([])  # 挿入するノットの値(0.0 < insert_knot < 1.0)
+# CP, l, m, knot_i, knot_j, knot_k = fn.knot_insertion_3parameter(CP_3D, w, n, l, knot_i, knot_j, knot_k, insert_axis, insert_knot)
 
 # 変数宣言
 N = np.zeros((n[0]+1, delta[0], l_i))
