@@ -1910,6 +1910,28 @@ write_date_localpoint(filename, localpoint3)
 write_date_localpoint(filename, localpoint4)
 write_date_globalpoint(filename, globalpoint, globalpoint_bool, globalpoint_x, globalpoint_y, globalpoint_w)
 
+def write_BC(filename, A, axis):
+    filename_txt = filename + ".txt"
+    f = open(filename_txt, 'a')
+    f.write('\n')
+    for i in range(18):
+        f.write(str(int(A[axis,i])))
+        f.write('\n')
+    f.write('\n')
+
+# 境界条件txt出力
+filename = 'BC_5patch'
+filename_txt = filename + ".txt"
+f = open(filename_txt, 'w')
+
+write_BC(filename, A0_i, 1)
+write_BC(filename, A1_j, 0)
+write_BC(filename, A3_i, 0)
+write_BC(filename, A4_j, 1)
+write_BC(filename, A2_j, 1)
+write_BC(filename, A3_j, 0)
+
+
 # 描写
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
 fig = plt.figure()
