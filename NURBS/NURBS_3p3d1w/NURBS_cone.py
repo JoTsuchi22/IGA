@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import math
 import function_of_NURBS as fn
 
+
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
 
@@ -115,9 +116,6 @@ shear_y = 0.0
 CP_matrix = fn.affine_transformation_3D(CP_matrix, CP_matrix.shape[0], stretch_x, stretch_y, stretch_z,
                                          trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
 
-# Define 刻み幅
-delta = np.array([30, 4, 50])
-
 # Define polynomial order:n
 n = np.array([2, 2, 2])   # n次のB-スプライン曲線
 
@@ -144,31 +142,25 @@ knot_j = fn.def_knot(m[1], n[1])
 # knot_i = np.array([0, 0, 0, 1, 1, 1])
 knot_k = np.array([0., 0., 0., .25, .25, .5, .5, .75, .75, 1., 1., 1.])
 
-# # knot removal
-# removal_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
-# removal_knot = np.array([])  # 除去するノットの値(0.0 < insert_knot < 1.0)
-# CP_3D, l, m, knot_i, knot_j, knot_k = fn.knot_removal(CP_3D, n, l,  knot_i, knot_j, knot_k, removal_axis, removal_knot)
+# オーダーエレベーション
 
-# # order elevation
-# elevation_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
-# elevation_degree = 0  # order elevationを行う回数
-# CP, l, m, n, knot_i, knot_j, knot_k = fn.order_elevation(CP_3D, n, l,  knot_i, knot_j, knot_k, elevation_axis, elevation_degree)
 
-# # knot insertion
-# insert_axis = 2 # knot_i方向→0, knot_j→1, knot_k→2
-# insert_knot = np.array([])  # 挿入するノットの値(0.0 < insert_knot < 1.0)
-# CP, l, m, knot_i, knot_j, knot_k = fn.knot_insertion_3parameter(CP_3D, w, n, l, knot_i, knot_j, knot_k, insert_axis, insert_knot)
+# autoノットインサーション
+
+
+# Define 刻み幅
+delta = np.array([30, 4, 50])
 
 # 変数宣言
-N = np.zeros((n[0]+1, delta[0], l_i))
-M = np.zeros((n[1]+1, delta[1], l_j))
-L = np.zeros((n[2]+1, delta[2], l_k))
-R = np.zeros((delta[0], delta[1], delta[2], l_i, l_j, l_k))
+N = np.zeros((n[0]+1, delta[0], l[0]))
+M = np.zeros((n[1]+1, delta[1], l[1]))
+L = np.zeros((n[2]+1, delta[2], l[2]))
+R = np.zeros((delta[0], delta[1], delta[2], l[0], l[1], l[2]))
 
 # 基底関数の計算
-N = fn.basisfunction_return_N(N, delta[0], knot_i, l_i, m[0], n[0])
-M = fn.basisfunction_return_N(M, delta[1], knot_j, l_j, m[1], n[1])
-L = fn.basisfunction_return_N(L, delta[2], knot_k, l_k, m[2], n[2])
+N = fn.basisfunction_return_N(N, delta[0], knot_i, l[0], m[0], n[0])
+M = fn.basisfunction_return_N(M, delta[1], knot_j, l[1], m[1], n[1])
+L = fn.basisfunction_return_N(L, delta[2], knot_k, l[2], m[2], n[2])
 
 # 重み付き基底関数の計算
 R = fn.weight_basisfunction_3parameter_return_R(R, N, M, L, w, delta, n, l)
@@ -187,9 +179,9 @@ for i in range(delta[0]):
             Sx = 0
             Sy = 0
             Sz = 0
-            for p in range(l_i):
-                for q in range(l_j):
-                    for r in range(l_k):
+            for p in range(l[0]):
+                for q in range(l[1]):
+                    for r in range(l[2]):
                         Sx += R[i][j][k][p][q][r] * CP_3D[p][q][r][0]
                         Sy += R[i][j][k][p][q][r] * CP_3D[p][q][r][1]
                         Sz += R[i][j][k][p][q][r] * CP_3D[p][q][r][2]
@@ -218,23 +210,23 @@ ax1.plot_surface(Sx_vec[:,-1,:], Sy_vec[:,-1,:], Sz_vec[:,-1,:], cmap="viridis",
 
 
 # # # コントロールポイントの描写
-x = np.zeros((l_i, l_j, l_k))
-y = np.zeros((l_i, l_j, l_k))
-z = np.zeros((l_i, l_j, l_k))
-for i in range(l_i):
-    for j in range(l_j):
-        for k in range(l_k):
+x = np.zeros((l[0], l[1], l[2]))
+y = np.zeros((l[0], l[1], l[2]))
+z = np.zeros((l[0], l[1], l[2]))
+for i in range(l[0]):
+    for j in range(l[1]):
+        for k in range(l[2]):
             x[i,j,k] = CP_3D[i,j,k,0]
             y[i,j,k] = CP_3D[i,j,k,1]
             z[i,j,k] = CP_3D[i,j,k,2]
-for i in range(l_i):
-    for j in range(l_j):
+for i in range(l[0]):
+    for j in range(l[1]):
         ax1.plot(x[i,j,:], y[i,j,:], z[i,j,:], c=color[2], linewidth=0.6)
-for i in range(l_i):
-    for k in range(l_k):
+for i in range(l[0]):
+    for k in range(l[2]):
         ax1.plot(x[i,:,k], y[i,:,k], z[i,:,k], c=color[2], linewidth=0.6)
-for j in range(l_j):
-    for k in range(l_k):
+for j in range(l[1]):
+    for k in range(l[2]):
         ax1.plot(x[:,j,k], y[:,j,k], z[:,j,k], c=color[2], linewidth=0.6)
 
 # 描写
