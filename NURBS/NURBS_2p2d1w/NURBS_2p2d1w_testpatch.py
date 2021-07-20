@@ -61,7 +61,7 @@ CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, kno
 
 # autoノットインサーション
 insert_parameter_axis = 1
-number_of_auto_insertion = 3
+number_of_auto_insertion = 2
 CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 

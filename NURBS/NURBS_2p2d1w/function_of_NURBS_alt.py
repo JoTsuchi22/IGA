@@ -102,9 +102,11 @@ def knot_insertion_B(CP, n, l, knot, insert_knot):
 
 def knot_insertion_C(CP, n, l, m, knot, number_of_auto_insertion):
     for i in range(number_of_auto_insertion):
-        new_knot_position = np.arange(l)
-        new_knot_position = new_knot_position[1:-1]
-        CP, l, m, knot = knot_insertion_A(CP, n, l, knot, new_knot_position)
+        knot_var = np.unique(knot)
+        insert_knot = np.zeros((knot_var.shape[0]-1))
+        for p in range(knot_var.shape[0]-1):
+            insert_knot[p] = knot_var[p] + (knot_var[p+1] - knot_var[p]) / 2.
+        CP, l, m, knot = knot_insertion_B(CP, n, l, knot, insert_knot)
     return CP, l, m, knot
 
 
@@ -248,11 +250,30 @@ def knot_insertion_B_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_a
 
 def knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, number_of_auto_insertion):
     for i in range(number_of_auto_insertion):
-        new_knot_position = np.arange(l[insert_parameter_axis])
-        new_knot_position = new_knot_position[1:-1]
-        CP_2d1w, l, m, knot_i, knot_j = knot_insertion_A_2p2d1w(
-            CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, new_knot_position)
+        if insert_parameter_axis == 0:
+            knot_var = np.unique(knot_i)
+            insert_knot = np.zeros((knot_var.shape[0]-1))
+            for p in range(knot_var.shape[0]-1):
+                insert_knot[p] = knot_var[p] + (knot_var[p+1] - knot_var[p]) / 2.
+            CP_2d1w, l, m, knot_i, knot_j = knot_insertion_B_2p2d1w(
+                CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot)
+        if insert_parameter_axis == 1:
+            knot_var = np.unique(knot_j)
+            insert_knot = np.zeros((knot_var.shape[0]-1))
+            for p in range(knot_var.shape[0]-1):
+                insert_knot[p] = knot_var[p] + (knot_var[p+1] - knot_var[p]) / 2.
+            CP_2d1w, l, m, knot_i, knot_j = knot_insertion_B_2p2d1w(
+                CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot)
     return CP_2d1w, l, m, knot_i, knot_j
+
+
+# def knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, number_of_auto_insertion):
+#     for i in range(number_of_auto_insertion):
+#         new_knot_position = np.arange(l[insert_parameter_axis])
+#         new_knot_position = new_knot_position[1:-1]
+#         CP_2d1w, l, m, knot_i, knot_j = knot_insertion_A_2p2d1w(
+#             CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, new_knot_position)
+#     return CP_2d1w, l, m, knot_i, knot_j
 
 
 # 2p3d1wは後回し

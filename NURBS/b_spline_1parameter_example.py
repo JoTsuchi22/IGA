@@ -15,11 +15,22 @@ color = np.array(["r", "g", "b", "c", "m", "y", "k"])
 #                [6.0, 5.0],
 #                [3.0, 6.0],
 #                [2.0, 4.0]])
-CP = np.array([[1., 2.],
-               [6., 2.]])
+
+# CP = np.array([[1., 2.],
+#                [6., 2.]])
+
+CP = np.array([[0., 0.],
+               [0., 1.],
+               [1., 1.],
+               [2., 1.],
+               [2., 0.],
+               [2.,-1.],
+               [1.,-1.],
+               [0.,-1.],
+               [0., 0.]])
 
 # Define polynomial order
-n = 1
+n = 2
 l = CP.shape[0]  # 制御点の個数
 m = l + n + 1   # ノットの個数
 
@@ -45,21 +56,22 @@ CP = fn.affine_transformation_2D(CP, l, stretch_x, stretch_y, stretch_z,
 # Define knot vector
 make_C0_CP = np.array([])  # C0連続にするコントロールポイント番号1個のみ(2個以上はバグる)，かつn=2のみ使える
 knot = fn.def_knot_C0(m, n, make_C0_CP)
+knot = np.array([0.,0.,0.,0.25,0.25,0.5,0.5,0.75,0.75,1.,1.,1.])
 
 # knot removal
 removal_knot = np.array([])  # 除去するノットの値(0.0 < insert_knot < 1.0)
 CP, l, m, knot = fn.knot_removal(CP, n, l, knot, removal_knot)
 
 # order elevation
-elevation_degree = 2  # order elevationを行う回数
+elevation_degree = 0  # order elevationを行う回数
 CP, l, m, n, knot = fn.order_elevation(CP, n, l, knot, elevation_degree)
 
 # knot insertion A
-new_knot_position = np.array([1])  # ノットを挿入するコントロールポイント番号，0, 1, 2...
+new_knot_position = np.array([])  # ノットを挿入するコントロールポイント番号，0, 1, 2...
 CP, l, m, knot = fn.knot_insertion_A(CP, n, l, knot, new_knot_position)
 
 # knot insertion A
-new_knot_position = np.array([1,2])  # ノットを挿入するコントロールポイント番号，0, 1, 2...
+new_knot_position = np.array([])  # ノットを挿入するコントロールポイント番号，0, 1, 2...
 CP, l, m, knot = fn.knot_insertion_A(CP, n, l, knot, new_knot_position)
 
 # knot insertion B
@@ -67,7 +79,7 @@ insert_knot = np.array([])  # 挿入するノットの値(0.0 < insert_knot < 1.
 CP, l, m, knot = fn.knot_insertion_B(CP, n, l, knot, insert_knot)
 
 # knot insertion C
-number_of_auto_insertion = 0    # autoノットインサーションの回数
+number_of_auto_insertion = 1    # autoノットインサーションの回数
 CP, l, m, knot = fn.knot_insertion_C(CP, n, l, m, knot, number_of_auto_insertion)
 
 # print(CP)
@@ -137,8 +149,8 @@ ax2.plot(CP[:, 0], CP[:, 1], c=color[2], marker="", linewidth=0.5)
 
 # 描写
 ax2.grid()
-ax2.set_xlim(0, 7)
-ax2.set_ylim(0, 7)
+ax2.set_xlim(-3,3)
+ax2.set_ylim(-3,3)
 ax2.set_aspect('equal', adjustable='box')
 
 # 描写
@@ -159,8 +171,8 @@ for i in range(xi.shape[0]):
 ax3.scatter(Cx_vec_xi, Cy_vec_xi, c=color[2], marker="s", s=5)
 ax3.set_aspect('equal', adjustable='box')
 ax3.grid()
-ax3.set_xlim(0, 7)
-ax3.set_ylim(0, 7)
+ax3.set_xlim(-3,3)
+ax3.set_ylim(-3,3)
 
 # oeder elevation 前のスプライン(黒) 比較用
 #---------------------------------------------------------------#
@@ -202,8 +214,8 @@ for i in range(delta):
 ax4.plot(Cx_vec, Cy_vec, c=color[6], marker="", linewidth=0.5)
 ax4.set_aspect('equal', adjustable='box')
 ax4.grid()
-ax4.set_xlim(0, 7)
-ax4.set_ylim(0, 7)
+ax4.set_xlim(-3,3)
+ax4.set_ylim(-3,3)
 ax4.set_axisbelow(True)
 #---------------------------------------------------------------#
 
