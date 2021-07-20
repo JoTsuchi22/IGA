@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from .. import function_of_NURBS as fn
+import function_of_NURBS_alt as fn
 
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
@@ -20,9 +20,62 @@ CP_matrix_weight = np.array([[1.,  0., 1.],
                              [3., 1.5, 1.],
                              [3.,  3., 1.]])
 
+# Define polynomial order:n
+n = np.array([1, 2])   # n次のB-スプライン曲線
 
-CP_matrix = CP_matrix_weight[:, :-1]
-weight = CP_matrix_weight[:, 2:]
+# (ξ, η)方向のコントロールポイントの数
+l_i = 2
+l_j = 3
+l = np.array([l_i, l_j])
+
+# Define number of knots 各方向ノットの個数
+m = np.array([l[0]+n[0]+1, l[1]+n[1]+1])
+
+# Difine knot vector
+knot_i = fn.def_knot(m[0], n[0])
+# knot_j = fn.def_knot(m[1], n[1])
+# ノットの置き方 特殊
+# knot_i = np.array([0, 0, 0, 1, 1, 1])
+knot_j = np.array([0., 0., 0., 1., 1., 1.])
+
+# CPreshape
+CP_2d1w = np.reshape(CP_matrix_weight, (l[0], l[1], 3))
+
+# オーダーエレベーション
+elevation_parameter_axis = 0
+elevation_degree = 1
+CP_2d1w, l, m, n, knot_i, knot_j = fn.order_elevation_2p2d1w(
+    CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
+
+# オーダーエレベーション
+elevation_parameter_axis = 1
+elevation_degree = 0
+CP_2d1w, l, m, n, knot_i, knot_j = fn.order_elevation_2p2d1w(
+    CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
+
+# autoノットインサーション
+insert_parameter_axis = 0
+number_of_auto_insertion = 2
+CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
+                                                           insert_parameter_axis, number_of_auto_insertion)
+
+# autoノットインサーション
+insert_parameter_axis = 1
+number_of_auto_insertion = 3
+CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
+                                                           insert_parameter_axis, number_of_auto_insertion)
+
+# ノットインサーションB
+insert_parameter_axis = 1
+insert_knot = np.array([])
+CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_B_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
+                                                           insert_parameter_axis, insert_knot)
+
+# コントロールポイントreshape
+CP_matrix = np.reshape(
+    CP_2d1w, [int((CP_2d1w.shape[0]*CP_2d1w.shape[1]*CP_2d1w.shape[2])/3.), 3])[:, :-1]
+weight = np.reshape(
+    CP_2d1w, [int((CP_2d1w.shape[0]*CP_2d1w.shape[1]*CP_2d1w.shape[2])/3.), 3])[:, 2:]
 
 # affine transformation (for CP)
 stretch_x = 1.0
@@ -41,46 +94,23 @@ shear_x = 0.0
 shear_y = 0.0
 
 CP_matrix = fn.affine_transformation_2D(CP_matrix, CP_matrix.shape[0], stretch_x, stretch_y, stretch_z,
-                                         trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
+                                        trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
 
-# Define polynomial order:n
-n = np.array([2, 1])   # n次のB-スプライン曲線
-
-# (ξ, η)方向のコントロールポイントの数
-l_i = 3
-l_j = 9
-l = np.array([l_i, l_j])
-
-# reshape CP_3D
-CP_3D = np.reshape(CP_matrix, (l_i, l_j, 2))
+# reshape CP_2D
+CP_2D = np.reshape(CP_matrix, (l[0], l[1], 2))
 
 # reshape weight
-w = np.reshape(weight, (l_i, l_j))
-
-# Define number of knots 各方向ノットの個数
-m = np.array([l_i+n[0]+1, l_j+n[1]+1])
-
-# Difine knot vector
-# knot_i = fn.def_knot(m[0], n[0])
-# knot_j = fn.def_knot(m[1], n[1])
-# knot_k = fn.def_knot(m[2], n[2])
-# ノットの置き方 特殊
-knot_i = np.array([0, 0, 1, 1])
-knot_j = np.array([0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4])
-knot_k = np.array([0, 0, 0, 1, 1, 2, 2, 2])
-
-# オーダーエレベーション
-
-
-# autoノットインサーション
+w = np.reshape(weight, (l[0], l[1]))
 
 # Define 刻み幅
-delta = np.array([m[0], m[1]])
+delta = np.array([l[0]-1, l[1]-1])
+# delta = np.array([m[0], m[1]])
+# delta = np.array([6, 6])
 
 # 変数宣言
 N = np.zeros((n[0]+1, delta[0], l[0]))
 M = np.zeros((n[1]+1, delta[1], l[1]))
-R = np.zeros((delta[0], delta[1], delta[2], l[0], l[1]))
+R = np.zeros((delta[0], delta[1], l[0], l[1]))
 
 # 基底関数の計算
 N = fn.basisfunction_return_N(N, delta[0], knot_i, l[0], m[0], n[0])
@@ -90,87 +120,43 @@ M = fn.basisfunction_return_N(M, delta[1], knot_j, l[1], m[1], n[1])
 R = fn.weight_basisfunction_2parameter_return_R(R, N, M, w, delta, n, l)
 
 # 描写
-fig = plt.figure(figsize=(10, 10))
-ax1 = fig.add_subplot(111, projection='3d')
+fig = plt.figure()
+ax1 = fig.add_subplot(1, 1, 1)
 
 # Bスプラインの描写
-Sx_vec = np.zeros((delta[0], delta[1], delta[2]))
-Sy_vec = np.zeros((delta[0], delta[1], delta[2]))
-Sz_vec = np.zeros((delta[0], delta[1], delta[2]))
+Sx_vec = np.zeros((delta[0], delta[1]))
+Sy_vec = np.zeros((delta[0], delta[1]))
 for i in range(delta[0]):
     for j in range(delta[1]):
-        for k in range(delta[2]):
-            Sx = 0
-            Sy = 0
-            Sz = 0
-            for p in range(l[0]):
-                for q in range(l[1]):
-                    for r in range(l_k):
-                        Sx += R[i][j][k][p][q][r] * CP_3D[p][q][r][0]
-                        Sy += R[i][j][k][p][q][r] * CP_3D[p][q][r][1]
-                        Sz += R[i][j][k][p][q][r] * CP_3D[p][q][r][2]
-            Sx_vec[i][j][k] = Sx
-            Sy_vec[i][j][k] = Sy
-            Sz_vec[i][j][k] = Sz
+        Sx = 0
+        Sy = 0
+        for p in range(l[0]):
+            for q in range(l[1]):
+                Sx += R[i][j][p][q] * CP_2D[p][q][0]
+                Sy += R[i][j][p][q] * CP_2D[p][q][1]
+        Sx_vec[i][j] = Sx
+        Sy_vec[i][j] = Sy
+ax1.plot(Sx_vec, Sy_vec, c=color[0], marker="", linewidth=0.7)
+ax1.plot(Sx_vec.T, Sy_vec.T, c=color[0], marker="", linewidth=0.7)
 
-# ワイヤーフレーム表示
-# for i in range(delta[0]):
-#     for j in range(delta[1]):
-#         ax1.plot(Sx_vec[i, j, :], Sy_vec[i, j, :],
-#                  Sz_vec[i, j, :], c=color[0], linewidth=0.3)
-# for i in range(delta[0]):
-#     for k in range(delta[2]):
-#         ax1.plot(Sx_vec[i, :, k], Sy_vec[i, :, k],
-#                  Sz_vec[i, :, k], c=color[0], linewidth=0.3)
-# for j in range(delta[1]):
-#     for k in range(delta[2]):
-#         ax1.plot(Sx_vec[:, j, k], Sy_vec[:, j, k],
-#                  Sz_vec[:, j, k], c=color[0], linewidth=0.3)
-
-# メッシュ表示
-ax1.plot_surface(Sx_vec[:, :, 0], Sy_vec[:, :, 0],
-                 Sz_vec[:, :, 0], cmap="viridis", alpha=0.5)
-ax1.plot_surface(Sx_vec[:, :, -1], Sy_vec[:, :, -1],
-                 Sz_vec[:, :, -1], cmap="viridis", alpha=0.5)
-ax1.plot_surface(Sx_vec[0, :, :], Sy_vec[0, :, :],
-                 Sz_vec[0, :, :], cmap="viridis", alpha=0.5)
-ax1.plot_surface(Sx_vec[-1, :, :], Sy_vec[-1, :, :],
-                 Sz_vec[-1, :, :], cmap="viridis", alpha=0.5)
-# ax1.plot_surface(Sx_vec[:, 0, :], Sy_vec[:, 0, :],
-#                  Sz_vec[:, 0, :], cmap="viridis", alpha=0.5)
-# ax1.plot_surface(Sx_vec[:, -1, :], Sy_vec[:, -1, :],
-#                  Sz_vec[:, -1, :], cmap="viridis", alpha=0.5)
-
-
-# # # コントロールポイントの描写
-x = np.zeros((l[0], l[1], l_k))
-y = np.zeros((l_i, l_j, l_k))
-z = np.zeros((l_i, l_j, l_k))
-for i in range(l_i):
-    for j in range(l_j):
-        for k in range(l_k):
-            x[i, j, k] = CP_3D[i, j, k, 0]
-            y[i, j, k] = CP_3D[i, j, k, 1]
-            z[i, j, k] = CP_3D[i, j, k, 2]
-for i in range(l_i):
-    for j in range(l_j):
-        ax1.plot(x[i, j, :], y[i, j, :], z[i, j, :], c=color[2], linewidth=0.6)
-for i in range(l_i):
-    for k in range(l_k):
-        ax1.plot(x[i, :, k], y[i, :, k], z[i, :, k], c=color[2], linewidth=0.6)
-for j in range(l_j):
-    for k in range(l_k):
-        ax1.plot(x[:, j, k], y[:, j, k], z[:, j, k], c=color[2], linewidth=0.6)
+# コントロールポイントの描写
+ax1.scatter(CP_matrix[:, 0], CP_matrix[:, 1], c=color[2], s=10)
+x = np.zeros((l[0], l[1]))
+y = np.zeros((l[0], l[1]))
+for i in range(l[1]):
+    x[:, i] = CP_2D[:, i, 0]
+    y[:, i] = CP_2D[:, i, 1]
+ax1.plot(x, y, c=color[2], marker="", linewidth=1)
+ax1.plot(x.T, y.T, c=color[2], marker="", linewidth=1)
 
 # 描写
-ax1.set_box_aspect((1, 1, 1))
+ax1.set_aspect('equal', adjustable='box')
 ax1.set_axisbelow(True)
-ax1.grid()
-ax1.set_xlim(-5, 5)
-ax1.set_ylim(-5, 5)
-ax1.set_zlim(-5, 5)
 fig.set_figheight(9)
 fig.set_figwidth(12)
+ax1.grid()
+ax1.set_xlim(0, 5)
+ax1.set_ylim(-1, 4)
 plt.show()
 
 # solid_name = "example"

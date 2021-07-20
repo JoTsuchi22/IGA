@@ -46,8 +46,20 @@ CP = fn.affine_transformation_2D(CP, l, stretch_x, stretch_y, stretch_z,
 make_C0_CP = np.array([])  # C0連続にするコントロールポイント番号1個のみ(2個以上はバグる)，かつn=2のみ使える
 knot = fn.def_knot_C0(m, n, make_C0_CP)
 
+# knot removal
+removal_knot = np.array([])  # 除去するノットの値(0.0 < insert_knot < 1.0)
+CP, l, m, knot = fn.knot_removal(CP, n, l, knot, removal_knot)
+
+# order elevation
+elevation_degree = 2  # order elevationを行う回数
+CP, l, m, n, knot = fn.order_elevation(CP, n, l, knot, elevation_degree)
+
 # knot insertion A
-new_knot_position = np.array([])  # ノットを挿入するコントロールポイント番号，0, 1, 2...
+new_knot_position = np.array([1])  # ノットを挿入するコントロールポイント番号，0, 1, 2...
+CP, l, m, knot = fn.knot_insertion_A(CP, n, l, knot, new_knot_position)
+
+# knot insertion A
+new_knot_position = np.array([1,2])  # ノットを挿入するコントロールポイント番号，0, 1, 2...
 CP, l, m, knot = fn.knot_insertion_A(CP, n, l, knot, new_knot_position)
 
 # knot insertion B
@@ -56,18 +68,6 @@ CP, l, m, knot = fn.knot_insertion_B(CP, n, l, knot, insert_knot)
 
 # knot insertion C
 number_of_auto_insertion = 0    # autoノットインサーションの回数
-CP, l, m, knot = fn.knot_insertion_C(CP, n, l, m, knot, number_of_auto_insertion)
-
-# knot removal
-removal_knot = np.array([])  # 除去するノットの値(0.0 < insert_knot < 1.0)
-CP, l, m, knot = fn.knot_removal(CP, n, l, knot, removal_knot)
-
-# order elevation
-elevation_degree = 1  # order elevationを行う回数
-CP, l, m, n, knot = fn.order_elevation(CP, n, l, knot, elevation_degree)
-
-# knot insertion C
-number_of_auto_insertion = 4    # autoノットインサーションの回数
 CP, l, m, knot = fn.knot_insertion_C(CP, n, l, m, knot, number_of_auto_insertion)
 
 # print(CP)
