@@ -5,6 +5,8 @@ import function_of_NURBS_alt as fn
 
 # NURBSのときノットインサーションが一致しない，
 # 原因:   重み付きのときはknot rate != 0.5
+# sin の厳密解と比較して，どちらが正しいか確認する．
+# igsファイルから作成したものとプログラムから作成したものpatch0
 
 # output file name
 file_name = "patch0"
