@@ -3,9 +3,11 @@ import matplotlib.pyplot as plt
 import math
 import function_of_NURBS_alt as fn
 
+# NURBSのときノットインサーションが一致しない，
+# 原因:   重み付きのときはknot rate != 0.5
+
 # output file name
 file_name = "patch0"
-axis = 0
 
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
@@ -18,60 +20,72 @@ v1 = math.sin(th)
 wv = math.cos(th/2.)
 
 CP_matrix_weight = np.array([[1.,  0., 1.],
-                             [1., math.sin(th/2.), wv],
-                             [v0,  v1, 1.],
                              [3.,  0., 1.],
+                             [1., math.sin(th/2.), wv],
                              [3., 1.5, 1.],
+                             [v0,  v1, 1.],
                              [3.,  3., 1.]])
 
 # Define polynomial order:n
-n = np.array([1, 2])   # n次のB-スプライン曲線
+n_xi =  1
+n_eta  = 2
 
 # (ξ, η)方向のコントロールポイントの数
-l_i = 2
-l_j = 3
-l = np.array([l_i, l_j])
+l_xi = 2
+l_eta = 3
+
+# n, lとxi, etaの関係
+n = np.array([n_eta, n_xi])
+l = np.array([l_eta, l_xi])
 
 # Define number of knots 各方向ノットの個数
 m = np.array([l[0]+n[0]+1, l[1]+n[1]+1])
 
 # Difine knot vector
-knot_i = fn.def_knot(m[0], n[0])
-# knot_j = fn.def_knot(m[1], n[1])
-# ノットの置き方 特殊
-# knot_i = np.array([0, 0, 0, 1, 1, 1])
-knot_j = np.array([0., 0., 0., 1., 1., 1.])
+knot_xi = fn.def_knot(m[1], n[1])
+knot_eta = fn.def_knot(m[0], n[0])
+
+# ξはm[1]，ηはm[0]
+# knot_xi = fn.def_knot(m[1], n[1])
+# knot_eta = fn.def_knot(m[0], n[0])
+
+knot_i = knot_eta
+knot_j = knot_xi
 
 # CPreshape
 CP_2d1w = np.reshape(CP_matrix_weight, (l[0], l[1], 3))
 
-# オーダーエレベーション
-elevation_parameter_axis = 0
+#difine axis
+xi = 1
+eta = 0
+
+# オーダーエレベーション xi
+elevation_parameter_axis = xi
 elevation_degree = 1
 CP_2d1w, l, m, n, knot_i, knot_j = fn.order_elevation_2p2d1w(
     CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
 
-# オーダーエレベーション
-elevation_parameter_axis = 1
+# オーダーエレベーション eta
+elevation_parameter_axis = eta
 elevation_degree = 0
 CP_2d1w, l, m, n, knot_i, knot_j = fn.order_elevation_2p2d1w(
     CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
 
-# autoノットインサーション
-insert_parameter_axis = 0
-number_of_auto_insertion = 3
+# autoノットインサーション xi
+insert_parameter_axis = xi
+number_of_auto_insertion = 2
 CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 
-# autoノットインサーション
-insert_parameter_axis = 1
-number_of_auto_insertion = 3
+# autoノットインサーション eta
+insert_parameter_axis = eta
+number_of_auto_insertion = 1
 CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 
-# ノットインサーションB
-insert_parameter_axis = 1
-insert_knot = np.array([])
+# ノットインサーションB eta
+insert_parameter_axis = eta
+insert_knot = np.array([0.25, 0.75])
 CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_B_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, insert_knot)
 
@@ -108,8 +122,7 @@ w = np.reshape(weight, (l[0], l[1]))
 
 # Define 刻み幅
 delta = np.array([l[0]-1, l[1]-1])
-# delta = np.array([m[0], m[1]])
-# delta = np.array([6, 6])
+# delta = np.array([100,100])
 
 # 変数宣言
 N = np.zeros((n[0]+1, delta[0], l[0]))
@@ -153,6 +166,9 @@ for i in range(l[1]):
 ax1.plot(x, y, c=color[2], marker="", linewidth=1)
 ax1.plot(x.T, y.T, c=color[2], marker="", linewidth=1)
 
+# テキストファイル出力
+fn.output_2p2d1w_txt(file_name, n, m, l, knot_i, knot_j, CP_2d1w)
+
 # 描写
 ax1.set_aspect('equal', adjustable='box')
 ax1.set_axisbelow(True)
@@ -165,5 +181,3 @@ plt.show()
 
 # solid_name = "example"
 # fn.make_stl_3D(solid_name, delta, Sx_vec , Sy_vec, Sz_vec)
-
-fn.output_txt(file_name, knot_i, knot_j, Sx_vec, Sy_vec, axis)
