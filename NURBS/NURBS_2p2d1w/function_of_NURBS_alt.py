@@ -1079,3 +1079,13 @@ def make_stl_3D(solid_name, delta, Sx_vec, Sy_vec, Sz_vec):
         write_stl_main(solid_name, a, c, mesh_k1, n_vec_k1)
         write_stl_main(solid_name, a, c, mesh_k2, n_vec_k2)
     write_stl_footer(solid_name)
+
+
+def output_2p2d1w_txt(file_name, knot_i, knot_j, Sx_vec, Sy_vec, axis):
+    file_name_txt = file_name + ".txt"
+    f = open(file_name_txt, 'w')
+    if axis == 0:
+        for i in range():
+            f.write()
+        for i in range():
+            f.write()

@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 import math
 import function_of_NURBS_alt as fn
 
+# output file name
+file_name = "patch0"
+axis = 0
+
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
 
@@ -55,13 +59,13 @@ CP_2d1w, l, m, n, knot_i, knot_j = fn.order_elevation_2p2d1w(
 
 # autoノットインサーション
 insert_parameter_axis = 0
-number_of_auto_insertion = 2
+number_of_auto_insertion = 3
 CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 
 # autoノットインサーション
 insert_parameter_axis = 1
-number_of_auto_insertion = 2
+number_of_auto_insertion = 3
 CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 
@@ -161,3 +165,5 @@ plt.show()
 
 # solid_name = "example"
 # fn.make_stl_3D(solid_name, delta, Sx_vec , Sy_vec, Sz_vec)
+
+fn.output_txt(file_name, knot_i, knot_j, Sx_vec, Sy_vec, axis)
