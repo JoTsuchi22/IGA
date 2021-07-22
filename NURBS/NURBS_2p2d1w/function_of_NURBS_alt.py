@@ -1145,7 +1145,7 @@ def output_2p2d1w_txt(file_name, n, m, l, knot_i, knot_j, CP_2d1w):
             f.write(str('{:.21e}'.format(CP_array[i][2])))
     f.write("\n")
     f.write("\n")
-    f.write("control points for python format(必ず変数名を変更してください)")
+    f.write("control points for python format")
     f.write("\n")
     for i in range(CP_array.shape[0]):
         if i == 0:
