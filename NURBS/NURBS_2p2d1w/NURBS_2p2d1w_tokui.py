@@ -52,49 +52,6 @@ knot_eta = fn.def_knot(m[0], n[0])
 knot_i = knot_eta
 knot_j = knot_xi
 
-# CPreshape
-CP_2d1w = np.reshape(CP_matrix_weight, (l[0], l[1], 3))
-
-#difine axis
-xi = 1
-eta = 0
-
-# オーダーエレベーション xi
-elevation_parameter_axis = xi
-elevation_degree = 1
-CP_2d1w, l, m, n, knot_i, knot_j = fn.order_elevation_2p2d1w(
-    CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
-
-# オーダーエレベーション eta
-elevation_parameter_axis = eta
-elevation_degree = 1
-CP_2d1w, l, m, n, knot_i, knot_j = fn.order_elevation_2p2d1w(
-    CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
-
-# autoノットインサーション xi
-insert_parameter_axis = xi
-number_of_auto_insertion = 0
-CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
-                                                           insert_parameter_axis, number_of_auto_insertion)
-
-# autoノットインサーション eta
-insert_parameter_axis = eta
-number_of_auto_insertion = 0
-CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
-                                                           insert_parameter_axis, number_of_auto_insertion)
-
-# ノットインサーションB
-insert_parameter_axis = xi
-insert_knot = np.array([])
-CP_2d1w, l, m, knot_i, knot_j = fn.knot_insertion_B_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
-                                                           insert_parameter_axis, insert_knot)
-
-# コントロールポイントreshape
-CP_matrix = np.reshape(
-    CP_2d1w, [int((CP_2d1w.shape[0]*CP_2d1w.shape[1]*CP_2d1w.shape[2])/3.), 3])[:, :-1]
-weight = np.reshape(
-    CP_2d1w, [int((CP_2d1w.shape[0]*CP_2d1w.shape[1]*CP_2d1w.shape[2])/3.), 3])[:, 2:]
-
 # affine transformation (for CP)
 stretch_x = 0.5
 stretch_y = 0.5
@@ -111,8 +68,51 @@ theta_z = 0.0
 shear_x = 0.0
 shear_y = 0.0
 
-CP_matrix = fn.affine_transformation_2D(CP_matrix, CP_matrix.shape[0], stretch_x, stretch_y, stretch_z,
+CP_matrix_weight = fn.affine_transformation_2D(CP_matrix_weight, CP_matrix_weight.shape[0], stretch_x, stretch_y, stretch_z,
                                         trans_x, trans_y, trans_z, theta_x, theta_y, theta_z, shear_x, shear_y)
+
+# CPreshape
+CP_2d1w = np.reshape(CP_matrix_weight, (l[0], l[1], 3))
+
+#difine axis
+xi = 1
+eta = 0
+
+# オーダーエレベーション xi
+elevation_parameter_axis = xi
+elevation_degree = 1
+CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
+    CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
+
+# オーダーエレベーション eta
+elevation_parameter_axis = eta
+elevation_degree = 1
+CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
+    CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
+
+# autoノットインサーション xi
+insert_parameter_axis = xi
+number_of_auto_insertion = 0
+CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
+                                                           insert_parameter_axis, number_of_auto_insertion)
+
+# autoノットインサーション eta
+insert_parameter_axis = eta
+number_of_auto_insertion = 0
+CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
+                                                           insert_parameter_axis, number_of_auto_insertion)
+
+# ノットインサーションB
+insert_parameter_axis = xi
+insert_knot = np.array([])
+CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_B_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
+                                                           insert_parameter_axis, insert_knot)
+
+# コントロールポイントreshape
+CP_matrix = np.reshape(
+    CP_2d1w, [int((CP_2d1w.shape[0]*CP_2d1w.shape[1]*CP_2d1w.shape[2])/3.), 3])[:, :-1]
+weight = np.reshape(
+    CP_2d1w, [int((CP_2d1w.shape[0]*CP_2d1w.shape[1]*CP_2d1w.shape[2])/3.), 3])[:, 2:]
 
 # reshape CP_2D
 CP_2D = np.reshape(CP_matrix, (l[0], l[1], 2))

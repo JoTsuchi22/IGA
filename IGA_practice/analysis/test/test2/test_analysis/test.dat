@@ -1,0 +1,1719 @@
+E:2.060000e+05 nu:3.000000e-01
+No_Patch:1
+Total_Control_Point:72
+Order[0][0]=2
+Order[0][1]=2
+No_knot[0][0]=15
+No_knot[0][1]=9
+No_Control_point[0][0]:12
+No_Control_point[0][1]:6
+No_Controlpoint_in_patch[0]:72	
+Total_Constraint;12
+Total_Load;1
+Total_DistributedForce;0
+0.000000e+00	0.000000e+00	0.000000e+00	1.000000e-01	2.000000e-01	3.000000e-01	4.000000e-01	5.000000e-01	6.000000e-01	7.000000e-01	8.000000e-01	9.000000e-01	1.000000e+00	1.000000e+00	1.000000e+00	
+0.000000e+00	0.000000e+00	0.000000e+00	2.500000e-01	5.000000e-01	7.500000e-01	1.000000e+00	1.000000e+00	1.000000e+00	
+Total_Element=40
+Node_Coordinate[0][0]=0.000000e+00
+Node_Coordinate[0][1]=0.000000e+00
+Node_Coordinate[0][2]=1.000000e+00
+Node_Coordinate[1][0]=5.000000e+00
+Node_Coordinate[1][1]=0.000000e+00
+Node_Coordinate[1][2]=1.000000e+00
+Node_Coordinate[2][0]=1.500000e+01
+Node_Coordinate[2][1]=0.000000e+00
+Node_Coordinate[2][2]=1.000000e+00
+Node_Coordinate[3][0]=2.500000e+01
+Node_Coordinate[3][1]=0.000000e+00
+Node_Coordinate[3][2]=1.000000e+00
+Node_Coordinate[4][0]=3.500000e+01
+Node_Coordinate[4][1]=0.000000e+00
+Node_Coordinate[4][2]=1.000000e+00
+Node_Coordinate[5][0]=4.500000e+01
+Node_Coordinate[5][1]=0.000000e+00
+Node_Coordinate[5][2]=1.000000e+00
+Node_Coordinate[6][0]=5.500000e+01
+Node_Coordinate[6][1]=0.000000e+00
+Node_Coordinate[6][2]=1.000000e+00
+Node_Coordinate[7][0]=6.500000e+01
+Node_Coordinate[7][1]=0.000000e+00
+Node_Coordinate[7][2]=1.000000e+00
+Node_Coordinate[8][0]=7.500000e+01
+Node_Coordinate[8][1]=0.000000e+00
+Node_Coordinate[8][2]=1.000000e+00
+Node_Coordinate[9][0]=8.500000e+01
+Node_Coordinate[9][1]=0.000000e+00
+Node_Coordinate[9][2]=1.000000e+00
+Node_Coordinate[10][0]=9.500000e+01
+Node_Coordinate[10][1]=0.000000e+00
+Node_Coordinate[10][2]=1.000000e+00
+Node_Coordinate[11][0]=1.000000e+02
+Node_Coordinate[11][1]=0.000000e+00
+Node_Coordinate[11][2]=1.000000e+00
+Node_Coordinate[12][0]=0.000000e+00
+Node_Coordinate[12][1]=1.250000e+00
+Node_Coordinate[12][2]=1.000000e+00
+Node_Coordinate[13][0]=5.000000e+00
+Node_Coordinate[13][1]=1.250000e+00
+Node_Coordinate[13][2]=1.000000e+00
+Node_Coordinate[14][0]=1.500000e+01
+Node_Coordinate[14][1]=1.250000e+00
+Node_Coordinate[14][2]=1.000000e+00
+Node_Coordinate[15][0]=2.500000e+01
+Node_Coordinate[15][1]=1.250000e+00
+Node_Coordinate[15][2]=1.000000e+00
+Node_Coordinate[16][0]=3.500000e+01
+Node_Coordinate[16][1]=1.250000e+00
+Node_Coordinate[16][2]=1.000000e+00
+Node_Coordinate[17][0]=4.500000e+01
+Node_Coordinate[17][1]=1.250000e+00
+Node_Coordinate[17][2]=1.000000e+00
+Node_Coordinate[18][0]=5.500000e+01
+Node_Coordinate[18][1]=1.250000e+00
+Node_Coordinate[18][2]=1.000000e+00
+Node_Coordinate[19][0]=6.500000e+01
+Node_Coordinate[19][1]=1.250000e+00
+Node_Coordinate[19][2]=1.000000e+00
+Node_Coordinate[20][0]=7.500000e+01
+Node_Coordinate[20][1]=1.250000e+00
+Node_Coordinate[20][2]=1.000000e+00
+Node_Coordinate[21][0]=8.500000e+01
+Node_Coordinate[21][1]=1.250000e+00
+Node_Coordinate[21][2]=1.000000e+00
+Node_Coordinate[22][0]=9.500000e+01
+Node_Coordinate[22][1]=1.250000e+00
+Node_Coordinate[22][2]=1.000000e+00
+Node_Coordinate[23][0]=1.000000e+02
+Node_Coordinate[23][1]=1.250000e+00
+Node_Coordinate[23][2]=1.000000e+00
+Node_Coordinate[24][0]=0.000000e+00
+Node_Coordinate[24][1]=3.750000e+00
+Node_Coordinate[24][2]=1.000000e+00
+Node_Coordinate[25][0]=5.000000e+00
+Node_Coordinate[25][1]=3.750000e+00
+Node_Coordinate[25][2]=1.000000e+00
+Node_Coordinate[26][0]=1.500000e+01
+Node_Coordinate[26][1]=3.750000e+00
+Node_Coordinate[26][2]=1.000000e+00
+Node_Coordinate[27][0]=2.500000e+01
+Node_Coordinate[27][1]=3.750000e+00
+Node_Coordinate[27][2]=1.000000e+00
+Node_Coordinate[28][0]=3.500000e+01
+Node_Coordinate[28][1]=3.750000e+00
+Node_Coordinate[28][2]=1.000000e+00
+Node_Coordinate[29][0]=4.500000e+01
+Node_Coordinate[29][1]=3.750000e+00
+Node_Coordinate[29][2]=1.000000e+00
+Node_Coordinate[30][0]=5.500000e+01
+Node_Coordinate[30][1]=3.750000e+00
+Node_Coordinate[30][2]=1.000000e+00
+Node_Coordinate[31][0]=6.500000e+01
+Node_Coordinate[31][1]=3.750000e+00
+Node_Coordinate[31][2]=1.000000e+00
+Node_Coordinate[32][0]=7.500000e+01
+Node_Coordinate[32][1]=3.750000e+00
+Node_Coordinate[32][2]=1.000000e+00
+Node_Coordinate[33][0]=8.500000e+01
+Node_Coordinate[33][1]=3.750000e+00
+Node_Coordinate[33][2]=1.000000e+00
+Node_Coordinate[34][0]=9.500000e+01
+Node_Coordinate[34][1]=3.750000e+00
+Node_Coordinate[34][2]=1.000000e+00
+Node_Coordinate[35][0]=1.000000e+02
+Node_Coordinate[35][1]=3.750000e+00
+Node_Coordinate[35][2]=1.000000e+00
+Node_Coordinate[36][0]=0.000000e+00
+Node_Coordinate[36][1]=6.250000e+00
+Node_Coordinate[36][2]=1.000000e+00
+Node_Coordinate[37][0]=5.000000e+00
+Node_Coordinate[37][1]=6.250000e+00
+Node_Coordinate[37][2]=1.000000e+00
+Node_Coordinate[38][0]=1.500000e+01
+Node_Coordinate[38][1]=6.250000e+00
+Node_Coordinate[38][2]=1.000000e+00
+Node_Coordinate[39][0]=2.500000e+01
+Node_Coordinate[39][1]=6.250000e+00
+Node_Coordinate[39][2]=1.000000e+00
+Node_Coordinate[40][0]=3.500000e+01
+Node_Coordinate[40][1]=6.250000e+00
+Node_Coordinate[40][2]=1.000000e+00
+Node_Coordinate[41][0]=4.500000e+01
+Node_Coordinate[41][1]=6.250000e+00
+Node_Coordinate[41][2]=1.000000e+00
+Node_Coordinate[42][0]=5.500000e+01
+Node_Coordinate[42][1]=6.250000e+00
+Node_Coordinate[42][2]=1.000000e+00
+Node_Coordinate[43][0]=6.500000e+01
+Node_Coordinate[43][1]=6.250000e+00
+Node_Coordinate[43][2]=1.000000e+00
+Node_Coordinate[44][0]=7.500000e+01
+Node_Coordinate[44][1]=6.250000e+00
+Node_Coordinate[44][2]=1.000000e+00
+Node_Coordinate[45][0]=8.500000e+01
+Node_Coordinate[45][1]=6.250000e+00
+Node_Coordinate[45][2]=1.000000e+00
+Node_Coordinate[46][0]=9.500000e+01
+Node_Coordinate[46][1]=6.250000e+00
+Node_Coordinate[46][2]=1.000000e+00
+Node_Coordinate[47][0]=1.000000e+02
+Node_Coordinate[47][1]=6.250000e+00
+Node_Coordinate[47][2]=1.000000e+00
+Node_Coordinate[48][0]=0.000000e+00
+Node_Coordinate[48][1]=8.750000e+00
+Node_Coordinate[48][2]=1.000000e+00
+Node_Coordinate[49][0]=5.000000e+00
+Node_Coordinate[49][1]=8.750000e+00
+Node_Coordinate[49][2]=1.000000e+00
+Node_Coordinate[50][0]=1.500000e+01
+Node_Coordinate[50][1]=8.750000e+00
+Node_Coordinate[50][2]=1.000000e+00
+Node_Coordinate[51][0]=2.500000e+01
+Node_Coordinate[51][1]=8.750000e+00
+Node_Coordinate[51][2]=1.000000e+00
+Node_Coordinate[52][0]=3.500000e+01
+Node_Coordinate[52][1]=8.750000e+00
+Node_Coordinate[52][2]=1.000000e+00
+Node_Coordinate[53][0]=4.500000e+01
+Node_Coordinate[53][1]=8.750000e+00
+Node_Coordinate[53][2]=1.000000e+00
+Node_Coordinate[54][0]=5.500000e+01
+Node_Coordinate[54][1]=8.750000e+00
+Node_Coordinate[54][2]=1.000000e+00
+Node_Coordinate[55][0]=6.500000e+01
+Node_Coordinate[55][1]=8.750000e+00
+Node_Coordinate[55][2]=1.000000e+00
+Node_Coordinate[56][0]=7.500000e+01
+Node_Coordinate[56][1]=8.750000e+00
+Node_Coordinate[56][2]=1.000000e+00
+Node_Coordinate[57][0]=8.500000e+01
+Node_Coordinate[57][1]=8.750000e+00
+Node_Coordinate[57][2]=1.000000e+00
+Node_Coordinate[58][0]=9.500000e+01
+Node_Coordinate[58][1]=8.750000e+00
+Node_Coordinate[58][2]=1.000000e+00
+Node_Coordinate[59][0]=1.000000e+02
+Node_Coordinate[59][1]=8.750000e+00
+Node_Coordinate[59][2]=1.000000e+00
+Node_Coordinate[60][0]=0.000000e+00
+Node_Coordinate[60][1]=1.000000e+01
+Node_Coordinate[60][2]=1.000000e+00
+Node_Coordinate[61][0]=5.000000e+00
+Node_Coordinate[61][1]=1.000000e+01
+Node_Coordinate[61][2]=1.000000e+00
+Node_Coordinate[62][0]=1.500000e+01
+Node_Coordinate[62][1]=1.000000e+01
+Node_Coordinate[62][2]=1.000000e+00
+Node_Coordinate[63][0]=2.500000e+01
+Node_Coordinate[63][1]=1.000000e+01
+Node_Coordinate[63][2]=1.000000e+00
+Node_Coordinate[64][0]=3.500000e+01
+Node_Coordinate[64][1]=1.000000e+01
+Node_Coordinate[64][2]=1.000000e+00
+Node_Coordinate[65][0]=4.500000e+01
+Node_Coordinate[65][1]=1.000000e+01
+Node_Coordinate[65][2]=1.000000e+00
+Node_Coordinate[66][0]=5.500000e+01
+Node_Coordinate[66][1]=1.000000e+01
+Node_Coordinate[66][2]=1.000000e+00
+Node_Coordinate[67][0]=6.500000e+01
+Node_Coordinate[67][1]=1.000000e+01
+Node_Coordinate[67][2]=1.000000e+00
+Node_Coordinate[68][0]=7.500000e+01
+Node_Coordinate[68][1]=1.000000e+01
+Node_Coordinate[68][2]=1.000000e+00
+Node_Coordinate[69][0]=8.500000e+01
+Node_Coordinate[69][1]=1.000000e+01
+Node_Coordinate[69][2]=1.000000e+00
+Node_Coordinate[70][0]=9.500000e+01
+Node_Coordinate[70][1]=1.000000e+01
+Node_Coordinate[70][2]=1.000000e+00
+Node_Coordinate[71][0]=1.000000e+02
+Node_Coordinate[71][1]=1.000000e+01
+Node_Coordinate[71][2]=1.000000e+00
+Constraint_Node_Dir[0][0]= 0 Constraint_Node_Dir[0][1]=0 Value_of_Constraint[0]= 0.000000e+00 
+Constraint_Node_Dir[1][0]= 12 Constraint_Node_Dir[1][1]=0 Value_of_Constraint[1]= 0.000000e+00 
+Constraint_Node_Dir[2][0]= 24 Constraint_Node_Dir[2][1]=0 Value_of_Constraint[2]= 0.000000e+00 
+Constraint_Node_Dir[3][0]= 36 Constraint_Node_Dir[3][1]=0 Value_of_Constraint[3]= 0.000000e+00 
+Constraint_Node_Dir[4][0]= 48 Constraint_Node_Dir[4][1]=0 Value_of_Constraint[4]= 0.000000e+00 
+Constraint_Node_Dir[5][0]= 60 Constraint_Node_Dir[5][1]=0 Value_of_Constraint[5]= 0.000000e+00 
+Constraint_Node_Dir[6][0]= 0 Constraint_Node_Dir[6][1]=1 Value_of_Constraint[6]= 0.000000e+00 
+Constraint_Node_Dir[7][0]= 12 Constraint_Node_Dir[7][1]=1 Value_of_Constraint[7]= 0.000000e+00 
+Constraint_Node_Dir[8][0]= 24 Constraint_Node_Dir[8][1]=1 Value_of_Constraint[8]= 0.000000e+00 
+Constraint_Node_Dir[9][0]= 36 Constraint_Node_Dir[9][1]=1 Value_of_Constraint[9]= 0.000000e+00 
+Constraint_Node_Dir[10][0]= 48 Constraint_Node_Dir[10][1]=1 Value_of_Constraint[10]= 0.000000e+00 
+Constraint_Node_Dir[11][0]= 60 Constraint_Node_Dir[11][1]=1 Value_of_Constraint[11]= 0.000000e+00 
+Load_Node_Dir[0][0]= 71 Load_Node_Dir[0][1]= 1 Value_of_Load[0]= -1.000000e+00
+real_Total_Element:40
+Finish Get_InputData
+Total Element=40 Node=72 Constraint=12 Load=1
+E;2.060000e+05 nu;3.000000e-01
+Max_Index_Dof=132
+re=0
+El_No:0 J_test=5.625000e+01
+re=1
+El_No:1 J_test=5.625000e+01
+re=2
+El_No:2 J_test=5.625000e+01
+re=3
+El_No:3 J_test=5.625000e+01
+re=4
+El_No:4 J_test=5.625000e+01
+re=5
+El_No:5 J_test=5.625000e+01
+re=6
+El_No:6 J_test=5.625000e+01
+re=7
+El_No:7 J_test=5.625000e+01
+re=8
+El_No:8 J_test=5.625000e+01
+re=9
+El_No:9 J_test=5.625000e+01
+re=10
+El_No:10 J_test=5.625000e+01
+re=11
+El_No:11 J_test=5.625000e+01
+re=12
+El_No:12 J_test=5.625000e+01
+re=13
+El_No:13 J_test=5.625000e+01
+re=14
+El_No:14 J_test=5.625000e+01
+re=15
+El_No:15 J_test=5.625000e+01
+re=16
+El_No:16 J_test=5.625000e+01
+re=17
+El_No:17 J_test=5.625000e+01
+re=18
+El_No:18 J_test=5.625000e+01
+re=19
+El_No:19 J_test=5.625000e+01
+re=20
+El_No:20 J_test=5.625000e+01
+re=21
+El_No:21 J_test=5.625000e+01
+re=22
+El_No:22 J_test=5.625000e+01
+re=23
+El_No:23 J_test=5.625000e+01
+re=24
+El_No:24 J_test=5.625000e+01
+re=25
+El_No:25 J_test=5.625000e+01
+re=26
+El_No:26 J_test=5.625000e+01
+re=27
+El_No:27 J_test=5.625000e+01
+re=28
+El_No:28 J_test=5.625000e+01
+re=29
+El_No:29 J_test=5.625000e+01
+re=30
+El_No:30 J_test=5.625000e+01
+re=31
+El_No:31 J_test=5.625000e+01
+re=32
+El_No:32 J_test=5.625000e+01
+re=33
+El_No:33 J_test=5.625000e+01
+re=34
+El_No:34 J_test=5.625000e+01
+re=35
+El_No:35 J_test=5.625000e+01
+re=36
+El_No:36 J_test=5.625000e+01
+re=37
+El_No:37 J_test=5.625000e+01
+re=38
+El_No:38 J_test=5.625000e+01
+re=39
+El_No:39 J_test=5.625000e+01
+Finish Make_K_Whole
+check
+-1.0000000000e+00
+ppK_Whole_Size:132
+El_No:0 J_test=5.625000e+01
+El_No:10 J_test=5.625000e+01
+El_No:20 J_test=5.625000e+01
+El_No:30 J_test=5.625000e+01
+i = 1 index = 0 rhs_vec[index] = 0.000000
+i = 2 index = 2 rhs_vec[index] = 0.000000
+i = 3 index = 4 rhs_vec[index] = 0.000000
+i = 4 index = 6 rhs_vec[index] = 0.000000
+i = 5 index = 8 rhs_vec[index] = 0.000000
+i = 6 index = 10 rhs_vec[index] = 0.000000
+i = 7 index = 12 rhs_vec[index] = 0.000000
+i = 8 index = 14 rhs_vec[index] = 0.000000
+i = 9 index = 16 rhs_vec[index] = 0.000000
+i = 10 index = 18 rhs_vec[index] = 0.000000
+i = 11 index = 20 rhs_vec[index] = 0.000000
+i = 13 index = 22 rhs_vec[index] = 0.000000
+i = 14 index = 24 rhs_vec[index] = 0.000000
+i = 15 index = 26 rhs_vec[index] = 0.000000
+i = 16 index = 28 rhs_vec[index] = 0.000000
+i = 17 index = 30 rhs_vec[index] = 0.000000
+i = 18 index = 32 rhs_vec[index] = 0.000000
+i = 19 index = 34 rhs_vec[index] = 0.000000
+i = 20 index = 36 rhs_vec[index] = 0.000000
+i = 21 index = 38 rhs_vec[index] = 0.000000
+i = 22 index = 40 rhs_vec[index] = 0.000000
+i = 23 index = 42 rhs_vec[index] = 0.000000
+i = 25 index = 44 rhs_vec[index] = 0.000000
+i = 26 index = 46 rhs_vec[index] = 0.000000
+i = 27 index = 48 rhs_vec[index] = 0.000000
+i = 28 index = 50 rhs_vec[index] = 0.000000
+i = 29 index = 52 rhs_vec[index] = 0.000000
+i = 30 index = 54 rhs_vec[index] = 0.000000
+i = 31 index = 56 rhs_vec[index] = 0.000000
+i = 32 index = 58 rhs_vec[index] = 0.000000
+i = 33 index = 60 rhs_vec[index] = 0.000000
+i = 34 index = 62 rhs_vec[index] = 0.000000
+i = 35 index = 64 rhs_vec[index] = 0.000000
+i = 37 index = 66 rhs_vec[index] = 0.000000
+i = 38 index = 68 rhs_vec[index] = 0.000000
+i = 39 index = 70 rhs_vec[index] = 0.000000
+i = 40 index = 72 rhs_vec[index] = 0.000000
+i = 41 index = 74 rhs_vec[index] = 0.000000
+i = 42 index = 76 rhs_vec[index] = 0.000000
+i = 43 index = 78 rhs_vec[index] = 0.000000
+i = 44 index = 80 rhs_vec[index] = 0.000000
+i = 45 index = 82 rhs_vec[index] = 0.000000
+i = 46 index = 84 rhs_vec[index] = 0.000000
+i = 47 index = 86 rhs_vec[index] = 0.000000
+i = 49 index = 88 rhs_vec[index] = 0.000000
+i = 50 index = 90 rhs_vec[index] = 0.000000
+i = 51 index = 92 rhs_vec[index] = 0.000000
+i = 52 index = 94 rhs_vec[index] = 0.000000
+i = 53 index = 96 rhs_vec[index] = 0.000000
+i = 54 index = 98 rhs_vec[index] = 0.000000
+i = 55 index = 100 rhs_vec[index] = 0.000000
+i = 56 index = 102 rhs_vec[index] = 0.000000
+i = 57 index = 104 rhs_vec[index] = 0.000000
+i = 58 index = 106 rhs_vec[index] = 0.000000
+i = 59 index = 108 rhs_vec[index] = 0.000000
+i = 61 index = 110 rhs_vec[index] = 0.000000
+i = 62 index = 112 rhs_vec[index] = 0.000000
+i = 63 index = 114 rhs_vec[index] = 0.000000
+i = 64 index = 116 rhs_vec[index] = 0.000000
+i = 65 index = 118 rhs_vec[index] = 0.000000
+i = 66 index = 120 rhs_vec[index] = 0.000000
+i = 67 index = 122 rhs_vec[index] = 0.000000
+i = 68 index = 124 rhs_vec[index] = 0.000000
+i = 69 index = 126 rhs_vec[index] = 0.000000
+i = 70 index = 128 rhs_vec[index] = 0.000000
+i = 71 index = 130 rhs_vec[index] = 0.000000
+i = 1 index = 1 rhs_vec[index] = 0.000000
+i = 2 index = 3 rhs_vec[index] = 0.000000
+i = 3 index = 5 rhs_vec[index] = 0.000000
+i = 4 index = 7 rhs_vec[index] = 0.000000
+i = 5 index = 9 rhs_vec[index] = 0.000000
+i = 6 index = 11 rhs_vec[index] = 0.000000
+i = 7 index = 13 rhs_vec[index] = 0.000000
+i = 8 index = 15 rhs_vec[index] = 0.000000
+i = 9 index = 17 rhs_vec[index] = 0.000000
+i = 10 index = 19 rhs_vec[index] = 0.000000
+i = 11 index = 21 rhs_vec[index] = 0.000000
+i = 13 index = 23 rhs_vec[index] = 0.000000
+i = 14 index = 25 rhs_vec[index] = 0.000000
+i = 15 index = 27 rhs_vec[index] = 0.000000
+i = 16 index = 29 rhs_vec[index] = 0.000000
+i = 17 index = 31 rhs_vec[index] = 0.000000
+i = 18 index = 33 rhs_vec[index] = 0.000000
+i = 19 index = 35 rhs_vec[index] = 0.000000
+i = 20 index = 37 rhs_vec[index] = 0.000000
+i = 21 index = 39 rhs_vec[index] = 0.000000
+i = 22 index = 41 rhs_vec[index] = 0.000000
+i = 23 index = 43 rhs_vec[index] = 0.000000
+i = 25 index = 45 rhs_vec[index] = 0.000000
+i = 26 index = 47 rhs_vec[index] = 0.000000
+i = 27 index = 49 rhs_vec[index] = 0.000000
+i = 28 index = 51 rhs_vec[index] = 0.000000
+i = 29 index = 53 rhs_vec[index] = 0.000000
+i = 30 index = 55 rhs_vec[index] = 0.000000
+i = 31 index = 57 rhs_vec[index] = 0.000000
+i = 32 index = 59 rhs_vec[index] = 0.000000
+i = 33 index = 61 rhs_vec[index] = 0.000000
+i = 34 index = 63 rhs_vec[index] = 0.000000
+i = 35 index = 65 rhs_vec[index] = 0.000000
+i = 37 index = 67 rhs_vec[index] = 0.000000
+i = 38 index = 69 rhs_vec[index] = 0.000000
+i = 39 index = 71 rhs_vec[index] = 0.000000
+i = 40 index = 73 rhs_vec[index] = 0.000000
+i = 41 index = 75 rhs_vec[index] = 0.000000
+i = 42 index = 77 rhs_vec[index] = 0.000000
+i = 43 index = 79 rhs_vec[index] = 0.000000
+i = 44 index = 81 rhs_vec[index] = 0.000000
+i = 45 index = 83 rhs_vec[index] = 0.000000
+i = 46 index = 85 rhs_vec[index] = 0.000000
+i = 47 index = 87 rhs_vec[index] = 0.000000
+i = 49 index = 89 rhs_vec[index] = 0.000000
+i = 50 index = 91 rhs_vec[index] = 0.000000
+i = 51 index = 93 rhs_vec[index] = 0.000000
+i = 52 index = 95 rhs_vec[index] = 0.000000
+i = 53 index = 97 rhs_vec[index] = 0.000000
+i = 54 index = 99 rhs_vec[index] = 0.000000
+i = 55 index = 101 rhs_vec[index] = 0.000000
+i = 56 index = 103 rhs_vec[index] = 0.000000
+i = 57 index = 105 rhs_vec[index] = 0.000000
+i = 58 index = 107 rhs_vec[index] = 0.000000
+i = 59 index = 109 rhs_vec[index] = 0.000000
+i = 61 index = 111 rhs_vec[index] = 0.000000
+i = 62 index = 113 rhs_vec[index] = 0.000000
+i = 63 index = 115 rhs_vec[index] = 0.000000
+i = 64 index = 117 rhs_vec[index] = 0.000000
+i = 65 index = 119 rhs_vec[index] = 0.000000
+i = 66 index = 121 rhs_vec[index] = 0.000000
+i = 67 index = 123 rhs_vec[index] = 0.000000
+i = 68 index = 125 rhs_vec[index] = 0.000000
+i = 69 index = 127 rhs_vec[index] = 0.000000
+i = 70 index = 129 rhs_vec[index] = 0.000000
+i = 71 index = 131 rhs_vec[index] = -1.000000
+rhs_vec_before[0]:0.000000e+00 diag_scaling[0]:2.505157e-03
+rhs_vec_before[1]:0.000000e+00 diag_scaling[1]:1.416662e-03
+rhs_vec_before[2]:0.000000e+00 diag_scaling[2]:2.015066e-03
+rhs_vec_before[3]:0.000000e+00 diag_scaling[3]:1.106072e-03
+rhs_vec_before[4]:0.000000e+00 diag_scaling[4]:2.015066e-03
+rhs_vec_before[5]:0.000000e+00 diag_scaling[5]:1.106072e-03
+rhs_vec_before[6]:0.000000e+00 diag_scaling[6]:2.015066e-03
+rhs_vec_before[7]:0.000000e+00 diag_scaling[7]:1.106072e-03
+rhs_vec_before[8]:0.000000e+00 diag_scaling[8]:2.015066e-03
+rhs_vec_before[9]:0.000000e+00 diag_scaling[9]:1.106072e-03
+rhs_vec_before[10]:0.000000e+00 diag_scaling[10]:2.015066e-03
+rhs_vec_before[11]:0.000000e+00 diag_scaling[11]:1.106072e-03
+rhs_vec_before[12]:0.000000e+00 diag_scaling[12]:2.015066e-03
+rhs_vec_before[13]:0.000000e+00 diag_scaling[13]:1.106072e-03
+rhs_vec_before[14]:0.000000e+00 diag_scaling[14]:2.015066e-03
+rhs_vec_before[15]:0.000000e+00 diag_scaling[15]:1.106072e-03
+rhs_vec_before[16]:0.000000e+00 diag_scaling[16]:2.015066e-03
+rhs_vec_before[17]:0.000000e+00 diag_scaling[17]:1.106072e-03
+rhs_vec_before[18]:0.000000e+00 diag_scaling[18]:2.505157e-03
+rhs_vec_before[19]:0.000000e+00 diag_scaling[19]:1.416662e-03
+rhs_vec_before[20]:0.000000e+00 diag_scaling[20]:3.115885e-03
+rhs_vec_before[21]:0.000000e+00 diag_scaling[21]:1.822474e-03
+rhs_vec_before[22]:0.000000e+00 diag_scaling[22]:2.413554e-03
+rhs_vec_before[23]:0.000000e+00 diag_scaling[23]:1.411682e-03
+rhs_vec_before[24]:0.000000e+00 diag_scaling[24]:1.978282e-03
+rhs_vec_before[25]:0.000000e+00 diag_scaling[25]:1.104289e-03
+rhs_vec_before[26]:0.000000e+00 diag_scaling[26]:1.978282e-03
+rhs_vec_before[27]:0.000000e+00 diag_scaling[27]:1.104289e-03
+rhs_vec_before[28]:0.000000e+00 diag_scaling[28]:1.978282e-03
+rhs_vec_before[29]:0.000000e+00 diag_scaling[29]:1.104289e-03
+rhs_vec_before[30]:0.000000e+00 diag_scaling[30]:1.978282e-03
+rhs_vec_before[31]:0.000000e+00 diag_scaling[31]:1.104289e-03
+rhs_vec_before[32]:0.000000e+00 diag_scaling[32]:1.978282e-03
+rhs_vec_before[33]:0.000000e+00 diag_scaling[33]:1.104289e-03
+rhs_vec_before[34]:0.000000e+00 diag_scaling[34]:1.978282e-03
+rhs_vec_before[35]:0.000000e+00 diag_scaling[35]:1.104289e-03
+rhs_vec_before[36]:0.000000e+00 diag_scaling[36]:1.978282e-03
+rhs_vec_before[37]:0.000000e+00 diag_scaling[37]:1.104289e-03
+rhs_vec_before[38]:0.000000e+00 diag_scaling[38]:1.978282e-03
+rhs_vec_before[39]:0.000000e+00 diag_scaling[39]:1.104289e-03
+rhs_vec_before[40]:0.000000e+00 diag_scaling[40]:2.413554e-03
+rhs_vec_before[41]:0.000000e+00 diag_scaling[41]:1.411682e-03
+rhs_vec_before[42]:0.000000e+00 diag_scaling[42]:2.944684e-03
+rhs_vec_before[43]:0.000000e+00 diag_scaling[43]:1.811909e-03
+rhs_vec_before[44]:0.000000e+00 diag_scaling[44]:2.527956e-03
+rhs_vec_before[45]:0.000000e+00 diag_scaling[45]:1.613178e-03
+rhs_vec_before[46]:0.000000e+00 diag_scaling[46]:2.169624e-03
+rhs_vec_before[47]:0.000000e+00 diag_scaling[47]:1.269008e-03
+rhs_vec_before[48]:0.000000e+00 diag_scaling[48]:2.169624e-03
+rhs_vec_before[49]:0.000000e+00 diag_scaling[49]:1.269008e-03
+rhs_vec_before[50]:0.000000e+00 diag_scaling[50]:2.169624e-03
+rhs_vec_before[51]:0.000000e+00 diag_scaling[51]:1.269008e-03
+rhs_vec_before[52]:0.000000e+00 diag_scaling[52]:2.169624e-03
+rhs_vec_before[53]:0.000000e+00 diag_scaling[53]:1.269008e-03
+rhs_vec_before[54]:0.000000e+00 diag_scaling[54]:2.169624e-03
+rhs_vec_before[55]:0.000000e+00 diag_scaling[55]:1.269008e-03
+rhs_vec_before[56]:0.000000e+00 diag_scaling[56]:2.169624e-03
+rhs_vec_before[57]:0.000000e+00 diag_scaling[57]:1.269008e-03
+rhs_vec_before[58]:0.000000e+00 diag_scaling[58]:2.169624e-03
+rhs_vec_before[59]:0.000000e+00 diag_scaling[59]:1.269008e-03
+rhs_vec_before[60]:0.000000e+00 diag_scaling[60]:2.169624e-03
+rhs_vec_before[61]:0.000000e+00 diag_scaling[61]:1.269008e-03
+rhs_vec_before[62]:0.000000e+00 diag_scaling[62]:2.527956e-03
+rhs_vec_before[63]:0.000000e+00 diag_scaling[63]:1.613178e-03
+rhs_vec_before[64]:0.000000e+00 diag_scaling[64]:2.958834e-03
+rhs_vec_before[65]:0.000000e+00 diag_scaling[65]:2.056848e-03
+rhs_vec_before[66]:0.000000e+00 diag_scaling[66]:2.527956e-03
+rhs_vec_before[67]:0.000000e+00 diag_scaling[67]:1.613178e-03
+rhs_vec_before[68]:0.000000e+00 diag_scaling[68]:2.169624e-03
+rhs_vec_before[69]:0.000000e+00 diag_scaling[69]:1.269008e-03
+rhs_vec_before[70]:0.000000e+00 diag_scaling[70]:2.169624e-03
+rhs_vec_before[71]:0.000000e+00 diag_scaling[71]:1.269008e-03
+rhs_vec_before[72]:0.000000e+00 diag_scaling[72]:2.169624e-03
+rhs_vec_before[73]:0.000000e+00 diag_scaling[73]:1.269008e-03
+rhs_vec_before[74]:0.000000e+00 diag_scaling[74]:2.169624e-03
+rhs_vec_before[75]:0.000000e+00 diag_scaling[75]:1.269008e-03
+rhs_vec_before[76]:0.000000e+00 diag_scaling[76]:2.169624e-03
+rhs_vec_before[77]:0.000000e+00 diag_scaling[77]:1.269008e-03
+rhs_vec_before[78]:0.000000e+00 diag_scaling[78]:2.169624e-03
+rhs_vec_before[79]:0.000000e+00 diag_scaling[79]:1.269008e-03
+rhs_vec_before[80]:0.000000e+00 diag_scaling[80]:2.169624e-03
+rhs_vec_before[81]:0.000000e+00 diag_scaling[81]:1.269008e-03
+rhs_vec_before[82]:0.000000e+00 diag_scaling[82]:2.169624e-03
+rhs_vec_before[83]:0.000000e+00 diag_scaling[83]:1.269008e-03
+rhs_vec_before[84]:0.000000e+00 diag_scaling[84]:2.527956e-03
+rhs_vec_before[85]:0.000000e+00 diag_scaling[85]:1.613178e-03
+rhs_vec_before[86]:0.000000e+00 diag_scaling[86]:2.958834e-03
+rhs_vec_before[87]:0.000000e+00 diag_scaling[87]:2.056848e-03
+rhs_vec_before[88]:0.000000e+00 diag_scaling[88]:2.413554e-03
+rhs_vec_before[89]:0.000000e+00 diag_scaling[89]:1.411682e-03
+rhs_vec_before[90]:0.000000e+00 diag_scaling[90]:1.978282e-03
+rhs_vec_before[91]:0.000000e+00 diag_scaling[91]:1.104289e-03
+rhs_vec_before[92]:0.000000e+00 diag_scaling[92]:1.978282e-03
+rhs_vec_before[93]:0.000000e+00 diag_scaling[93]:1.104289e-03
+rhs_vec_before[94]:0.000000e+00 diag_scaling[94]:1.978282e-03
+rhs_vec_before[95]:0.000000e+00 diag_scaling[95]:1.104289e-03
+rhs_vec_before[96]:0.000000e+00 diag_scaling[96]:1.978282e-03
+rhs_vec_before[97]:0.000000e+00 diag_scaling[97]:1.104289e-03
+rhs_vec_before[98]:0.000000e+00 diag_scaling[98]:1.978282e-03
+rhs_vec_before[99]:0.000000e+00 diag_scaling[99]:1.104289e-03
+rhs_vec_before[100]:0.000000e+00 diag_scaling[100]:1.978282e-03
+rhs_vec_before[101]:0.000000e+00 diag_scaling[101]:1.104289e-03
+rhs_vec_before[102]:0.000000e+00 diag_scaling[102]:1.978282e-03
+rhs_vec_before[103]:0.000000e+00 diag_scaling[103]:1.104289e-03
+rhs_vec_before[104]:0.000000e+00 diag_scaling[104]:1.978282e-03
+rhs_vec_before[105]:0.000000e+00 diag_scaling[105]:1.104289e-03
+rhs_vec_before[106]:0.000000e+00 diag_scaling[106]:2.413554e-03
+rhs_vec_before[107]:0.000000e+00 diag_scaling[107]:1.411682e-03
+rhs_vec_before[108]:0.000000e+00 diag_scaling[108]:2.944684e-03
+rhs_vec_before[109]:0.000000e+00 diag_scaling[109]:1.811909e-03
+rhs_vec_before[110]:0.000000e+00 diag_scaling[110]:2.505157e-03
+rhs_vec_before[111]:0.000000e+00 diag_scaling[111]:1.416662e-03
+rhs_vec_before[112]:0.000000e+00 diag_scaling[112]:2.015066e-03
+rhs_vec_before[113]:0.000000e+00 diag_scaling[113]:1.106072e-03
+rhs_vec_before[114]:0.000000e+00 diag_scaling[114]:2.015066e-03
+rhs_vec_before[115]:0.000000e+00 diag_scaling[115]:1.106072e-03
+rhs_vec_before[116]:0.000000e+00 diag_scaling[116]:2.015066e-03
+rhs_vec_before[117]:0.000000e+00 diag_scaling[117]:1.106072e-03
+rhs_vec_before[118]:0.000000e+00 diag_scaling[118]:2.015066e-03
+rhs_vec_before[119]:0.000000e+00 diag_scaling[119]:1.106072e-03
+rhs_vec_before[120]:0.000000e+00 diag_scaling[120]:2.015066e-03
+rhs_vec_before[121]:0.000000e+00 diag_scaling[121]:1.106072e-03
+rhs_vec_before[122]:0.000000e+00 diag_scaling[122]:2.015066e-03
+rhs_vec_before[123]:0.000000e+00 diag_scaling[123]:1.106072e-03
+rhs_vec_before[124]:0.000000e+00 diag_scaling[124]:2.015066e-03
+rhs_vec_before[125]:0.000000e+00 diag_scaling[125]:1.106072e-03
+rhs_vec_before[126]:0.000000e+00 diag_scaling[126]:2.015066e-03
+rhs_vec_before[127]:0.000000e+00 diag_scaling[127]:1.106072e-03
+rhs_vec_before[128]:0.000000e+00 diag_scaling[128]:2.505157e-03
+rhs_vec_before[129]:0.000000e+00 diag_scaling[129]:1.416662e-03
+rhs_vec_before[130]:0.000000e+00 diag_scaling[130]:3.115885e-03
+rhs_vec_before[131]:-1.000000e+00 diag_scaling[131]:1.822474e-03
+
+qq
+rhs_vec[0]=0.000000 dd[0]=0.000000
+rhs_vec[1]=0.000000 dd[1]=0.000000
+rhs_vec[2]=0.000000 dd[2]=0.000000
+rhs_vec[3]=0.000000 dd[3]=0.000000
+rhs_vec[4]=0.000000 dd[4]=0.000000
+rhs_vec[5]=0.000000 dd[5]=0.000000
+rhs_vec[6]=0.000000 dd[6]=0.000000
+rhs_vec[7]=0.000000 dd[7]=0.000000
+rhs_vec[8]=0.000000 dd[8]=0.000000
+rhs_vec[9]=0.000000 dd[9]=0.000000
+rhs_vec[10]=0.000000 dd[10]=0.000000
+rhs_vec[11]=0.000000 dd[11]=0.000000
+rhs_vec[12]=0.000000 dd[12]=0.000000
+rhs_vec[13]=0.000000 dd[13]=0.000000
+rhs_vec[14]=0.000000 dd[14]=0.000000
+rhs_vec[15]=0.000000 dd[15]=0.000000
+rhs_vec[16]=0.000000 dd[16]=0.000000
+rhs_vec[17]=0.000000 dd[17]=0.000000
+rhs_vec[18]=0.000000 dd[18]=0.000000
+rhs_vec[19]=0.000000 dd[19]=0.000000
+rhs_vec[20]=0.000000 dd[20]=0.000000
+rhs_vec[21]=0.000000 dd[21]=0.000000
+rhs_vec[22]=0.000000 dd[22]=0.000000
+rhs_vec[23]=0.000000 dd[23]=0.000000
+rhs_vec[24]=0.000000 dd[24]=0.000000
+rhs_vec[25]=0.000000 dd[25]=0.000000
+rhs_vec[26]=0.000000 dd[26]=0.000000
+rhs_vec[27]=0.000000 dd[27]=0.000000
+rhs_vec[28]=0.000000 dd[28]=0.000000
+rhs_vec[29]=0.000000 dd[29]=0.000000
+rhs_vec[30]=0.000000 dd[30]=0.000000
+rhs_vec[31]=0.000000 dd[31]=0.000000
+rhs_vec[32]=0.000000 dd[32]=0.000000
+rhs_vec[33]=0.000000 dd[33]=0.000000
+rhs_vec[34]=0.000000 dd[34]=0.000000
+rhs_vec[35]=0.000000 dd[35]=0.000000
+rhs_vec[36]=0.000000 dd[36]=0.000000
+rhs_vec[37]=0.000000 dd[37]=0.000000
+rhs_vec[38]=0.000000 dd[38]=0.000000
+rhs_vec[39]=0.000000 dd[39]=0.000000
+rhs_vec[40]=0.000000 dd[40]=0.000000
+rhs_vec[41]=0.000000 dd[41]=0.000000
+rhs_vec[42]=0.000000 dd[42]=0.000000
+rhs_vec[43]=0.000000 dd[43]=0.000000
+rhs_vec[44]=0.000000 dd[44]=0.000000
+rhs_vec[45]=0.000000 dd[45]=0.000000
+rhs_vec[46]=0.000000 dd[46]=0.000000
+rhs_vec[47]=0.000000 dd[47]=0.000000
+rhs_vec[48]=0.000000 dd[48]=0.000000
+rhs_vec[49]=0.000000 dd[49]=0.000000
+rhs_vec[50]=0.000000 dd[50]=0.000000
+rhs_vec[51]=0.000000 dd[51]=0.000000
+rhs_vec[52]=0.000000 dd[52]=0.000000
+rhs_vec[53]=0.000000 dd[53]=0.000000
+rhs_vec[54]=0.000000 dd[54]=0.000000
+rhs_vec[55]=0.000000 dd[55]=0.000000
+rhs_vec[56]=0.000000 dd[56]=0.000000
+rhs_vec[57]=0.000000 dd[57]=0.000000
+rhs_vec[58]=0.000000 dd[58]=0.000000
+rhs_vec[59]=0.000000 dd[59]=0.000000
+rhs_vec[60]=0.000000 dd[60]=0.000000
+rhs_vec[61]=0.000000 dd[61]=0.000000
+rhs_vec[62]=0.000000 dd[62]=0.000000
+rhs_vec[63]=0.000000 dd[63]=0.000000
+rhs_vec[64]=0.000000 dd[64]=0.000000
+rhs_vec[65]=0.000000 dd[65]=0.000000
+rhs_vec[66]=0.000000 dd[66]=0.000000
+rhs_vec[67]=0.000000 dd[67]=0.000000
+rhs_vec[68]=0.000000 dd[68]=0.000000
+rhs_vec[69]=0.000000 dd[69]=0.000000
+rhs_vec[70]=0.000000 dd[70]=0.000000
+rhs_vec[71]=0.000000 dd[71]=0.000000
+rhs_vec[72]=0.000000 dd[72]=0.000000
+rhs_vec[73]=0.000000 dd[73]=0.000000
+rhs_vec[74]=0.000000 dd[74]=0.000000
+rhs_vec[75]=0.000000 dd[75]=0.000000
+rhs_vec[76]=0.000000 dd[76]=0.000000
+rhs_vec[77]=0.000000 dd[77]=0.000000
+rhs_vec[78]=0.000000 dd[78]=0.000000
+rhs_vec[79]=0.000000 dd[79]=0.000000
+rhs_vec[80]=0.000000 dd[80]=0.000000
+rhs_vec[81]=0.000000 dd[81]=0.000000
+rhs_vec[82]=0.000000 dd[82]=0.000000
+rhs_vec[83]=0.000000 dd[83]=0.000000
+rhs_vec[84]=0.000000 dd[84]=0.000000
+rhs_vec[85]=0.000000 dd[85]=0.000000
+rhs_vec[86]=0.000000 dd[86]=0.000000
+rhs_vec[87]=0.000000 dd[87]=0.000000
+rhs_vec[88]=0.000000 dd[88]=0.000000
+rhs_vec[89]=0.000000 dd[89]=0.000000
+rhs_vec[90]=0.000000 dd[90]=0.000000
+rhs_vec[91]=0.000000 dd[91]=0.000000
+rhs_vec[92]=0.000000 dd[92]=0.000000
+rhs_vec[93]=0.000000 dd[93]=0.000000
+rhs_vec[94]=0.000000 dd[94]=0.000000
+rhs_vec[95]=0.000000 dd[95]=0.000000
+rhs_vec[96]=0.000000 dd[96]=0.000000
+rhs_vec[97]=0.000000 dd[97]=0.000000
+rhs_vec[98]=0.000000 dd[98]=0.000000
+rhs_vec[99]=0.000000 dd[99]=0.000000
+rhs_vec[100]=0.000000 dd[100]=0.000000
+rhs_vec[101]=0.000000 dd[101]=0.000000
+rhs_vec[102]=0.000000 dd[102]=0.000000
+rhs_vec[103]=0.000000 dd[103]=0.000000
+rhs_vec[104]=0.000000 dd[104]=0.000000
+rhs_vec[105]=0.000000 dd[105]=0.000000
+rhs_vec[106]=0.000000 dd[106]=0.000000
+rhs_vec[107]=0.000000 dd[107]=0.000000
+rhs_vec[108]=0.000000 dd[108]=0.000000
+rhs_vec[109]=0.000000 dd[109]=0.000000
+rhs_vec[110]=0.000000 dd[110]=0.000000
+rhs_vec[111]=0.000000 dd[111]=0.000000
+rhs_vec[112]=0.000000 dd[112]=0.000000
+rhs_vec[113]=0.000000 dd[113]=0.000000
+rhs_vec[114]=0.000000 dd[114]=0.000000
+rhs_vec[115]=0.000000 dd[115]=0.000000
+rhs_vec[116]=0.000000 dd[116]=0.000000
+rhs_vec[117]=0.000000 dd[117]=0.000000
+rhs_vec[118]=0.000000 dd[118]=0.000000
+rhs_vec[119]=0.000000 dd[119]=0.000000
+rhs_vec[120]=0.000000 dd[120]=0.000000
+rhs_vec[121]=0.000000 dd[121]=0.000000
+rhs_vec[122]=0.000000 dd[122]=0.000000
+rhs_vec[123]=0.000000 dd[123]=0.000000
+rhs_vec[124]=0.000000 dd[124]=0.000000
+rhs_vec[125]=0.000000 dd[125]=0.000000
+rhs_vec[126]=0.000000 dd[126]=0.000000
+rhs_vec[127]=0.000000 dd[127]=0.000000
+rhs_vec[128]=0.000000 dd[128]=0.000000
+rhs_vec[129]=0.000000 dd[129]=0.000000
+rhs_vec[130]=0.000000 dd[130]=0.000000
+rhs_vec[131]=-0.001822 dd[131]=0.000000
+
+rrndof=132 alphak=    1.000000e+00	Iteration# = 0  residual =    1.445394e+00 (   1.000000e-10)
+ndof=132 alphak=    1.335299e+00	Iteration# = 1  residual =    1.108767e+00 (   1.000000e-10)
+ndof=132 alphak=    1.109947e+00	Iteration# = 2  residual =    4.327006e-01 (   1.000000e-10)
+ndof=132 alphak=    1.054657e+00	Iteration# = 3  residual =    3.054994e-01 (   1.000000e-10)
+ndof=132 alphak=    1.315945e+00	Iteration# = 4  residual =    3.887491e-01 (   1.000000e-10)
+ndof=132 alphak=    1.246957e+00	Iteration# = 5  residual =    3.324817e-01 (   1.000000e-10)
+ndof=132 alphak=    1.263829e+00	Iteration# = 6  residual =    3.141993e-01 (   1.000000e-10)
+ndof=132 alphak=    1.293192e+00	Iteration# = 7  residual =    2.931442e-01 (   1.000000e-10)
+ndof=132 alphak=    1.263124e+00	Iteration# = 8  residual =    2.501184e-01 (   1.000000e-10)
+ndof=132 alphak=    1.225473e+00	Iteration# = 9  residual =    2.035127e-01 (   1.000000e-10)
+ndof=132 alphak=    1.155770e+00	Iteration# = 10  residual =    1.476766e-01 (   1.000000e-10)
+ndof=132 alphak=    1.451221e+00	Iteration# = 11  residual =    1.920008e-01 (   1.000000e-10)
+ndof=132 alphak=    1.175610e+00	Iteration# = 12  residual =    1.546746e-01 (   1.000000e-10)
+ndof=132 alphak=    1.725499e+00	Iteration# = 13  residual =    2.721578e-01 (   1.000000e-10)
+ndof=132 alphak=    1.222412e+00	Iteration# = 14  residual =    1.776774e-01 (   1.000000e-10)
+ndof=132 alphak=    1.378706e+00	Iteration# = 15  residual =    2.153810e-01 (   1.000000e-10)
+ndof=132 alphak=    1.209045e+00	Iteration# = 16  residual =    1.537020e-01 (   1.000000e-10)
+ndof=132 alphak=    1.235167e+00	Iteration# = 17  residual =    1.493604e-01 (   1.000000e-10)
+ndof=132 alphak=    1.541639e+00	Iteration# = 18  residual =    2.318019e-01 (   1.000000e-10)
+ndof=132 alphak=    1.363641e+00	Iteration# = 19  residual =    1.761597e-01 (   1.000000e-10)
+ndof=132 alphak=    1.054852e+00	Iteration# = 20  residual =    1.003927e-01 (   1.000000e-10)
+ndof=132 alphak=    1.290746e+00	Iteration# = 21  residual =    1.108485e-01 (   1.000000e-10)
+ndof=132 alphak=    1.314153e+00	Iteration# = 22  residual =    6.332743e-02 (   1.000000e-10)
+ndof=132 alphak=    1.531681e+00	Iteration# = 23  residual =    6.067997e-02 (   1.000000e-10)
+ndof=132 alphak=    1.533417e+00	Iteration# = 24  residual =    7.632473e-02 (   1.000000e-10)
+ndof=132 alphak=    1.017146e+00	Iteration# = 25  residual =    3.790150e-02 (   1.000000e-10)
+ndof=132 alphak=    1.283473e+00	Iteration# = 26  residual =    5.069177e-02 (   1.000000e-10)
+ndof=132 alphak=    1.338118e+00	Iteration# = 27  residual =    4.098004e-02 (   1.000000e-10)
+ndof=132 alphak=    1.839784e+00	Iteration# = 28  residual =    7.035966e-02 (   1.000000e-10)
+ndof=132 alphak=    1.349657e+00	Iteration# = 29  residual =    4.843809e-02 (   1.000000e-10)
+ndof=132 alphak=    1.508841e+00	Iteration# = 30  residual =    7.176053e-02 (   1.000000e-10)
+ndof=132 alphak=    1.615381e+00	Iteration# = 31  residual =    9.291019e-02 (   1.000000e-10)
+ndof=132 alphak=    1.615395e+00	Iteration# = 32  residual =    1.290919e-01 (   1.000000e-10)
+ndof=132 alphak=    1.293413e+00	Iteration# = 33  residual =    9.558595e-02 (   1.000000e-10)
+ndof=132 alphak=    1.381196e+00	Iteration# = 34  residual =    7.872675e-02 (   1.000000e-10)
+ndof=132 alphak=    1.642464e+00	Iteration# = 35  residual =    8.054779e-02 (   1.000000e-10)
+ndof=132 alphak=    1.238699e+00	Iteration# = 36  residual =    6.031709e-02 (   1.000000e-10)
+ndof=132 alphak=    1.043366e+00	Iteration# = 37  residual =    2.800636e-02 (   1.000000e-10)
+ndof=132 alphak=    1.460474e+00	Iteration# = 38  residual =    3.947608e-02 (   1.000000e-10)
+ndof=132 alphak=    1.551605e+00	Iteration# = 39  residual =    3.287903e-02 (   1.000000e-10)
+ndof=132 alphak=    1.568014e+00	Iteration# = 40  residual =    3.237163e-02 (   1.000000e-10)
+ndof=132 alphak=    1.412749e+00	Iteration# = 41  residual =    2.600451e-02 (   1.000000e-10)
+ndof=132 alphak=    1.529696e+00	Iteration# = 42  residual =    2.993055e-02 (   1.000000e-10)
+ndof=132 alphak=    1.441412e+00	Iteration# = 43  residual =    3.625905e-02 (   1.000000e-10)
+ndof=132 alphak=    1.697508e+00	Iteration# = 44  residual =    5.690898e-02 (   1.000000e-10)
+ndof=132 alphak=    1.855347e+00	Iteration# = 45  residual =    7.082028e-02 (   1.000000e-10)
+ndof=132 alphak=    1.874947e+00	Iteration# = 46  residual =    9.878239e-02 (   1.000000e-10)
+ndof=132 alphak=    1.415450e+00	Iteration# = 47  residual =    8.000351e-02 (   1.000000e-10)
+ndof=132 alphak=    1.198950e+00	Iteration# = 48  residual =    4.633617e-02 (   1.000000e-10)
+ndof=132 alphak=    1.040754e+00	Iteration# = 49  residual =    3.446628e-02 (   1.000000e-10)
+ndof=132 alphak=    1.377523e+00	Iteration# = 50  residual =    2.574583e-02 (   1.000000e-10)
+ndof=132 alphak=    1.752964e+00	Iteration# = 51  residual =    2.834751e-02 (   1.000000e-10)
+ndof=132 alphak=    2.009695e+00	Iteration# = 52  residual =    3.047677e-02 (   1.000000e-10)
+ndof=132 alphak=    1.598191e+00	Iteration# = 53  residual =    2.194763e-02 (   1.000000e-10)
+ndof=132 alphak=    1.747747e+00	Iteration# = 54  residual =    2.963028e-02 (   1.000000e-10)
+ndof=132 alphak=    1.272782e+00	Iteration# = 55  residual =    2.169746e-02 (   1.000000e-10)
+ndof=132 alphak=    8.830104e-01	Iteration# = 56  residual =    1.614578e-02 (   1.000000e-10)
+ndof=132 alphak=    1.872238e+00	Iteration# = 57  residual =    4.411803e-02 (   1.000000e-10)
+ndof=132 alphak=    1.836930e+00	Iteration# = 58  residual =    4.574133e-02 (   1.000000e-10)
+ndof=132 alphak=    2.422590e+00	Iteration# = 59  residual =    9.674321e-02 (   1.000000e-10)
+ndof=132 alphak=    1.676168e+00	Iteration# = 60  residual =    4.339445e-02 (   1.000000e-10)
+ndof=132 alphak=    1.934099e+00	Iteration# = 61  residual =    4.441756e-02 (   1.000000e-10)
+ndof=132 alphak=    1.816152e+00	Iteration# = 62  residual =    3.581887e-02 (   1.000000e-10)
+ndof=132 alphak=    1.591865e+00	Iteration# = 63  residual =    2.461111e-02 (   1.000000e-10)
+ndof=132 alphak=    1.190318e+00	Iteration# = 64  residual =    2.202022e-02 (   1.000000e-10)
+ndof=132 alphak=    8.538680e-01	Iteration# = 65  residual =    9.791466e-03 (   1.000000e-10)
+ndof=132 alphak=    1.423625e+00	Iteration# = 66  residual =    9.108064e-03 (   1.000000e-10)
+ndof=132 alphak=    3.046804e+00	Iteration# = 67  residual =    3.591046e-02 (   1.000000e-10)
+ndof=132 alphak=    1.906534e+00	Iteration# = 68  residual =    2.463139e-02 (   1.000000e-10)
+ndof=132 alphak=    2.850040e+00	Iteration# = 69  residual =    9.004142e-02 (   1.000000e-10)
+ndof=132 alphak=    1.034118e+00	Iteration# = 70  residual =    3.810762e-02 (   1.000000e-10)
+ndof=132 alphak=    1.314848e+00	Iteration# = 71  residual =    4.481319e-02 (   1.000000e-10)
+ndof=132 alphak=    1.965874e+00	Iteration# = 72  residual =    4.112888e-02 (   1.000000e-10)
+ndof=132 alphak=    1.683673e+00	Iteration# = 73  residual =    1.983546e-02 (   1.000000e-10)
+ndof=132 alphak=    1.704946e+00	Iteration# = 74  residual =    2.835600e-02 (   1.000000e-10)
+ndof=132 alphak=    7.006359e-01	Iteration# = 75  residual =    5.742003e-03 (   1.000000e-10)
+ndof=132 alphak=    2.368127e+00	Iteration# = 76  residual =    2.260923e-02 (   1.000000e-10)
+ndof=132 alphak=    2.654200e+00	Iteration# = 77  residual =    2.712637e-02 (   1.000000e-10)
+ndof=132 alphak=    2.911017e+00	Iteration# = 78  residual =    3.800756e-02 (   1.000000e-10)
+ndof=132 alphak=    1.242643e+00	Iteration# = 79  residual =    1.836727e-02 (   1.000000e-10)
+ndof=132 alphak=    9.843016e-01	Iteration# = 80  residual =    1.223683e-02 (   1.000000e-10)
+ndof=132 alphak=    1.734032e+00	Iteration# = 81  residual =    2.307323e-02 (   1.000000e-10)
+ndof=132 alphak=    2.563446e+00	Iteration# = 82  residual =    4.816227e-02 (   1.000000e-10)
+ndof=132 alphak=    2.199608e+00	Iteration# = 83  residual =    1.059820e-01 (   1.000000e-10)
+ndof=132 alphak=    9.705013e-01	Iteration# = 84  residual =    3.088276e-02 (   1.000000e-10)
+ndof=132 alphak=    1.941058e+00	Iteration# = 85  residual =    4.343012e-02 (   1.000000e-10)
+ndof=132 alphak=    1.661550e+00	Iteration# = 86  residual =    2.020229e-02 (   1.000000e-10)
+ndof=132 alphak=    1.415736e+00	Iteration# = 87  residual =    1.989170e-02 (   1.000000e-10)
+ndof=132 alphak=    8.213574e-01	Iteration# = 88  residual =    5.081776e-03 (   1.000000e-10)
+ndof=132 alphak=    1.798891e+00	Iteration# = 89  residual =    1.227834e-02 (   1.000000e-10)
+ndof=132 alphak=    2.586578e+00	Iteration# = 90  residual =    3.244841e-02 (   1.000000e-10)
+ndof=132 alphak=    9.263460e-01	Iteration# = 91  residual =    1.661677e-02 (   1.000000e-10)
+ndof=132 alphak=    2.321233e+00	Iteration# = 92  residual =    5.004543e-02 (   1.000000e-10)
+ndof=132 alphak=    1.675047e+00	Iteration# = 93  residual =    6.440656e-02 (   1.000000e-10)
+ndof=132 alphak=    1.188565e+00	Iteration# = 94  residual =    2.322128e-02 (   1.000000e-10)
+ndof=132 alphak=    1.734409e+00	Iteration# = 95  residual =    1.571409e-02 (   1.000000e-10)
+ndof=132 alphak=    1.620431e+00	Iteration# = 96  residual =    2.113567e-02 (   1.000000e-10)
+ndof=132 alphak=    8.947345e-01	Iteration# = 97  residual =    6.167419e-03 (   1.000000e-10)
+ndof=132 alphak=    1.707306e+00	Iteration# = 98  residual =    6.535152e-03 (   1.000000e-10)
+ndof=132 alphak=    1.452391e+00	Iteration# = 99  residual =    7.263779e-03 (   1.000000e-10)
+ndof=132 alphak=    9.335812e-01	Iteration# = 100  residual =    1.940357e-03 (   1.000000e-10)
+ndof=132 alphak=    2.055007e+00	Iteration# = 101  residual =    4.432421e-03 (   1.000000e-10)
+ndof=132 alphak=    1.333280e+00	Iteration# = 102  residual =    4.934804e-03 (   1.000000e-10)
+ndof=132 alphak=    1.456742e+00	Iteration# = 103  residual =    4.354725e-03 (   1.000000e-10)
+ndof=132 alphak=    1.882845e+00	Iteration# = 104  residual =    8.198811e-03 (   1.000000e-10)
+ndof=132 alphak=    1.075073e+00	Iteration# = 105  residual =    3.609897e-03 (   1.000000e-10)
+ndof=132 alphak=    1.699078e+00	Iteration# = 106  residual =    4.114697e-03 (   1.000000e-10)
+ndof=132 alphak=    2.129799e+00	Iteration# = 107  residual =    5.356407e-03 (   1.000000e-10)
+ndof=132 alphak=    9.283474e-01	Iteration# = 108  residual =    2.826811e-03 (   1.000000e-10)
+ndof=132 alphak=    1.388523e+00	Iteration# = 109  residual =    3.057751e-03 (   1.000000e-10)
+ndof=132 alphak=    1.272512e+00	Iteration# = 110  residual =    2.788518e-03 (   1.000000e-10)
+ndof=132 alphak=    1.026384e+00	Iteration# = 111  residual =    1.962686e-03 (   1.000000e-10)
+ndof=132 alphak=    2.171756e+00	Iteration# = 112  residual =    2.825399e-03 (   1.000000e-10)
+ndof=132 alphak=    2.249414e+00	Iteration# = 113  residual =    4.838066e-03 (   1.000000e-10)
+ndof=132 alphak=    1.110137e+00	Iteration# = 114  residual =    2.024544e-03 (   1.000000e-10)
+ndof=132 alphak=    2.885967e+00	Iteration# = 115  residual =    8.141242e-03 (   1.000000e-10)
+ndof=132 alphak=    1.670400e+00	Iteration# = 116  residual =    1.406489e-02 (   1.000000e-10)
+ndof=132 alphak=    2.398364e+00	Iteration# = 117  residual =    3.434902e-02 (   1.000000e-10)
+ndof=132 alphak=    1.539223e+00	Iteration# = 118  residual =    3.692695e-02 (   1.000000e-10)
+ndof=132 alphak=    1.419026e+00	Iteration# = 119  residual =    4.556175e-02 (   1.000000e-10)
+ndof=132 alphak=    1.396090e+00	Iteration# = 120  residual =    4.434704e-02 (   1.000000e-10)
+ndof=132 alphak=    8.074764e-01	Iteration# = 121  residual =    7.761586e-03 (   1.000000e-10)
+ndof=132 alphak=    4.868548e+00	Iteration# = 122  residual =    9.477956e-02 (   1.000000e-10)
+ndof=132 alphak=    2.966630e+00	Iteration# = 123  residual =    1.533697e-01 (   1.000000e-10)
+ndof=132 alphak=    1.674871e+00	Iteration# = 124  residual =    1.340509e-01 (   1.000000e-10)
+ndof=132 alphak=    1.042213e+01	Iteration# = 125  residual =    2.369142e+00 (   1.000000e-10)
+ndof=132 alphak=    1.393315e+00	Iteration# = 126  residual =    3.465419e-01 (   1.000000e-10)
+ndof=132 alphak=    3.453177e+00	Iteration# = 127  residual =    4.981441e-01 (   1.000000e-10)
+ndof=132 alphak=    1.521296e+00	Iteration# = 128  residual =    2.543043e-01 (   1.000000e-10)
+ndof=132 alphak=    6.728530e-01	Iteration# = 129  residual =    2.302366e-02 (   1.000000e-10)
+ndof=132 alphak=    1.039310e+00	Iteration# = 130  residual =    1.626483e-02 (   1.000000e-10)
+ndof=132 alphak=    7.618027e-01	Iteration# = 131  residual =    2.180372e-03 (   1.000000e-10)
+
+ss
+qq
+Finish CG_Solver
+Finish Make_Displacement
+1.03秒かかりました
+Finish Make_Strain
+Finish Make_Stress
+Finish Make_ReactionForce
+sol_vec
+Finish Make_Parameter_z
+q:0
+r:0
+q:1
+r:0
+q:2
+r:0
+q:3
+r:0
+q:4
+r:0
+q:5
+r:0
+q:6
+r:0
+q:7
+r:0
+q:8
+r:0
+q:9
+r:0
+r:1
+q:11
+r:1
+q:12
+r:1
+q:13
+r:1
+q:14
+r:1
+q:15
+r:1
+q:16
+r:1
+q:17
+r:1
+q:18
+r:1
+q:19
+r:1
+q:20
+r:1
+r:2
+q:22
+r:2
+q:23
+r:2
+q:24
+r:2
+q:25
+r:2
+q:26
+r:2
+q:27
+r:2
+q:28
+r:2
+q:29
+r:2
+q:30
+r:2
+q:31
+r:2
+r:3
+q:33
+r:3
+q:34
+r:3
+q:35
+r:3
+q:36
+r:3
+q:37
+r:3
+q:38
+r:3
+q:39
+r:3
+q:40
+r:3
+q:41
+r:3
+q:42
+r:3
+r:4
+q:44
+r:4
+q:45
+r:4
+q:46
+r:4
+q:47
+r:4
+q:48
+r:4
+q:49
+r:4
+q:50
+r:4
+q:51
+r:4
+q:52
+r:4
+q:53
+r:4
+r:5
+q:55
+r:5
+q:56
+r:5
+q:57
+r:5
+q:58
+r:5
+q:59
+r:5
+q:60
+r:5
+q:61
+r:5
+q:62
+r:5
+q:63
+r:5
+q:64
+r:5
+r:6
+q:66
+r:6
+q:67
+r:6
+q:68
+r:6
+q:69
+r:6
+q:70
+r:6
+q:71
+r:6
+q:72
+r:6
+q:73
+r:6
+q:74
+r:6
+q:75
+r:6
+r:7
+q:77
+r:7
+q:78
+r:7
+q:79
+r:7
+q:80
+r:7
+q:81
+r:7
+q:82
+r:7
+q:83
+r:7
+q:84
+r:7
+q:85
+r:7
+q:86
+r:7
+r:8
+q:88
+r:8
+q:89
+r:8
+q:90
+r:8
+q:91
+r:8
+q:92
+r:8
+q:93
+r:8
+q:94
+r:8
+q:95
+r:8
+q:96
+r:8
+q:97
+r:8
+r:9
+q:99
+r:9
+q:100
+r:9
+q:101
+r:9
+q:102
+r:9
+q:103
+r:9
+q:104
+r:9
+q:105
+r:9
+q:106
+r:9
+q:107
+r:9
+q:108
+r:9
+r:10
+q:110
+r:10
+q:111
+r:10
+q:112
+r:10
+q:113
+r:10
+q:114
+r:10
+q:115
+r:10
+q:116
+r:10
+q:117
+r:10
+q:118
+r:10
+q:119
+r:10
+r:11
+q:121
+r:11
+q:122
+r:11
+q:123
+r:11
+q:124
+r:11
+q:125
+r:11
+q:126
+r:11
+q:127
+r:11
+q:128
+r:11
+q:129
+r:11
+q:130
+r:11
+r:12
+q:132
+r:12
+q:133
+r:12
+q:134
+r:12
+q:135
+r:12
+q:136
+r:12
+q:137
+r:12
+q:138
+r:12
+q:139
+r:12
+q:140
+r:12
+q:141
+r:12
+r:13
+q:143
+r:13
+q:144
+r:13
+q:145
+r:13
+q:146
+r:13
+q:147
+r:13
+q:148
+r:13
+q:149
+r:13
+q:150
+r:13
+q:151
+r:13
+q:152
+r:13
+r:14
+q:154
+r:14
+q:155
+r:14
+q:156
+r:14
+q:157
+r:14
+q:158
+r:14
+q:159
+r:14
+q:160
+r:14
+q:161
+r:14
+q:162
+r:14
+q:163
+r:14
+r:15
+q:165
+r:15
+q:166
+r:15
+q:167
+r:15
+q:168
+r:15
+q:169
+r:15
+q:170
+r:15
+q:171
+r:15
+q:172
+r:15
+q:173
+r:15
+q:174
+r:15
+r:16
+q:176
+r:16
+q:177
+r:16
+q:178
+r:16
+q:179
+r:16
+q:180
+r:16
+q:181
+r:16
+q:182
+r:16
+q:183
+r:16
+q:184
+r:16
+q:185
+r:16
+r:17
+q:187
+r:17
+q:188
+r:17
+q:189
+r:17
+q:190
+r:17
+q:191
+r:17
+q:192
+r:17
+q:193
+r:17
+q:194
+r:17
+q:195
+r:17
+q:196
+r:17
+r:18
+q:198
+r:18
+q:199
+r:18
+q:200
+r:18
+q:201
+r:18
+q:202
+r:18
+q:203
+r:18
+q:204
+r:18
+q:205
+r:18
+q:206
+r:18
+q:207
+r:18
+r:19
+q:209
+r:19
+q:210
+r:19
+q:211
+r:19
+q:212
+r:19
+q:213
+r:19
+q:214
+r:19
+q:215
+r:19
+q:216
+r:19
+q:217
+r:19
+q:218
+r:19
+r:20
+q:220
+r:20
+q:221
+r:20
+q:222
+r:20
+q:223
+r:20
+q:224
+r:20
+q:225
+r:20
+q:226
+r:20
+q:227
+r:20
+q:228
+r:20
+q:229
+r:20
+r:21
+q:231
+r:21
+q:232
+r:21
+q:233
+r:21
+q:234
+r:21
+q:235
+r:21
+q:236
+r:21
+q:237
+r:21
+q:238
+r:21
+q:239
+r:21
+q:240
+r:21
+r:22
+q:242
+r:22
+q:243
+r:22
+q:244
+r:22
+q:245
+r:22
+q:246
+r:22
+q:247
+r:22
+q:248
+r:22
+q:249
+r:22
+q:250
+r:22
+q:251
+r:22
+r:23
+q:253
+r:23
+q:254
+r:23
+q:255
+r:23
+q:256
+r:23
+q:257
+r:23
+q:258
+r:23
+q:259
+r:23
+q:260
+r:23
+q:261
+r:23
+q:262
+r:23
+r:24
+q:264
+r:24
+q:265
+r:24
+q:266
+r:24
+q:267
+r:24
+q:268
+r:24
+q:269
+r:24
+q:270
+r:24
+q:271
+r:24
+q:272
+r:24
+q:273
+r:24
+r:25
+q:275
+r:25
+q:276
+r:25
+q:277
+r:25
+q:278
+r:25
+q:279
+r:25
+q:280
+r:25
+q:281
+r:25
+q:282
+r:25
+q:283
+r:25
+q:284
+r:25
+r:26
+q:286
+r:26
+q:287
+r:26
+q:288
+r:26
+q:289
+r:26
+q:290
+r:26
+q:291
+r:26
+q:292
+r:26
+q:293
+r:26
+q:294
+r:26
+q:295
+r:26
+r:27
+q:297
+r:27
+q:298
+r:27
+q:299
+r:27
+q:300
+r:27
+q:301
+r:27
+q:302
+r:27
+q:303
+r:27
+q:304
+r:27
+q:305
+r:27
+q:306
+r:27
+r:28
+q:308
+r:28
+q:309
+r:28
+q:310
+r:28
+q:311
+r:28
+q:312
+r:28
+q:313
+r:28
+q:314
+r:28
+q:315
+r:28
+q:316
+r:28
+q:317
+r:28
+r:29
+q:319
+r:29
+q:320
+r:29
+q:321
+r:29
+q:322
+r:29
+q:323
+r:29
+q:324
+r:29
+q:325
+r:29
+q:326
+r:29
+q:327
+r:29
+q:328
+r:29
+r:30
+q:330
+r:30
+q:331
+r:30
+q:332
+r:30
+q:333
+r:30
+q:334
+r:30
+q:335
+r:30
+q:336
+r:30
+q:337
+r:30
+q:338
+r:30
+q:339
+r:30
+r:31
+q:341
+r:31
+q:342
+r:31
+q:343
+r:31
+q:344
+r:31
+q:345
+r:31
+q:346
+r:31
+q:347
+r:31
+q:348
+r:31
+q:349
+r:31
+q:350
+r:31
+r:32
+q:352
+r:32
+q:353
+r:32
+q:354
+r:32
+q:355
+r:32
+q:356
+r:32
+q:357
+r:32
+q:358
+r:32
+q:359
+r:32
+q:360
+r:32
+q:361
+r:32
+r:33
+q:363
+r:33
+q:364
+r:33
+q:365
+r:33
+q:366
+r:33
+q:367
+r:33
+q:368
+r:33
+q:369
+r:33
+q:370
+r:33
+q:371
+r:33
+q:372
+r:33
+r:34
+q:374
+r:34
+q:375
+r:34
+q:376
+r:34
+q:377
+r:34
+q:378
+r:34
+q:379
+r:34
+q:380
+r:34
+q:381
+r:34
+q:382
+r:34
+q:383
+r:34
+r:35
+q:385
+r:35
+q:386
+r:35
+q:387
+r:35
+q:388
+r:35
+q:389
+r:35
+q:390
+r:35
+q:391
+r:35
+q:392
+r:35
+q:393
+r:35
+q:394
+r:35
+r:36
+q:396
+r:36
+q:397
+r:36
+q:398
+r:36
+q:399
+r:36
+q:400
+r:36
+q:401
+r:36
+q:402
+r:36
+q:403
+r:36
+q:404
+r:36
+q:405
+r:36
+r:37
+q:407
+r:37
+q:408
+r:37
+q:409
+r:37
+q:410
+r:37
+q:411
+r:37
+q:412
+r:37
+q:413
+r:37
+q:414
+r:37
+q:415
+r:37
+q:416
+r:37
+r:38
+q:418
+r:38
+q:419
+r:38
+q:420
+r:38
+q:421
+r:38
+q:422
+r:38
+q:423
+r:38
+q:424
+r:38
+q:425
+r:38
+q:426
+r:38
+q:427
+r:38
+r:39
+q:429
+r:39
+q:430
+r:39
+q:431
+r:39
+q:432
+r:39
+q:433
+r:39
+q:434
+r:39
+q:435
+r:39
+q:436
+r:39
+q:437
+r:39
+q:438
+r:39

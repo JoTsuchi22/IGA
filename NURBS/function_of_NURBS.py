@@ -110,21 +110,17 @@ def knot_insertion_C(CP, n, l, m, knot, number_of_auto_insertion):
     return CP, l, m, knot
 
 
-def knot_insertion_A_1p_calc_knot(n, knot, new_knot_position):
-    knot_rate = 0.5
-    number_of_insertion = new_knot_position.shape[0]
-    new_knot = np.zeros((number_of_insertion))
+def NURBS_knot_insertion_B(CP, n, l, knot, insert_knot):
+    CP_w = CP
+    for i in range(CP.shape[0]):
+        for j in range(CP.shape[1]-1):
+            CP_w[i][j] = CP[i][CP.shape[1]-1] * CP[i][j]
+
+    number_of_insertion = insert_knot.shape[0]
     knot_var_old = knot
-    for i in range(number_of_insertion):
-        new_knot[i] = knot_rate * (knot[n+new_knot_position[i]] -
-                                   knot[n+new_knot_position[i]-1]) + knot[n+new_knot_position[i]-1]
-        new_knot_number = n + new_knot_position[i] + i
-        knot_var_old = np.insert(knot_var_old, new_knot_number, new_knot[i])
-    knot_var = knot_var_old
-    return knot_var, number_of_insertion
+    knot_var_old = np.append(knot_var_old, insert_knot)
+    knot_var = np.sort(knot_var_old)
 
-
-def knot_insertion_A_1p_calc_T(CP, n, l, knot, knot_var, number_of_insertion):
     T = np.zeros((n+1, l+number_of_insertion, l))
     for i in range(l+number_of_insertion):
         for k in range(n+1):
@@ -146,18 +142,79 @@ def knot_insertion_A_1p_calc_T(CP, n, l, knot, knot_var, number_of_insertion):
                         b = ((knot[j+k+1] - knot_var[i+k]) /
                              (knot[j+k+1] - knot[j+1])) * T[k-1][i][j+1]
                     T[k][i][j] = a + b
-    CP = np.array(np.dot(T[n, :, :], CP))
-    return CP
+    CP_w = np.array(np.dot(T[n, :, :], CP_w))
 
+    CP = CP_w
+    for i in range(CP_w.shape[0]):
+        for j in range(CP_w.shape[1]-1):
+            CP[i][j] = CP_w[i][j] / CP_w[i][CP_w.shape[1]-1]
 
-def knot_insertion_A_1p_update(knot, knot_var, l, n, number_of_insertion):
     knot = np.array(knot_var)
     l = l + number_of_insertion
     m = l + n + 1
-    return knot, l, m
+    return CP, l, m, knot
 
 
-def knot_insertion_B_1p_calc_knot(knot, insert_knot):
+def NURBS_knot_insertion_C(CP, n, l, m, knot, number_of_auto_insertion):
+    for i in range(number_of_auto_insertion):
+        knot_var = np.unique(knot)
+        insert_knot = np.zeros((knot_var.shape[0]-1))
+        for p in range(knot_var.shape[0]-1):
+            insert_knot[p] = knot_var[p] + (knot_var[p+1] - knot_var[p]) / 2.
+        CP, l, m, knot = NURBS_knot_insertion_B(CP, n, l, knot, insert_knot)
+    return CP, l, m, knot
+
+
+# 以下knot_insertion_A_1pはNURBS版に拡張してないし，ほぼ使わないのでコメントアウトで保留
+
+    # def knot_insertion_A_1p_calc_knot(n, knot, new_knot_position):
+    #     knot_rate = 0.5
+    #     number_of_insertion = new_knot_position.shape[0]
+    #     new_knot = np.zeros((number_of_insertion))
+    #     knot_var_old = knot
+    #     for i in range(number_of_insertion):
+    #         new_knot[i] = knot_rate * (knot[n+new_knot_position[i]] -
+    #                                    knot[n+new_knot_position[i]-1]) + knot[n+new_knot_position[i]-1]
+    #         new_knot_number = n + new_knot_position[i] + i
+    #         knot_var_old = np.insert(knot_var_old, new_knot_number, new_knot[i])
+    #     knot_var = knot_var_old
+    #     return knot_var, number_of_insertion
+
+
+    # def knot_insertion_A_1p_calc_T(CP, n, l, knot, knot_var, number_of_insertion):
+    #     T = np.zeros((n+1, l+number_of_insertion, l))
+    #     for i in range(l+number_of_insertion):
+    #         for k in range(n+1):
+    #             for j in range(l):
+    #                 if k == 0:
+    #                     if (knot[j] <= knot_var[i]) and (knot_var[i] < knot[j+1]):
+    #                         T[k][i][j] = 1.0
+    #                     else:
+    #                         T[k][i][j] = 0.0
+    #                 else:
+    #                     if (knot[j+k] - knot[j]) == 0:
+    #                         a = 0.0
+    #                     if (knot[j+k] - knot[j]) != 0:
+    #                         a = ((knot_var[i+k] - knot[j]) /
+    #                              (knot[j+k] - knot[j])) * T[k-1][i][j]
+    #                     if (knot[j+k+1] - knot[j+1]) == 0:
+    #                         b = 0.0
+    #                     if (knot[j+k+1] - knot[j+1]) != 0:
+    #                         b = ((knot[j+k+1] - knot_var[i+k]) /
+    #                              (knot[j+k+1] - knot[j+1])) * T[k-1][i][j+1]
+    #                     T[k][i][j] = a + b
+    #     CP = np.array(np.dot(T[n, :, :], CP))
+    #     return CP
+
+
+    # def knot_insertion_A_1p_update(knot, knot_var, l, n, number_of_insertion):
+    #     knot = np.array(knot_var)
+    #     l = l + number_of_insertion
+    #     m = l + n + 1
+    #     return knot, l, m
+
+
+def NURBS_knot_insertion_B_1p_calc_knot(knot, insert_knot):
     number_of_insertion = insert_knot.shape[0]
     knot_var_old = knot
     knot_var_old = np.append(knot_var_old, insert_knot)
@@ -165,7 +222,11 @@ def knot_insertion_B_1p_calc_knot(knot, insert_knot):
     return knot_var, number_of_insertion
 
 
-def knot_insertion_B_1p_calc_T(CP, n, l, knot, knot_var, number_of_insertion):
+def NURBS_knot_insertion_B_1p_calc_T(CP, n, l, knot, knot_var, number_of_insertion):
+    CP_w = CP
+    for i in range(CP.shape[0]):
+        for j in range(CP.shape[1]-1):
+            CP_w[i][j] = CP[i][CP.shape[1]-1] * CP[i][j]
     T = np.zeros((n+1, l+number_of_insertion, l))
     for i in range(l+number_of_insertion):
         for k in range(n+1):
@@ -187,93 +248,89 @@ def knot_insertion_B_1p_calc_T(CP, n, l, knot, knot_var, number_of_insertion):
                         b = ((knot[j+k+1] - knot_var[i+k]) /
                              (knot[j+k+1] - knot[j+1])) * T[k-1][i][j+1]
                     T[k][i][j] = a + b
-    CP = np.array(np.dot(T[n, :, :], CP))
+    CP_w = np.array(np.dot(T[n, :, :], CP_w))
+    CP = CP_w
+    for i in range(CP_w.shape[0]):
+        for j in range(CP_w.shape[1]-1):
+            CP[i][j] = CP_w[i][j] / CP_w[i][CP_w.shape[1]-1]
     return CP
 
 
-def knot_insertion_B_1p_update(knot, knot_var, l, n, number_of_insertion):
+def NURBS_knot_insertion_B_1p_update(knot, knot_var, l, n, number_of_insertion):
     knot = np.array(knot_var)
     l = l + number_of_insertion
     m = l + n + 1
     return knot, l, m
 
 
-def knot_insertion_A_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, new_knot_position):
-    if insert_parameter_axis == 0:
-        CP_2d1w_dash = np.zeros((2*l[0]-2, l[1], 3))
-        for j in range(l[1]):
-            if j == 0:
-                knot_var, number_of_insertion = knot_insertion_A_1p_calc_knot(
-                    n[0], knot_i, new_knot_position)
-            CP_2d1w_dash[:, j, :] = knot_insertion_A_1p_calc_T(
-                CP_2d1w[:, j, :], n[0], l[0], knot_i, knot_var, number_of_insertion)
-        knot_i, l[0], m[0] = knot_insertion_A_1p_update(
-            knot_i, knot_var, l[0], n[0], number_of_insertion)
-    if insert_parameter_axis == 1:
-        CP_2d1w_dash = np.zeros((l[0], 2*l[1]-2, 3))
-        for i in range(l[0]):
-            if i == 0:
-                knot_var, number_of_insertion = knot_insertion_A_1p_calc_knot(
-                    n[1], knot_j, new_knot_position)
-            CP_2d1w_dash[i, :, :] = knot_insertion_A_1p_calc_T(
-                CP_2d1w[i, :, :], n[1], l[1], knot_j, knot_var, number_of_insertion)
-        knot_j, l[1], m[1] = knot_insertion_A_1p_update(
-            knot_j, knot_var, l[1], n[1], number_of_insertion)
-    CP_2d1w = CP_2d1w_dash
-    return CP_2d1w, l, m, knot_i, knot_j
+# 以下knot_insertion_A_2p2d1wはNURBS版に拡張してないし，ほぼ使わないのでコメントアウトで保留
+
+    # def knot_insertion_A_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, new_knot_position):
+    #     if insert_parameter_axis == 0:
+    #         CP_2d1w_dash = np.zeros((2*l[0]-2, l[1], 3))
+    #         for j in range(l[1]):
+    #             if j == 0:
+    #                 knot_var, number_of_insertion = knot_insertion_A_1p_calc_knot(
+    #                     n[0], knot_i, new_knot_position)
+    #             CP_2d1w_dash[:, j, :] = knot_insertion_A_1p_calc_T(
+    #                 CP_2d1w[:, j, :], n[0], l[0], knot_i, knot_var, number_of_insertion)
+    #         knot_i, l[0], m[0] = knot_insertion_A_1p_update(
+    #             knot_i, knot_var, l[0], n[0], number_of_insertion)
+    #     if insert_parameter_axis == 1:
+    #         CP_2d1w_dash = np.zeros((l[0], 2*l[1]-2, 3))
+    #         for i in range(l[0]):
+    #             if i == 0:
+    #                 knot_var, number_of_insertion = knot_insertion_A_1p_calc_knot(
+    #                     n[1], knot_j, new_knot_position)
+    #             CP_2d1w_dash[i, :, :] = knot_insertion_A_1p_calc_T(
+    #                 CP_2d1w[i, :, :], n[1], l[1], knot_j, knot_var, number_of_insertion)
+    #         knot_j, l[1], m[1] = knot_insertion_A_1p_update(
+    #             knot_j, knot_var, l[1], n[1], number_of_insertion)
+    #     CP_2d1w = CP_2d1w_dash
+    #     return CP_2d1w, l, m, knot_i, knot_j
 
 
-def knot_insertion_B_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot):
+def NURBS_knot_insertion_B_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot):
     if insert_parameter_axis == 0:
         CP_2d1w_dash = np.zeros((l[0]+insert_knot.shape[0], l[1], 3))
         for j in range(l[1]):
             if j == 0:
-                knot_var, number_of_insertion = knot_insertion_B_1p_calc_knot(
+                knot_var, number_of_insertion = NURBS_knot_insertion_B_1p_calc_knot(
                     knot_i, insert_knot)
-            CP_2d1w_dash[:, j, :] = knot_insertion_B_1p_calc_T(
+            CP_2d1w_dash[:, j, :] = NURBS_knot_insertion_B_1p_calc_T(
                 CP_2d1w[:, j, :], n[0], l[0], knot_i, knot_var, number_of_insertion)
-        knot_i, l[0], m[0] = knot_insertion_B_1p_update(
+        knot_i, l[0], m[0] = NURBS_knot_insertion_B_1p_update(
             knot_i, knot_var, l[0], n[0], number_of_insertion)
+    
     if insert_parameter_axis == 1:
         CP_2d1w_dash = np.zeros((l[0], l[1]+insert_knot.shape[0], 3))
         for i in range(l[0]):
             if i == 0:
-                knot_var, number_of_insertion = knot_insertion_B_1p_calc_knot(
+                knot_var, number_of_insertion = NURBS_knot_insertion_B_1p_calc_knot(
                     knot_j, insert_knot)
-            CP_2d1w_dash[i, :, :] = knot_insertion_B_1p_calc_T(
+            CP_2d1w_dash[i, :, :] = NURBS_knot_insertion_B_1p_calc_T(
                 CP_2d1w[i, :, :], n[1], l[1], knot_j, knot_var, number_of_insertion)
-        knot_j, l[1], m[1] = knot_insertion_B_1p_update(
+        knot_j, l[1], m[1] = NURBS_knot_insertion_B_1p_update(
             knot_j, knot_var, l[1], n[1], number_of_insertion)
+    
     CP_2d1w = CP_2d1w_dash
     return CP_2d1w, l, m, knot_i, knot_j
 
 
-def knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, number_of_auto_insertion):
+def NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, number_of_auto_insertion):
     for i in range(number_of_auto_insertion):
         if insert_parameter_axis == 0:
             knot_var = np.unique(knot_i)
-            insert_knot = np.zeros((knot_var.shape[0]-1))
-            for p in range(knot_var.shape[0]-1):
-                insert_knot[p] = knot_var[p] + (knot_var[p+1] - knot_var[p]) / 2.
-            CP_2d1w, l, m, knot_i, knot_j = knot_insertion_B_2p2d1w(
-                CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot)
         if insert_parameter_axis == 1:
             knot_var = np.unique(knot_j)
-            insert_knot = np.zeros((knot_var.shape[0]-1))
-            for p in range(knot_var.shape[0]-1):
-                insert_knot[p] = knot_var[p] + (knot_var[p+1] - knot_var[p]) / 2.
-            CP_2d1w, l, m, knot_i, knot_j = knot_insertion_B_2p2d1w(
-                CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot)
+        
+        insert_knot = np.zeros((knot_var.shape[0]-1))
+        for p in range(knot_var.shape[0]-1):
+            insert_knot[p] = knot_var[p] + (knot_var[p+1] - knot_var[p]) / 2.
+        CP_2d1w, l, m, knot_i, knot_j = NURBS_knot_insertion_B_2p2d1w(
+            CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot)
+ 
     return CP_2d1w, l, m, knot_i, knot_j
-
-
-# def knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, number_of_auto_insertion):
-#     for i in range(number_of_auto_insertion):
-#         new_knot_position = np.arange(l[insert_parameter_axis])
-#         new_knot_position = new_knot_position[1:-1]
-#         CP_2d1w, l, m, knot_i, knot_j = knot_insertion_A_2p2d1w(
-#             CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, new_knot_position)
-#     return CP_2d1w, l, m, knot_i, knot_j
 
 
 # 2p3d1wは後回し
@@ -342,7 +399,7 @@ def knot_removal(CP, n, l, knot, removal_knot):
     return CP, l, m, knot
 
 
-def knot_removal_1p_calc_knot(l, knot, removal_knot):
+def NURBS_knot_removal_1p_calc_knot(l, knot, removal_knot):
     knot_bool_vec_1 = np.ones((knot.shape[0]), dtype=bool)
     knot_bool_vec_2 = np.zeros(
         (knot.shape[0], np.unique(removal_knot).shape[0]), dtype=bool)
@@ -369,7 +426,11 @@ def knot_removal_1p_calc_knot(l, knot, removal_knot):
     return knot, knot_var, l, number_of_removal
 
 
-def knot_removal_1p_calc_Tinv(CP, knot, knot_var, l, n, number_of_removal):
+def NURBS_knot_removal_1p_calc_Tinv(CP, knot, knot_var, l, n, number_of_removal):
+    CP_w = CP
+    for i in range(CP.shape[0]):
+        for j in range(CP.shape[1]-1):
+            CP_w[i][j] = CP[i][CP.shape[1]-1] * CP[i][j]
     T = np.zeros((n+1, l+number_of_removal, l))
     for i in range(l+number_of_removal):
         for k in range(n+1):
@@ -391,32 +452,36 @@ def knot_removal_1p_calc_Tinv(CP, knot, knot_var, l, n, number_of_removal):
                         b = ((knot[j+k+1] - knot_var[i+k]) /
                              (knot[j+k+1] - knot[j+1])) * T[k-1][i][j+1]
                     T[k][i][j] = a + b
-    CP = np.array(np.dot(np.linalg.pinv(T[n, :, :]), CP))
+    CP_w = np.array(np.dot(np.linalg.pinv(T[n, :, :]), CP_w))
+    CP = CP_w
+    for i in range(CP_w.shape[0]):
+        for j in range(CP.shape[1]-1):
+            CP[i][j] = CP_w[i][j] / CP_w[i][CP.shape[1]-1]
     return CP
 
 
-def knot_removal_1p_update(l, n):
+def NURBS_knot_removal_1p_update(l, n):
     m = l + n + 1
     return m
 
 
-def knot_removal_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, removal_knot):
+def NURBS_knot_removal_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, removal_knot):
     if insert_parameter_axis == 0:
         CP_2d1w_dash = np.zeros((l[0]-removal_knot.shape[0], l[1], 3))
         for j in range(l[1]):
             if j == 0:
-                knot_i, knot_var, l[0], number_of_removal = knot_removal_1p_calc_knot(l[0], knot_i, removal_knot)
-            CP_2d1w_dash[:, j, :] = knot_removal_1p_calc_Tinv(
+                knot_i, knot_var, l[0], number_of_removal = NURBS_knot_removal_1p_calc_knot(l[0], knot_i, removal_knot)
+            CP_2d1w_dash[:, j, :] = NURBS_knot_removal_1p_calc_Tinv(
                 CP_2d1w[:, j, :], knot_i, knot_var, l[0], n[0], number_of_removal)
-        m[0] = knot_removal_1p_update(l[0], n[0])
+        m[0] = NURBS_knot_removal_1p_update(l[0], n[0])
     if insert_parameter_axis == 1:
         CP_2d1w_dash = np.zeros((l[0], l[1]-removal_knot.shape[0], 3))
         for i in range(l[0]):
             if i == 0:
-                knot_j, knot_var, l[1], number_of_removal = knot_removal_1p_calc_knot(l[1], knot_j, removal_knot)
-            CP_2d1w_dash[i, :, :] = knot_removal_1p_calc_Tinv(
+                knot_j, knot_var, l[1], number_of_removal = NURBS_knot_removal_1p_calc_knot(l[1], knot_j, removal_knot)
+            CP_2d1w_dash[i, :, :] = NURBS_knot_removal_1p_calc_Tinv(
                 CP_2d1w[i, :, :], knot_j, knot_var, l[1], n[1], number_of_removal)
-        m[1] = knot_removal_1p_update(l[1], n[1])
+        m[1] = NURBS_knot_removal_1p_update(l[1], n[1])
     CP_2d1w = CP_2d1w_dash
     return CP_2d1w, l, m, knot_i, knot_j
 
@@ -568,7 +633,7 @@ def order_elevation(CP, n, l, knot, elevation_degree):
         return CP, l, m, n, knot
 
 
-def order_elevation_2p2d1w(CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis):
+def NURBS_order_elevation_2p2d1w(CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis):
     if elevation_degree == 0:
         return CP_2d1w, l, m, n, knot_i, knot_j
     else:
@@ -590,7 +655,7 @@ def order_elevation_2p2d1w(CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, e
             insert_knot = np.sort(knot_var_2)
 
             insert_parameter_axis = elevation_parameter_axis
-            CP_2d1w, l, m, knot_i, knot_j = knot_insertion_B_2p2d1w(
+            CP_2d1w, l, m, knot_i, knot_j = NURBS_knot_insertion_B_2p2d1w(
                 CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot)
 
             a = 1 + ((l[0] - 1 - n[0]) // n[0])
@@ -621,9 +686,10 @@ def order_elevation_2p2d1w(CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, e
             l[0] = l[0] + elevation_degree*a
             n[0] = n[0] + elevation_degree
 
-            CP_2d1w, l, m, knot_i, knot_j = knot_removal_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, removal_knot)
+            CP_2d1w, l, m, knot_i, knot_j = NURBS_knot_removal_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, removal_knot)
 
             return CP_2d1w, l, m, n, knot_i, knot_j
+
         if elevation_parameter_axis == 1:
             knot_bool_vec = np.zeros((knot_j.shape[0]), dtype=bool)
             knot_var_1 = np.zeros((1))
@@ -642,7 +708,7 @@ def order_elevation_2p2d1w(CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, e
             insert_knot = np.sort(knot_var_2)
 
             insert_parameter_axis = elevation_parameter_axis
-            CP_2d1w, l, m, knot_i, knot_j = knot_insertion_B_2p2d1w(
+            CP_2d1w, l, m, knot_i, knot_j = NURBS_knot_insertion_B_2p2d1w(
                 CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, insert_knot)
 
             a = 1 + ((l[1] - 1 - n[1]) // n[1])
@@ -673,34 +739,34 @@ def order_elevation_2p2d1w(CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, e
             l[1] = l[1] + elevation_degree*a
             n[1] = n[1] + elevation_degree
 
-            CP_2d1w, l, m, knot_i, knot_j = knot_removal_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, removal_knot)
+            CP_2d1w, l, m, knot_i, knot_j = NURBS_knot_removal_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, removal_knot)
             
             return CP_2d1w, l, m, n, knot_i, knot_j
 
 
 # def knot_insertion_A_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j, insert_parameter_axis, new_knot_position):
-#     if insert_parameter_axis == 0:
-#         CP_2d1w_dash = np.zeros((2*l[0]-2, l[1], 3))
-#         for j in range(l[1]):
-#             if j == 0:
-#                 knot_var, number_of_insertion = knot_insertion_A_1p_calc_knot(
-#                     n[0], knot_i, new_knot_position)
-#             CP_2d1w_dash[:, j, :] = knot_insertion_A_1p_calc_T(
-#                 CP_2d1w[:, j, :], n[0], l[0], knot_i, knot_var, number_of_insertion)
-#         knot_i, l[0], m[0] = knot_insertion_A_1p_update(
-#             knot_i, knot_var, l[0], n[0], number_of_insertion)
-#     if insert_parameter_axis == 1:
-#         CP_2d1w_dash = np.zeros((l[0], 2*l[1]-2, 3))
-#         for i in range(l[0]):
-#             if i == 0:
-#                 knot_var, number_of_insertion = knot_insertion_A_1p_calc_knot(
-#                     n[1], knot_j, new_knot_position)
-#             CP_2d1w_dash[i, :, :] = knot_insertion_A_1p_calc_T(
-#                 CP_2d1w[i, :, :], n[1], l[1], knot_j, knot_var, number_of_insertion)
-#         knot_j, l[1], m[1] = knot_insertion_A_1p_update(
-#             knot_j, knot_var, l[1], n[1], number_of_insertion)
-#     CP_2d1w = CP_2d1w_dash
-#     return CP_2d1w, l, m, knot_i, knot_j
+    #     if insert_parameter_axis == 0:
+    #         CP_2d1w_dash = np.zeros((2*l[0]-2, l[1], 3))
+    #         for j in range(l[1]):
+    #             if j == 0:
+    #                 knot_var, number_of_insertion = knot_insertion_A_1p_calc_knot(
+    #                     n[0], knot_i, new_knot_position)
+    #             CP_2d1w_dash[:, j, :] = knot_insertion_A_1p_calc_T(
+    #                 CP_2d1w[:, j, :], n[0], l[0], knot_i, knot_var, number_of_insertion)
+    #         knot_i, l[0], m[0] = knot_insertion_A_1p_update(
+    #             knot_i, knot_var, l[0], n[0], number_of_insertion)
+    #     if insert_parameter_axis == 1:
+    #         CP_2d1w_dash = np.zeros((l[0], 2*l[1]-2, 3))
+    #         for i in range(l[0]):
+    #             if i == 0:
+    #                 knot_var, number_of_insertion = knot_insertion_A_1p_calc_knot(
+    #                     n[1], knot_j, new_knot_position)
+    #             CP_2d1w_dash[i, :, :] = knot_insertion_A_1p_calc_T(
+    #                 CP_2d1w[i, :, :], n[1], l[1], knot_j, knot_var, number_of_insertion)
+    #         knot_j, l[1], m[1] = knot_insertion_A_1p_update(
+    #             knot_j, knot_var, l[1], n[1], number_of_insertion)
+    #     CP_2d1w = CP_2d1w_dash
+    #     return CP_2d1w, l, m, knot_i, knot_j
 
 
 # def order_elevation_2p3d1w():
@@ -1079,3 +1145,111 @@ def make_stl_3D(solid_name, delta, Sx_vec, Sy_vec, Sz_vec):
         write_stl_main(solid_name, a, c, mesh_k1, n_vec_k1)
         write_stl_main(solid_name, a, c, mesh_k2, n_vec_k2)
     write_stl_footer(solid_name)
+
+
+def output_2p2d1w_txt(file_name, n, m, l, knot_i, knot_j, CP_2d1w):
+    file_name_txt = file_name + ".txt"
+    CP_array = np.reshape(CP_2d1w, [int((CP_2d1w.shape[0]*CP_2d1w.shape[1]*CP_2d1w.shape[2])/3.), 3])
+    f = open(file_name_txt, 'w')
+    f.write("order")
+    f.write("\n")
+    f.write(str(n[1]))
+    f.write("   ")
+    f.write(str(n[0]))
+    f.write("\n")
+    f.write("\n")
+    f.write("knot vector length")
+    f.write("\n")
+    f.write(str(m[1]))
+    f.write("   ")
+    f.write(str(m[0]))
+    f.write("\n")
+    f.write("\n")
+    f.write("number of control points")
+    f.write("\n")
+    f.write(str(l[1]))
+    f.write("   ")
+    f.write(str(l[0]))
+    f.write("\n")
+    f.write("\n")
+    f.write("knot vector")
+    f.write("\n")
+    for i in range(knot_j.shape[0]):
+        if i == 0:
+            f.write(str('{:.21e}'.format(knot_j[i])))
+        else:
+            f.write("   ")
+            f.write(str('{:.21e}'.format(knot_j[i])))
+    f.write("\n")
+    for i in range(knot_i.shape[0]):
+        if i == 0:
+            f.write(str('{:.21e}'.format(knot_i[i])))
+        else:
+            f.write("   ")
+            f.write(str('{:.21e}'.format(knot_i[i])))
+    f.write("\n")
+    f.write("\n")
+    f.write("control points")
+    f.write("\n")
+    for i in range(CP_array.shape[0]):
+        if i == 0:
+            f.write(str(i))
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][0])))
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][1])))
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][2])))
+        else:
+            f.write("\n")
+            f.write(str(i))
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][0])))
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][1])))
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][2])))
+    f.write("\n")
+    f.write("\n")
+    f.write("control points for python format")
+    f.write("\n")
+    for i in range(CP_array.shape[0]):
+        if i == 0:
+            f.write("patchX = np.array(")
+            f.write("\n")
+            f.write("   ")
+            f.write("[[ ")
+            f.write(str('{:.21e}'.format(CP_array[i][0])))
+            f.write(",")
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][1])))
+            f.write(",")
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][2])))
+            f.write(" ]")
+            f.write(",")
+            f.write("\n")
+        if i != 0 and i != CP_array.shape[0] - 1:
+            f.write("   ")
+            f.write(" [ ")
+            f.write(str('{:.21e}'.format(CP_array[i][0])))
+            f.write(",")
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][1])))
+            f.write(",")
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][2])))
+            f.write(" ]")
+            f.write(",")
+            f.write("\n")
+        if i == CP_array.shape[0] - 1:
+            f.write("   ")
+            f.write(" [ ")
+            f.write(str('{:.21e}'.format(CP_array[i][0])))
+            f.write(",")
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][1])))
+            f.write(",")
+            f.write("   ")
+            f.write(str('{:.21e}'.format(CP_array[i][2])))
+            f.write(" ]])")
