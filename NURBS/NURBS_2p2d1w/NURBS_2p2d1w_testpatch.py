@@ -11,7 +11,7 @@ import function_of_NURBS_alt as fn
 # 追記 パッチ境界では厳密に表現できているが，内部では合わない(なんで?)
 
 # output file name
-file_name = "patch0"
+file_name = "testpatch"
 
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
