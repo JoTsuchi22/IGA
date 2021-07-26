@@ -286,7 +286,7 @@ def write_boundary(filename, A, A_bool, boundary_array, boundary_number):
             f.write('\n')
         f.write('\n')
     if (np.array(boundary_array.shape)).shape[0] != 1:
-        for i in range((np.array(boundary_array.shape)).shape[0]):
+        for i in range(boundary_array.shape[0]):
             a = boundary_array[i][0]
             b = boundary_array[i][1]
             c = boundary_array[i][2]

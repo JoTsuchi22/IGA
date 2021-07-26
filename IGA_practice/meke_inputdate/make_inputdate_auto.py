@@ -6,7 +6,7 @@ import make_inputdate_function as mif
 # difine filename
 filename = "auto_test"
 
-# patch info (パッチ番号, ξ方向のコントロールポイント個数, η方向のコントロールポイント個数)
+# patch info (ξ方向のコントロールポイント個数, η方向のコントロールポイント個数)
 patch_info = np.array([[6, 6],
                        [6, 6],
                        [6, 6],

@@ -9,7 +9,7 @@ import function_of_NURBS_alt as fn
 # igsファイルから作成したものとプログラムから作成したものpatch0
 
 # output file name
-file_name = "tokuipatch9"
+file_name = "tokuipatch4"
 
 # Define color vector
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
@@ -53,8 +53,8 @@ knot_i = knot_eta
 knot_j = knot_xi
 
 # affine transformation (for CP)
-stretch_x = 0.5
-stretch_y = 0.5
+stretch_x = 5.0
+stretch_y = 5.0
 stretch_z = 1.0
 
 trans_x = 0.0
@@ -92,7 +92,7 @@ CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
 
 # autoノットインサーション xi
 insert_parameter_axis = xi
-number_of_auto_insertion = 0
+number_of_auto_insertion = 1
 CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 

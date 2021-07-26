@@ -6,7 +6,7 @@ import make_inputdate_function as mif
 # difine filename
 filename = "tokuipatch"
 
-# patch info (パッチ番号, ξ方向のコントロールポイント個数, η方向のコントロールポイント個数)
+# patch info (ξ方向のコントロールポイント個数, η方向のコントロールポイント個数)
 patch_info = np.array([[3, 3],
                        [3, 3],
                        [3, 3],
@@ -313,7 +313,11 @@ globalpoint, globalpoint_bool, globalpoint_x, globalpoint_y, globalpoint_w, loca
 # 座標，パッチコネクティビティー，境界の辺をtxt出力
 # [patch_number, xi_or_eta, 0_or_1(int)] (auto marge)
 boundary_array_0 = np.array([[0, eta, 0],
-                             [4, eta, 0]])
+                             [4, eta, 0],
+                             [0,  xi, 0],
+                             [1,  xi, 0],
+                             [2,  xi, 0],
+                             [3,  xi, 0]])
 
 boundary_array_1 = np.array([[8,  xi, 0],
                              [9,  xi, 0]])
