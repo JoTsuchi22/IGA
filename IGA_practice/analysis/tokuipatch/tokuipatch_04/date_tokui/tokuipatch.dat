@@ -1,0 +1,514 @@
+E:2.060000e+05 nu:3.000000e-01
+No_Patch:10
+Total_Control_Point:240
+Order[0][0]=2
+Order[0][1]=2
+Order[1][0]=2
+Order[1][1]=2
+Order[2][0]=2
+Order[2][1]=2
+Order[3][0]=2
+Order[3][1]=2
+Order[4][0]=2
+Order[4][1]=2
+Order[5][0]=2
+Order[5][1]=2
+Order[6][0]=2
+Order[6][1]=2
+Order[7][0]=2
+Order[7][1]=2
+Order[8][0]=2
+Order[8][1]=2
+Order[9][0]=2
+Order[9][1]=2
+No_knot[0][0]=6
+No_knot[0][1]=6
+No_knot[1][0]=6
+No_knot[1][1]=6
+No_knot[2][0]=6
+No_knot[2][1]=6
+No_knot[3][0]=6
+No_knot[3][1]=6
+No_knot[4][0]=13
+No_knot[4][1]=6
+No_knot[5][0]=13
+No_knot[5][1]=13
+No_knot[6][0]=6
+No_knot[6][1]=13
+No_knot[7][0]=6
+No_knot[7][1]=13
+No_knot[8][0]=9
+No_knot[8][1]=13
+No_knot[9][0]=9
+No_knot[9][1]=6
+No_Control_point[0][0]:3
+No_Control_point[0][1]:3
+No_Control_point[1][0]:3
+No_Control_point[1][1]:3
+No_Control_point[2][0]:3
+No_Control_point[2][1]:3
+No_Control_point[3][0]:3
+No_Control_point[3][1]:3
+No_Control_point[4][0]:10
+No_Control_point[4][1]:3
+No_Control_point[5][0]:10
+No_Control_point[5][1]:10
+No_Control_point[6][0]:3
+No_Control_point[6][1]:10
+No_Control_point[7][0]:3
+No_Control_point[7][1]:10
+No_Control_point[8][0]:6
+No_Control_point[8][1]:10
+No_Control_point[9][0]:6
+No_Control_point[9][1]:3
+No_Controlpoint_in_patch[0]:9	No_Controlpoint_in_patch[1]:9	No_Controlpoint_in_patch[2]:9	No_Controlpoint_in_patch[3]:9	No_Controlpoint_in_patch[4]:30	No_Controlpoint_in_patch[5]:100	No_Controlpoint_in_patch[6]:30	No_Controlpoint_in_patch[7]:30	No_Controlpoint_in_patch[8]:60	No_Controlpoint_in_patch[9]:18	
+Total_Constraint;32
+Total_Load;0
+Total_DistributedForce;4
+Total_Element=128
+Constraint_Node_Dir[0][0]= 0 Constraint_Node_Dir[0][1]=1 Value_of_Constraint[0]= 0.000000e+00 
+Constraint_Node_Dir[1][0]= 1 Constraint_Node_Dir[1][1]=1 Value_of_Constraint[1]= 0.000000e+00 
+Constraint_Node_Dir[2][0]= 2 Constraint_Node_Dir[2][1]=1 Value_of_Constraint[2]= 0.000000e+00 
+Constraint_Node_Dir[3][0]= 3 Constraint_Node_Dir[3][1]=1 Value_of_Constraint[3]= 0.000000e+00 
+Constraint_Node_Dir[4][0]= 6 Constraint_Node_Dir[4][1]=1 Value_of_Constraint[4]= 0.000000e+00 
+Constraint_Node_Dir[5][0]= 9 Constraint_Node_Dir[5][1]=1 Value_of_Constraint[5]= 0.000000e+00 
+Constraint_Node_Dir[6][0]= 12 Constraint_Node_Dir[6][1]=1 Value_of_Constraint[6]= 0.000000e+00 
+Constraint_Node_Dir[7][0]= 15 Constraint_Node_Dir[7][1]=1 Value_of_Constraint[7]= 0.000000e+00 
+Constraint_Node_Dir[8][0]= 18 Constraint_Node_Dir[8][1]=1 Value_of_Constraint[8]= 0.000000e+00 
+Constraint_Node_Dir[9][0]= 21 Constraint_Node_Dir[9][1]=1 Value_of_Constraint[9]= 0.000000e+00 
+Constraint_Node_Dir[10][0]= 24 Constraint_Node_Dir[10][1]=1 Value_of_Constraint[10]= 0.000000e+00 
+Constraint_Node_Dir[11][0]= 27 Constraint_Node_Dir[11][1]=1 Value_of_Constraint[11]= 0.000000e+00 
+Constraint_Node_Dir[12][0]= 28 Constraint_Node_Dir[12][1]=1 Value_of_Constraint[12]= 0.000000e+00 
+Constraint_Node_Dir[13][0]= 29 Constraint_Node_Dir[13][1]=1 Value_of_Constraint[13]= 0.000000e+00 
+Constraint_Node_Dir[14][0]= 30 Constraint_Node_Dir[14][1]=1 Value_of_Constraint[14]= 0.000000e+00 
+Constraint_Node_Dir[15][0]= 31 Constraint_Node_Dir[15][1]=1 Value_of_Constraint[15]= 0.000000e+00 
+Constraint_Node_Dir[16][0]= 32 Constraint_Node_Dir[16][1]=1 Value_of_Constraint[16]= 0.000000e+00 
+Constraint_Node_Dir[17][0]= 33 Constraint_Node_Dir[17][1]=1 Value_of_Constraint[17]= 0.000000e+00 
+Constraint_Node_Dir[18][0]= 34 Constraint_Node_Dir[18][1]=1 Value_of_Constraint[18]= 0.000000e+00 
+Constraint_Node_Dir[19][0]= 35 Constraint_Node_Dir[19][1]=1 Value_of_Constraint[19]= 0.000000e+00 
+Constraint_Node_Dir[20][0]= 180 Constraint_Node_Dir[20][1]=0 Value_of_Constraint[20]= 0.000000e+00 
+Constraint_Node_Dir[21][0]= 185 Constraint_Node_Dir[21][1]=0 Value_of_Constraint[21]= 0.000000e+00 
+Constraint_Node_Dir[22][0]= 190 Constraint_Node_Dir[22][1]=0 Value_of_Constraint[22]= 0.000000e+00 
+Constraint_Node_Dir[23][0]= 195 Constraint_Node_Dir[23][1]=0 Value_of_Constraint[23]= 0.000000e+00 
+Constraint_Node_Dir[24][0]= 200 Constraint_Node_Dir[24][1]=0 Value_of_Constraint[24]= 0.000000e+00 
+Constraint_Node_Dir[25][0]= 205 Constraint_Node_Dir[25][1]=0 Value_of_Constraint[25]= 0.000000e+00 
+Constraint_Node_Dir[26][0]= 210 Constraint_Node_Dir[26][1]=0 Value_of_Constraint[26]= 0.000000e+00 
+Constraint_Node_Dir[27][0]= 215 Constraint_Node_Dir[27][1]=0 Value_of_Constraint[27]= 0.000000e+00 
+Constraint_Node_Dir[28][0]= 220 Constraint_Node_Dir[28][1]=0 Value_of_Constraint[28]= 0.000000e+00 
+Constraint_Node_Dir[29][0]= 225 Constraint_Node_Dir[29][1]=0 Value_of_Constraint[29]= 0.000000e+00 
+Constraint_Node_Dir[30][0]= 230 Constraint_Node_Dir[30][1]=0 Value_of_Constraint[30]= 0.000000e+00 
+Constraint_Node_Dir[31][0]= 235 Constraint_Node_Dir[31][1]=0 Value_of_Constraint[31]= 0.000000e+00 
+Distibuted load nober: 0
+type_load: 1  iPatch: 5 iCoord: 0  val_Coord:   1.0000000e+00  Range_Coord:   0.0000000e+00    1.0000000e+00
+ Coef_Dist_Load:   1.0000000e+01   0.0000000e+00   0.0000000e+00
+Distibuted load nober: 1
+type_load: 1  iPatch: 6 iCoord: 0  val_Coord:   1.0000000e+00  Range_Coord:   0.0000000e+00    1.0000000e+00
+ Coef_Dist_Load:   1.0000000e+01   0.0000000e+00   0.0000000e+00
+Distibuted load nober: 2
+type_load: 1  iPatch: 7 iCoord: 0  val_Coord:   1.0000000e+00  Range_Coord:   0.0000000e+00    1.0000000e+00
+ Coef_Dist_Load:   1.0000000e+01   0.0000000e+00   0.0000000e+00
+Distibuted load nober: 3
+type_load: 1  iPatch: 8 iCoord: 0  val_Coord:   1.0000000e+00  Range_Coord:   0.0000000e+00    1.0000000e+00
+ Coef_Dist_Load:   1.0000000e+01   0.0000000e+00   0.0000000e+00
+line_No_real_element[0][0]:1
+line_No_real_element[1][0]:1
+line_No_real_element[2][0]:1
+line_No_real_element[3][0]:1
+line_No_real_element[4][0]:8
+line_No_real_element[5][0]:8
+line_No_real_element[6][0]:1
+line_No_real_element[7][0]:1
+line_No_real_element[8][0]:4
+line_No_real_element[9][0]:4
+line_No_real_element[0][1]:1
+line_No_real_element[1][1]:1
+line_No_real_element[2][1]:1
+line_No_real_element[3][1]:1
+line_No_real_element[4][1]:1
+line_No_real_element[5][1]:8
+line_No_real_element[6][1]:8
+line_No_real_element[7][1]:8
+line_No_real_element[8][1]:8
+line_No_real_element[9][1]:1
+real_Total_Element:128
+Finish Get_InputData
+Total Element=128 Node=240 Constraint=32 Load=0
+E;2.060000e+05 nu;3.000000e-01
+Max_Index_Dof=448
+El_No:0 J_test=1.237500e-02
+El_No:1 J_test=1.237500e-02
+El_No:2 J_test=1.237500e-02
+El_No:3 J_test=1.237500e-02
+El_No:4 J_test=2.503125e-01
+El_No:5 J_test=2.503125e-01
+El_No:6 J_test=2.503125e-01
+El_No:7 J_test=2.503125e-01
+El_No:8 J_test=2.503125e-01
+El_No:9 J_test=2.503125e-01
+El_No:10 J_test=2.503125e-01
+El_No:11 J_test=2.503125e-01
+El_No:12 J_test=3.097617e+00
+El_No:13 J_test=3.097617e+00
+El_No:14 J_test=3.097617e+00
+El_No:15 J_test=3.097617e+00
+El_No:16 J_test=3.097617e+00
+El_No:17 J_test=3.097617e+00
+El_No:18 J_test=3.097617e+00
+El_No:19 J_test=3.097617e+00
+El_No:20 J_test=3.097617e+00
+El_No:21 J_test=3.097617e+00
+El_No:22 J_test=3.097617e+00
+El_No:23 J_test=3.097617e+00
+El_No:24 J_test=3.097617e+00
+El_No:25 J_test=3.097617e+00
+El_No:26 J_test=3.097617e+00
+El_No:27 J_test=3.097617e+00
+El_No:28 J_test=3.097617e+00
+El_No:29 J_test=3.097617e+00
+El_No:30 J_test=3.097617e+00
+El_No:31 J_test=3.097617e+00
+El_No:32 J_test=3.097617e+00
+El_No:33 J_test=3.097617e+00
+El_No:34 J_test=3.097617e+00
+El_No:35 J_test=3.097617e+00
+El_No:36 J_test=3.097617e+00
+El_No:37 J_test=3.097617e+00
+El_No:38 J_test=3.097617e+00
+El_No:39 J_test=3.097617e+00
+El_No:40 J_test=3.097617e+00
+El_No:41 J_test=3.097617e+00
+El_No:42 J_test=3.097617e+00
+El_No:43 J_test=3.097617e+00
+El_No:44 J_test=3.097617e+00
+El_No:45 J_test=3.097617e+00
+El_No:46 J_test=3.097617e+00
+El_No:47 J_test=3.097617e+00
+El_No:48 J_test=3.097617e+00
+El_No:49 J_test=3.097617e+00
+El_No:50 J_test=3.097617e+00
+El_No:51 J_test=3.097617e+00
+El_No:52 J_test=3.097617e+00
+El_No:53 J_test=3.097617e+00
+El_No:54 J_test=3.097617e+00
+El_No:55 J_test=3.097617e+00
+El_No:56 J_test=3.097617e+00
+El_No:57 J_test=3.097617e+00
+El_No:58 J_test=3.097617e+00
+El_No:59 J_test=3.097617e+00
+El_No:60 J_test=3.097617e+00
+El_No:61 J_test=3.097617e+00
+El_No:62 J_test=3.097617e+00
+El_No:63 J_test=3.097617e+00
+El_No:64 J_test=3.097617e+00
+El_No:65 J_test=3.097617e+00
+El_No:66 J_test=3.097617e+00
+El_No:67 J_test=3.097617e+00
+El_No:68 J_test=3.097617e+00
+El_No:69 J_test=3.097617e+00
+El_No:70 J_test=3.097617e+00
+El_No:71 J_test=3.097617e+00
+El_No:72 J_test=3.097617e+00
+El_No:73 J_test=3.097617e+00
+El_No:74 J_test=3.097617e+00
+El_No:75 J_test=3.097617e+00
+El_No:76 J_test=2.784375e-01
+El_No:77 J_test=2.784375e-01
+El_No:78 J_test=2.784375e-01
+El_No:79 J_test=2.784375e-01
+El_No:80 J_test=2.784375e-01
+El_No:81 J_test=2.784375e-01
+El_No:82 J_test=2.784375e-01
+El_No:83 J_test=2.784375e-01
+El_No:84 J_test=2.784375e-01
+El_No:85 J_test=2.784375e-01
+El_No:86 J_test=2.784375e-01
+El_No:87 J_test=2.784375e-01
+El_No:88 J_test=2.784375e-01
+El_No:89 J_test=2.784375e-01
+El_No:90 J_test=2.784375e-01
+El_No:91 J_test=2.784375e-01
+El_No:92 J_test=6.264844e-01
+El_No:93 J_test=6.264844e-01
+El_No:94 J_test=6.264844e-01
+El_No:95 J_test=6.264844e-01
+El_No:96 J_test=6.264844e-01
+El_No:97 J_test=6.264844e-01
+El_No:98 J_test=6.264844e-01
+El_No:99 J_test=6.264844e-01
+El_No:100 J_test=6.264844e-01
+El_No:101 J_test=6.264844e-01
+El_No:102 J_test=6.264844e-01
+El_No:103 J_test=6.264844e-01
+El_No:104 J_test=6.264844e-01
+El_No:105 J_test=6.264844e-01
+El_No:106 J_test=6.264844e-01
+El_No:107 J_test=6.264844e-01
+El_No:108 J_test=6.264844e-01
+El_No:109 J_test=6.264844e-01
+El_No:110 J_test=6.264844e-01
+El_No:111 J_test=6.264844e-01
+El_No:112 J_test=6.264844e-01
+El_No:113 J_test=6.264844e-01
+El_No:114 J_test=6.264844e-01
+El_No:115 J_test=6.264844e-01
+El_No:116 J_test=6.264844e-01
+El_No:117 J_test=6.264844e-01
+El_No:118 J_test=6.264844e-01
+El_No:119 J_test=6.264844e-01
+El_No:120 J_test=6.264844e-01
+El_No:121 J_test=6.264844e-01
+El_No:122 J_test=6.264844e-01
+El_No:123 J_test=6.264844e-01
+El_No:124 J_test=5.062500e-02
+El_No:125 J_test=5.062500e-02
+El_No:126 J_test=5.062500e-02
+El_No:127 J_test=5.062500e-02
+Finish Make_K_Whole
+check
+ppK_Whole_Size:448
+El_No:0 J_test=1.237500e-02
+El_No:1 J_test=1.237500e-02
+El_No:2 J_test=1.237500e-02
+El_No:3 J_test=1.237500e-02
+El_No:4 J_test=2.503125e-01
+El_No:5 J_test=2.503125e-01
+El_No:6 J_test=2.503125e-01
+El_No:7 J_test=2.503125e-01
+El_No:8 J_test=2.503125e-01
+El_No:9 J_test=2.503125e-01
+El_No:10 J_test=2.503125e-01
+El_No:11 J_test=2.503125e-01
+El_No:92 J_test=6.264844e-01
+El_No:96 J_test=6.264844e-01
+El_No:100 J_test=6.264844e-01
+El_No:104 J_test=6.264844e-01
+El_No:108 J_test=6.264844e-01
+El_No:112 J_test=6.264844e-01
+El_No:116 J_test=6.264844e-01
+El_No:120 J_test=6.264844e-01
+El_No:124 J_test=5.062500e-02
+
+qq
+
+rrndof=448 alphak=    6.246907e-01	Iteration# = 0  residual =    9.857013e-01 (   1.000000e-10)
+ndof=448 alphak=    2.065683e+00	Iteration# = 1  residual =    9.951758e-01 (   1.000000e-10)
+ndof=448 alphak=    1.891757e+00	Iteration# = 2  residual =    6.711871e-01 (   1.000000e-10)
+ndof=448 alphak=    1.288564e+00	Iteration# = 3  residual =    3.861829e-01 (   1.000000e-10)
+ndof=448 alphak=    1.223462e+00	Iteration# = 4  residual =    2.723712e-01 (   1.000000e-10)
+ndof=448 alphak=    1.145301e+00	Iteration# = 5  residual =    1.645738e-01 (   1.000000e-10)
+ndof=448 alphak=    1.016611e+00	Iteration# = 6  residual =    9.793455e-02 (   1.000000e-10)
+ndof=448 alphak=    1.225238e+00	Iteration# = 7  residual =    9.689920e-02 (   1.000000e-10)
+ndof=448 alphak=    1.445669e+00	Iteration# = 8  residual =    1.079780e-01 (   1.000000e-10)
+ndof=448 alphak=    1.095299e+00	Iteration# = 9  residual =    7.198297e-02 (   1.000000e-10)
+ndof=448 alphak=    1.019330e+00	Iteration# = 10  residual =    4.645195e-02 (   1.000000e-10)
+ndof=448 alphak=    1.747148e+00	Iteration# = 11  residual =    1.106780e-01 (   1.000000e-10)
+ndof=448 alphak=    1.257964e+00	Iteration# = 12  residual =    8.277849e-02 (   1.000000e-10)
+ndof=448 alphak=    1.197261e+00	Iteration# = 13  residual =    8.018455e-02 (   1.000000e-10)
+ndof=448 alphak=    1.032053e+00	Iteration# = 14  residual =    5.125403e-02 (   1.000000e-10)
+ndof=448 alphak=    1.049562e+00	Iteration# = 15  residual =    5.100893e-02 (   1.000000e-10)
+ndof=448 alphak=    1.003662e+00	Iteration# = 16  residual =    5.753402e-02 (   1.000000e-10)
+ndof=448 alphak=    9.595219e-01	Iteration# = 17  residual =    5.093645e-02 (   1.000000e-10)
+ndof=448 alphak=    1.297837e+00	Iteration# = 18  residual =    6.552493e-02 (   1.000000e-10)
+ndof=448 alphak=    9.855228e-01	Iteration# = 19  residual =    2.877837e-02 (   1.000000e-10)
+ndof=448 alphak=    1.266432e+00	Iteration# = 20  residual =    4.390906e-02 (   1.000000e-10)
+ndof=448 alphak=    1.333963e+00	Iteration# = 21  residual =    8.172919e-02 (   1.000000e-10)
+ndof=448 alphak=    1.037982e+00	Iteration# = 22  residual =    7.314560e-02 (   1.000000e-10)
+ndof=448 alphak=    1.491268e+00	Iteration# = 23  residual =    9.782095e-02 (   1.000000e-10)
+ndof=448 alphak=    1.579354e+00	Iteration# = 24  residual =    8.941462e-02 (   1.000000e-10)
+ndof=448 alphak=    1.040049e+00	Iteration# = 25  residual =    3.556722e-02 (   1.000000e-10)
+ndof=448 alphak=    1.087481e+00	Iteration# = 26  residual =    2.241037e-02 (   1.000000e-10)
+ndof=448 alphak=    1.292848e+00	Iteration# = 27  residual =    2.360764e-02 (   1.000000e-10)
+ndof=448 alphak=    1.365929e+00	Iteration# = 28  residual =    2.884332e-02 (   1.000000e-10)
+ndof=448 alphak=    1.211777e+00	Iteration# = 29  residual =    2.862639e-02 (   1.000000e-10)
+ndof=448 alphak=    1.380924e+00	Iteration# = 30  residual =    3.143023e-02 (   1.000000e-10)
+ndof=448 alphak=    1.602243e+00	Iteration# = 31  residual =    3.526377e-02 (   1.000000e-10)
+ndof=448 alphak=    1.680308e+00	Iteration# = 32  residual =    4.480627e-02 (   1.000000e-10)
+ndof=448 alphak=    1.357237e+00	Iteration# = 33  residual =    3.597386e-02 (   1.000000e-10)
+ndof=448 alphak=    1.381402e+00	Iteration# = 34  residual =    3.184852e-02 (   1.000000e-10)
+ndof=448 alphak=    1.268084e+00	Iteration# = 35  residual =    2.631353e-02 (   1.000000e-10)
+ndof=448 alphak=    9.921090e-01	Iteration# = 36  residual =    1.288059e-02 (   1.000000e-10)
+ndof=448 alphak=    1.198111e+00	Iteration# = 37  residual =    1.032117e-02 (   1.000000e-10)
+ndof=448 alphak=    1.008739e+00	Iteration# = 38  residual =    5.815528e-03 (   1.000000e-10)
+ndof=448 alphak=    9.772828e-01	Iteration# = 39  residual =    4.361473e-03 (   1.000000e-10)
+ndof=448 alphak=    1.405187e+00	Iteration# = 40  residual =    6.338489e-03 (   1.000000e-10)
+ndof=448 alphak=    1.431399e+00	Iteration# = 41  residual =    6.905252e-03 (   1.000000e-10)
+ndof=448 alphak=    1.410462e+00	Iteration# = 42  residual =    7.006638e-03 (   1.000000e-10)
+ndof=448 alphak=    1.389848e+00	Iteration# = 43  residual =    7.319813e-03 (   1.000000e-10)
+ndof=448 alphak=    1.395681e+00	Iteration# = 44  residual =    7.999892e-03 (   1.000000e-10)
+ndof=448 alphak=    1.113631e+00	Iteration# = 45  residual =    4.939899e-03 (   1.000000e-10)
+ndof=448 alphak=    1.394464e+00	Iteration# = 46  residual =    5.692394e-03 (   1.000000e-10)
+ndof=448 alphak=    1.223988e+00	Iteration# = 47  residual =    4.304500e-03 (   1.000000e-10)
+ndof=448 alphak=    1.110455e+00	Iteration# = 48  residual =    2.614526e-03 (   1.000000e-10)
+ndof=448 alphak=    1.401642e+00	Iteration# = 49  residual =    3.526975e-03 (   1.000000e-10)
+ndof=448 alphak=    1.522956e+00	Iteration# = 50  residual =    3.627419e-03 (   1.000000e-10)
+ndof=448 alphak=    1.279604e+00	Iteration# = 51  residual =    3.287910e-03 (   1.000000e-10)
+ndof=448 alphak=    1.470270e+00	Iteration# = 52  residual =    3.990930e-03 (   1.000000e-10)
+ndof=448 alphak=    1.300628e+00	Iteration# = 53  residual =    3.339699e-03 (   1.000000e-10)
+ndof=448 alphak=    1.147002e+00	Iteration# = 54  residual =    3.057729e-03 (   1.000000e-10)
+ndof=448 alphak=    9.870433e-01	Iteration# = 55  residual =    3.230060e-03 (   1.000000e-10)
+ndof=448 alphak=    8.196797e-01	Iteration# = 56  residual =    1.640488e-03 (   1.000000e-10)
+ndof=448 alphak=    1.225883e+00	Iteration# = 57  residual =    2.304764e-03 (   1.000000e-10)
+ndof=448 alphak=    1.320323e+00	Iteration# = 58  residual =    2.333357e-03 (   1.000000e-10)
+ndof=448 alphak=    1.435645e+00	Iteration# = 59  residual =    3.011872e-03 (   1.000000e-10)
+ndof=448 alphak=    1.415575e+00	Iteration# = 60  residual =    3.125137e-03 (   1.000000e-10)
+ndof=448 alphak=    1.087000e+00	Iteration# = 61  residual =    2.532582e-03 (   1.000000e-10)
+ndof=448 alphak=    9.010583e-01	Iteration# = 62  residual =    1.974381e-03 (   1.000000e-10)
+ndof=448 alphak=    1.026262e+00	Iteration# = 63  residual =    2.072188e-03 (   1.000000e-10)
+ndof=448 alphak=    1.172575e+00	Iteration# = 64  residual =    2.147634e-03 (   1.000000e-10)
+ndof=448 alphak=    1.270961e+00	Iteration# = 65  residual =    2.256874e-03 (   1.000000e-10)
+ndof=448 alphak=    1.461578e+00	Iteration# = 66  residual =    2.432818e-03 (   1.000000e-10)
+ndof=448 alphak=    1.385532e+00	Iteration# = 67  residual =    2.402131e-03 (   1.000000e-10)
+ndof=448 alphak=    1.353030e+00	Iteration# = 68  residual =    2.276953e-03 (   1.000000e-10)
+ndof=448 alphak=    1.357716e+00	Iteration# = 69  residual =    2.074703e-03 (   1.000000e-10)
+ndof=448 alphak=    1.515623e+00	Iteration# = 70  residual =    2.358039e-03 (   1.000000e-10)
+ndof=448 alphak=    1.508252e+00	Iteration# = 71  residual =    2.758597e-03 (   1.000000e-10)
+ndof=448 alphak=    1.411873e+00	Iteration# = 72  residual =    2.201974e-03 (   1.000000e-10)
+ndof=448 alphak=    1.191547e+00	Iteration# = 73  residual =    1.503193e-03 (   1.000000e-10)
+ndof=448 alphak=    1.429235e+00	Iteration# = 74  residual =    1.914734e-03 (   1.000000e-10)
+ndof=448 alphak=    1.593748e+00	Iteration# = 75  residual =    2.423552e-03 (   1.000000e-10)
+ndof=448 alphak=    1.284443e+00	Iteration# = 76  residual =    1.443127e-03 (   1.000000e-10)
+ndof=448 alphak=    1.245353e+00	Iteration# = 77  residual =    9.607841e-04 (   1.000000e-10)
+ndof=448 alphak=    1.247735e+00	Iteration# = 78  residual =    7.774797e-04 (   1.000000e-10)
+ndof=448 alphak=    1.090035e+00	Iteration# = 79  residual =    5.691800e-04 (   1.000000e-10)
+ndof=448 alphak=    1.502128e+00	Iteration# = 80  residual =    8.430600e-04 (   1.000000e-10)
+ndof=448 alphak=    1.362341e+00	Iteration# = 81  residual =    9.221023e-04 (   1.000000e-10)
+ndof=448 alphak=    1.069786e+00	Iteration# = 82  residual =    6.828706e-04 (   1.000000e-10)
+ndof=448 alphak=    1.329595e+00	Iteration# = 83  residual =    8.999515e-04 (   1.000000e-10)
+ndof=448 alphak=    1.113920e+00	Iteration# = 84  residual =    6.612450e-04 (   1.000000e-10)
+ndof=448 alphak=    1.330352e+00	Iteration# = 85  residual =    6.606437e-04 (   1.000000e-10)
+ndof=448 alphak=    1.240228e+00	Iteration# = 86  residual =    4.720726e-04 (   1.000000e-10)
+ndof=448 alphak=    1.369973e+00	Iteration# = 87  residual =    4.640157e-04 (   1.000000e-10)
+ndof=448 alphak=    1.113628e+00	Iteration# = 88  residual =    2.586389e-04 (   1.000000e-10)
+ndof=448 alphak=    1.156492e+00	Iteration# = 89  residual =    1.972879e-04 (   1.000000e-10)
+ndof=448 alphak=    1.191501e+00	Iteration# = 90  residual =    1.562151e-04 (   1.000000e-10)
+ndof=448 alphak=    1.341827e+00	Iteration# = 91  residual =    1.856511e-04 (   1.000000e-10)
+ndof=448 alphak=    1.194389e+00	Iteration# = 92  residual =    2.174511e-04 (   1.000000e-10)
+ndof=448 alphak=    8.144523e-01	Iteration# = 93  residual =    1.421404e-04 (   1.000000e-10)
+ndof=448 alphak=    1.023462e+00	Iteration# = 94  residual =    1.323796e-04 (   1.000000e-10)
+ndof=448 alphak=    1.321303e+00	Iteration# = 95  residual =    1.616917e-04 (   1.000000e-10)
+ndof=448 alphak=    1.320844e+00	Iteration# = 96  residual =    1.461677e-04 (   1.000000e-10)
+ndof=448 alphak=    1.230555e+00	Iteration# = 97  residual =    1.082217e-04 (   1.000000e-10)
+ndof=448 alphak=    1.445344e+00	Iteration# = 98  residual =    1.094076e-04 (   1.000000e-10)
+ndof=448 alphak=    1.192778e+00	Iteration# = 99  residual =    7.685091e-05 (   1.000000e-10)
+ndof=448 alphak=    1.206382e+00	Iteration# = 100  residual =    8.512144e-05 (   1.000000e-10)
+ndof=448 alphak=    7.773802e-01	Iteration# = 101  residual =    5.010939e-05 (   1.000000e-10)
+ndof=448 alphak=    1.090251e+00	Iteration# = 102  residual =    5.878489e-05 (   1.000000e-10)
+ndof=448 alphak=    1.174950e+00	Iteration# = 103  residual =    5.591224e-05 (   1.000000e-10)
+ndof=448 alphak=    1.371169e+00	Iteration# = 104  residual =    6.074511e-05 (   1.000000e-10)
+ndof=448 alphak=    1.472921e+00	Iteration# = 105  residual =    6.672461e-05 (   1.000000e-10)
+ndof=448 alphak=    1.527623e+00	Iteration# = 106  residual =    7.453590e-05 (   1.000000e-10)
+ndof=448 alphak=    1.396329e+00	Iteration# = 107  residual =    6.256220e-05 (   1.000000e-10)
+ndof=448 alphak=    1.084859e+00	Iteration# = 108  residual =    3.158067e-05 (   1.000000e-10)
+ndof=448 alphak=    1.023247e+00	Iteration# = 109  residual =    2.157932e-05 (   1.000000e-10)
+ndof=448 alphak=    1.028899e+00	Iteration# = 110  residual =    1.780551e-05 (   1.000000e-10)
+ndof=448 alphak=    1.181975e+00	Iteration# = 111  residual =    1.953799e-05 (   1.000000e-10)
+ndof=448 alphak=    1.397952e+00	Iteration# = 112  residual =    2.671451e-05 (   1.000000e-10)
+ndof=448 alphak=    1.282532e+00	Iteration# = 113  residual =    2.407197e-05 (   1.000000e-10)
+ndof=448 alphak=    1.316255e+00	Iteration# = 114  residual =    2.229522e-05 (   1.000000e-10)
+ndof=448 alphak=    1.416064e+00	Iteration# = 115  residual =    1.964496e-05 (   1.000000e-10)
+ndof=448 alphak=    1.372608e+00	Iteration# = 116  residual =    1.916891e-05 (   1.000000e-10)
+ndof=448 alphak=    1.349701e+00	Iteration# = 117  residual =    1.668133e-05 (   1.000000e-10)
+ndof=448 alphak=    1.356781e+00	Iteration# = 118  residual =    1.398754e-05 (   1.000000e-10)
+ndof=448 alphak=    1.494175e+00	Iteration# = 119  residual =    1.372959e-05 (   1.000000e-10)
+ndof=448 alphak=    1.047567e+00	Iteration# = 120  residual =    7.064082e-06 (   1.000000e-10)
+ndof=448 alphak=    1.269350e+00	Iteration# = 121  residual =    6.805960e-06 (   1.000000e-10)
+ndof=448 alphak=    1.201503e+00	Iteration# = 122  residual =    5.494528e-06 (   1.000000e-10)
+ndof=448 alphak=    1.357604e+00	Iteration# = 123  residual =    6.733389e-06 (   1.000000e-10)
+ndof=448 alphak=    1.354798e+00	Iteration# = 124  residual =    6.178851e-06 (   1.000000e-10)
+ndof=448 alphak=    1.303626e+00	Iteration# = 125  residual =    4.683361e-06 (   1.000000e-10)
+ndof=448 alphak=    1.221228e+00	Iteration# = 126  residual =    3.672614e-06 (   1.000000e-10)
+ndof=448 alphak=    1.043516e+00	Iteration# = 127  residual =    2.933073e-06 (   1.000000e-10)
+ndof=448 alphak=    1.094560e+00	Iteration# = 128  residual =    2.536320e-06 (   1.000000e-10)
+ndof=448 alphak=    1.019216e+00	Iteration# = 129  residual =    2.465972e-06 (   1.000000e-10)
+ndof=448 alphak=    8.689151e-01	Iteration# = 130  residual =    2.161698e-06 (   1.000000e-10)
+ndof=448 alphak=    9.311308e-01	Iteration# = 131  residual =    1.774420e-06 (   1.000000e-10)
+ndof=448 alphak=    1.120040e+00	Iteration# = 132  residual =    1.469964e-06 (   1.000000e-10)
+ndof=448 alphak=    1.146770e+00	Iteration# = 133  residual =    1.080961e-06 (   1.000000e-10)
+ndof=448 alphak=    1.140153e+00	Iteration# = 134  residual =    8.203792e-07 (   1.000000e-10)
+ndof=448 alphak=    1.114677e+00	Iteration# = 135  residual =    5.777232e-07 (   1.000000e-10)
+ndof=448 alphak=    1.575126e+00	Iteration# = 136  residual =    1.046475e-06 (   1.000000e-10)
+ndof=448 alphak=    1.301657e+00	Iteration# = 137  residual =    1.044516e-06 (   1.000000e-10)
+ndof=448 alphak=    1.095526e+00	Iteration# = 138  residual =    7.738919e-07 (   1.000000e-10)
+ndof=448 alphak=    1.115558e+00	Iteration# = 139  residual =    6.585781e-07 (   1.000000e-10)
+ndof=448 alphak=    1.124941e+00	Iteration# = 140  residual =    7.128509e-07 (   1.000000e-10)
+ndof=448 alphak=    7.416366e-01	Iteration# = 141  residual =    3.732196e-07 (   1.000000e-10)
+ndof=448 alphak=    1.159591e+00	Iteration# = 142  residual =    5.347045e-07 (   1.000000e-10)
+ndof=448 alphak=    1.452787e+00	Iteration# = 143  residual =    6.585733e-07 (   1.000000e-10)
+ndof=448 alphak=    1.147169e+00	Iteration# = 144  residual =    4.339425e-07 (   1.000000e-10)
+ndof=448 alphak=    1.112296e+00	Iteration# = 145  residual =    3.334207e-07 (   1.000000e-10)
+ndof=448 alphak=    1.208831e+00	Iteration# = 146  residual =    2.910530e-07 (   1.000000e-10)
+ndof=448 alphak=    1.377303e+00	Iteration# = 147  residual =    4.051982e-07 (   1.000000e-10)
+ndof=448 alphak=    9.359905e-01	Iteration# = 148  residual =    2.283181e-07 (   1.000000e-10)
+ndof=448 alphak=    1.062005e+00	Iteration# = 149  residual =    1.620966e-07 (   1.000000e-10)
+ndof=448 alphak=    1.458899e+00	Iteration# = 150  residual =    1.862295e-07 (   1.000000e-10)
+ndof=448 alphak=    1.207681e+00	Iteration# = 151  residual =    1.377427e-07 (   1.000000e-10)
+ndof=448 alphak=    1.140851e+00	Iteration# = 152  residual =    1.256519e-07 (   1.000000e-10)
+ndof=448 alphak=    1.190272e+00	Iteration# = 153  residual =    1.169481e-07 (   1.000000e-10)
+ndof=448 alphak=    1.247984e+00	Iteration# = 154  residual =    1.087169e-07 (   1.000000e-10)
+ndof=448 alphak=    1.230139e+00	Iteration# = 155  residual =    8.789335e-08 (   1.000000e-10)
+ndof=448 alphak=    1.193482e+00	Iteration# = 156  residual =    6.676392e-08 (   1.000000e-10)
+ndof=448 alphak=    1.243385e+00	Iteration# = 157  residual =    5.467031e-08 (   1.000000e-10)
+ndof=448 alphak=    1.181808e+00	Iteration# = 158  residual =    4.408502e-08 (   1.000000e-10)
+ndof=448 alphak=    1.549485e+00	Iteration# = 159  residual =    6.418274e-08 (   1.000000e-10)
+ndof=448 alphak=    1.703365e+00	Iteration# = 160  residual =    8.428581e-08 (   1.000000e-10)
+ndof=448 alphak=    1.618346e+00	Iteration# = 161  residual =    8.376341e-08 (   1.000000e-10)
+ndof=448 alphak=    1.687592e+00	Iteration# = 162  residual =    1.009626e-07 (   1.000000e-10)
+ndof=448 alphak=    1.205234e+00	Iteration# = 163  residual =    7.042533e-08 (   1.000000e-10)
+ndof=448 alphak=    1.124325e+00	Iteration# = 164  residual =    5.426575e-08 (   1.000000e-10)
+ndof=448 alphak=    1.202336e+00	Iteration# = 165  residual =    3.718088e-08 (   1.000000e-10)
+ndof=448 alphak=    1.285829e+00	Iteration# = 166  residual =    3.629446e-08 (   1.000000e-10)
+ndof=448 alphak=    8.876405e-01	Iteration# = 167  residual =    2.910557e-08 (   1.000000e-10)
+ndof=448 alphak=    7.819905e-01	Iteration# = 168  residual =    1.525265e-08 (   1.000000e-10)
+ndof=448 alphak=    1.294626e+00	Iteration# = 169  residual =    1.912582e-08 (   1.000000e-10)
+ndof=448 alphak=    1.317914e+00	Iteration# = 170  residual =    1.466870e-08 (   1.000000e-10)
+ndof=448 alphak=    1.391691e+00	Iteration# = 171  residual =    1.282322e-08 (   1.000000e-10)
+ndof=448 alphak=    1.364959e+00	Iteration# = 172  residual =    9.482006e-09 (   1.000000e-10)
+ndof=448 alphak=    1.542244e+00	Iteration# = 173  residual =    7.951923e-09 (   1.000000e-10)
+ndof=448 alphak=    1.499834e+00	Iteration# = 174  residual =    8.131858e-09 (   1.000000e-10)
+ndof=448 alphak=    1.000484e+00	Iteration# = 175  residual =    4.948364e-09 (   1.000000e-10)
+ndof=448 alphak=    1.177602e+00	Iteration# = 176  residual =    5.408773e-09 (   1.000000e-10)
+ndof=448 alphak=    1.444507e+00	Iteration# = 177  residual =    5.255811e-09 (   1.000000e-10)
+ndof=448 alphak=    1.788372e+00	Iteration# = 178  residual =    7.438913e-09 (   1.000000e-10)
+ndof=448 alphak=    8.967480e-01	Iteration# = 179  residual =    4.030484e-09 (   1.000000e-10)
+ndof=448 alphak=    7.632633e-01	Iteration# = 180  residual =    2.252043e-09 (   1.000000e-10)
+ndof=448 alphak=    1.559822e+00	Iteration# = 181  residual =    5.041086e-09 (   1.000000e-10)
+ndof=448 alphak=    1.778459e+00	Iteration# = 182  residual =    6.706344e-09 (   1.000000e-10)
+ndof=448 alphak=    1.766301e+00	Iteration# = 183  residual =    8.856087e-09 (   1.000000e-10)
+ndof=448 alphak=    1.149479e+00	Iteration# = 184  residual =    5.113063e-09 (   1.000000e-10)
+ndof=448 alphak=    1.095593e+00	Iteration# = 185  residual =    3.720115e-09 (   1.000000e-10)
+ndof=448 alphak=    1.193229e+00	Iteration# = 186  residual =    2.710440e-09 (   1.000000e-10)
+ndof=448 alphak=    1.291120e+00	Iteration# = 187  residual =    2.037088e-09 (   1.000000e-10)
+ndof=448 alphak=    1.274593e+00	Iteration# = 188  residual =    1.437039e-09 (   1.000000e-10)
+ndof=448 alphak=    1.389577e+00	Iteration# = 189  residual =    1.223768e-09 (   1.000000e-10)
+ndof=448 alphak=    1.683906e+00	Iteration# = 190  residual =    1.192079e-09 (   1.000000e-10)
+ndof=448 alphak=    1.730998e+00	Iteration# = 191  residual =    1.380678e-09 (   1.000000e-10)
+ndof=448 alphak=    1.629026e+00	Iteration# = 192  residual =    1.808960e-09 (   1.000000e-10)
+ndof=448 alphak=    9.957865e-01	Iteration# = 193  residual =    1.012152e-09 (   1.000000e-10)
+ndof=448 alphak=    1.155204e+00	Iteration# = 194  residual =    8.488253e-10 (   1.000000e-10)
+ndof=448 alphak=    1.397501e+00	Iteration# = 195  residual =    7.077291e-10 (   1.000000e-10)
+ndof=448 alphak=    1.307195e+00	Iteration# = 196  residual =    5.970797e-10 (   1.000000e-10)
+ndof=448 alphak=    1.178667e+00	Iteration# = 197  residual =    4.876577e-10 (   1.000000e-10)
+ndof=448 alphak=    1.039866e+00	Iteration# = 198  residual =    4.880512e-10 (   1.000000e-10)
+ndof=448 alphak=    1.175175e+00	Iteration# = 199  residual =    5.529364e-10 (   1.000000e-10)
+ndof=448 alphak=    1.532817e+00	Iteration# = 200  residual =    1.041977e-09 (   1.000000e-10)
+ndof=448 alphak=    8.617964e-01	Iteration# = 201  residual =    6.624857e-10 (   1.000000e-10)
+ndof=448 alphak=    9.817706e-01	Iteration# = 202  residual =    5.350250e-10 (   1.000000e-10)
+ndof=448 alphak=    1.330768e+00	Iteration# = 203  residual =    5.504644e-10 (   1.000000e-10)
+ndof=448 alphak=    1.238176e+00	Iteration# = 204  residual =    4.487717e-10 (   1.000000e-10)
+ndof=448 alphak=    8.865521e-01	Iteration# = 205  residual =    1.871829e-10 (   1.000000e-10)
+ndof=448 alphak=    1.263256e+00	Iteration# = 206  residual =    1.532890e-10 (   1.000000e-10)
+ndof=448 alphak=    1.409792e+00	Iteration# = 207  residual =    1.319899e-10 (   1.000000e-10)
+ndof=448 alphak=    1.508530e+00	Iteration# = 208  residual =    1.011237e-10 (   1.000000e-10)
+ndof=448 alphak=    1.590144e+00	Iteration# = 209  residual =    1.110406e-10 (   1.000000e-10)
+ndof=448 alphak=    1.062747e+00	Iteration# = 210  residual =    6.519805e-11 (   1.000000e-10)
+
+ss
+qq
+Finish CG_Solver
+Finish Make_Displacement
+0.44秒かかりました
+Finish Make_Strain
+Finish Make_Stress
+Finish Make_ReactionForce
+sol_vec
+Finish Make_Parameter_z
