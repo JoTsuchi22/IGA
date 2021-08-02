@@ -1,0 +1,686 @@
+s-IGA carried out.(1 local meshes)
+E:1.000000e+03 nu:0.000000e+00
+No_Patch:1
+Total_Patch_to_mesh[0]=0
+Total_Patch_to_Now=0
+Total_Control_Point:9
+Total_Control_Point_to_mesh[0]=0
+Total_Control_Point_to_mesh[1]=9
+Total_Control_Point_to_Now=0
+Order[0][0]=2
+Order[0][1]=2
+No_knot[0][0]=6
+No_knot[0][1]=6
+No_Control_point[0][0]:3
+No_Control_point[0][1]:3
+No_Controlpoint_in_patch[0]:9	
+Total_Constraint;6
+Total_Constraint_on_mesh[0];6
+Total_Constraint_to_mesh[0];0
+Total_Load;3
+Total_DistributedForce;0
+0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	1.000000e+00	1.000000e+00	
+0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	1.000000e+00	1.000000e+00	
+Total_Element=1
+Total_Element_on_mesh[0]=1
+Total_Element_to_Now=0
+No_Control_point_ON_ELEMENT[0]=9
+Node_Coordinate[0][0]=-3.000000e+00
+Node_Coordinate[0][1]=-3.000000e+00
+Node_Coordinate[0][2]=1.000000e+00
+Node_Coordinate[1][0]=0.000000e+00
+Node_Coordinate[1][1]=-3.000000e+00
+Node_Coordinate[1][2]=1.000000e+00
+Node_Coordinate[2][0]=3.000000e+00
+Node_Coordinate[2][1]=-3.000000e+00
+Node_Coordinate[2][2]=1.000000e+00
+Node_Coordinate[3][0]=-3.000000e+00
+Node_Coordinate[3][1]=0.000000e+00
+Node_Coordinate[3][2]=1.000000e+00
+Node_Coordinate[4][0]=0.000000e+00
+Node_Coordinate[4][1]=0.000000e+00
+Node_Coordinate[4][2]=1.000000e+00
+Node_Coordinate[5][0]=3.000000e+00
+Node_Coordinate[5][1]=0.000000e+00
+Node_Coordinate[5][2]=1.000000e+00
+Node_Coordinate[6][0]=-3.000000e+00
+Node_Coordinate[6][1]=3.000000e+00
+Node_Coordinate[6][2]=1.000000e+00
+Node_Coordinate[7][0]=0.000000e+00
+Node_Coordinate[7][1]=3.000000e+00
+Node_Coordinate[7][2]=1.000000e+00
+Node_Coordinate[8][0]=3.000000e+00
+Node_Coordinate[8][1]=3.000000e+00
+Node_Coordinate[8][2]=1.000000e+00
+Constraint_Node_Dir[0][0]= 0 Constraint_Node_Dir[0][1]=1 Value_of_Constraint[0]= 0.000000e+00 
+Constraint_Node_Dir[1][0]= 1 Constraint_Node_Dir[1][1]=1 Value_of_Constraint[1]= 0.000000e+00 
+Constraint_Node_Dir[2][0]= 2 Constraint_Node_Dir[2][1]=1 Value_of_Constraint[2]= 0.000000e+00 
+Constraint_Node_Dir[3][0]= 0 Constraint_Node_Dir[3][1]=0 Value_of_Constraint[3]= 0.000000e+00 
+Constraint_Node_Dir[4][0]= 3 Constraint_Node_Dir[4][1]=0 Value_of_Constraint[4]= 0.000000e+00 
+Constraint_Node_Dir[5][0]= 6 Constraint_Node_Dir[5][1]=0 Value_of_Constraint[5]= 0.000000e+00 
+Load_Node_Dir[0][0]= 6 Load_Node_Dir[0][1]= 1 Value_of_Load[0]= 1.000000e+00
+Load_Node_Dir[1][0]= 7 Load_Node_Dir[1][1]= 1 Value_of_Load[1]= 1.000000e+00
+Load_Node_Dir[2][0]= 8 Load_Node_Dir[2][1]= 1 Value_of_Load[2]= 1.000000e+00
+Finish Get_InputData(Global mesh:../input_glo_-3_3_1ele_test.txt)
+Total Element=1 Node=9 Constraint=6 Load=3
+E;1.000000e+03 nu;0.000000e+00
+E:1.000000e+03 nu:0.000000e+00
+No_Patch:1
+Total_Patch_to_mesh[1]=1
+Total_Patch_to_Now=1
+Total_Control_Point:9
+Total_Control_Point_to_mesh[1]=9
+Total_Control_Point_to_mesh[2]=18
+Total_Control_Point_to_Now=9
+Order[1][0]=2
+Order[1][1]=2
+No_knot[1][0]=6
+No_knot[1][1]=6
+No_Control_point[1][0]:3
+No_Control_point[1][1]:3
+No_Controlpoint_in_patch[1]:9	
+Total_Constraint_all_mesh;22
+Total_Constraint;16
+Total_Constraint_on_mesh[1];16
+Total_Constraint_to_mesh[1];6
+Total_Load;0
+Total_DistributedForce;0
+0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	1.000000e+00	1.000000e+00	
+0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	1.000000e+00	1.000000e+00	
+Total_Element=1
+Total_Element_on_mesh[1]=1
+Total_Element_to_Now=1
+No_Control_point_ON_ELEMENT[1]=9
+Node_Coordinate[9][0]=-1.000000e+00
+Node_Coordinate[9][1]=-1.000000e+00
+Node_Coordinate[9][2]=1.000000e+00
+Node_Coordinate[10][0]=0.000000e+00
+Node_Coordinate[10][1]=-1.000000e+00
+Node_Coordinate[10][2]=1.000000e+00
+Node_Coordinate[11][0]=1.000000e+00
+Node_Coordinate[11][1]=-1.000000e+00
+Node_Coordinate[11][2]=1.000000e+00
+Node_Coordinate[12][0]=-1.000000e+00
+Node_Coordinate[12][1]=0.000000e+00
+Node_Coordinate[12][2]=1.000000e+00
+Node_Coordinate[13][0]=0.000000e+00
+Node_Coordinate[13][1]=0.000000e+00
+Node_Coordinate[13][2]=1.000000e+00
+Node_Coordinate[14][0]=1.000000e+00
+Node_Coordinate[14][1]=0.000000e+00
+Node_Coordinate[14][2]=1.000000e+00
+Node_Coordinate[15][0]=-1.000000e+00
+Node_Coordinate[15][1]=1.000000e+00
+Node_Coordinate[15][2]=1.000000e+00
+Node_Coordinate[16][0]=0.000000e+00
+Node_Coordinate[16][1]=1.000000e+00
+Node_Coordinate[16][2]=1.000000e+00
+Node_Coordinate[17][0]=1.000000e+00
+Node_Coordinate[17][1]=1.000000e+00
+Node_Coordinate[17][2]=1.000000e+00
+Constraint_Node_Dir[6][0]= 9 Constraint_Node_Dir[6][1]=0 Value_of_Constraint[6]= 0.000000e+00 
+Constraint_Node_Dir[7][0]= 10 Constraint_Node_Dir[7][1]=0 Value_of_Constraint[7]= 0.000000e+00 
+Constraint_Node_Dir[8][0]= 11 Constraint_Node_Dir[8][1]=0 Value_of_Constraint[8]= 0.000000e+00 
+Constraint_Node_Dir[9][0]= 12 Constraint_Node_Dir[9][1]=0 Value_of_Constraint[9]= 0.000000e+00 
+Constraint_Node_Dir[10][0]= 14 Constraint_Node_Dir[10][1]=0 Value_of_Constraint[10]= 0.000000e+00 
+Constraint_Node_Dir[11][0]= 15 Constraint_Node_Dir[11][1]=0 Value_of_Constraint[11]= 0.000000e+00 
+Constraint_Node_Dir[12][0]= 16 Constraint_Node_Dir[12][1]=0 Value_of_Constraint[12]= 0.000000e+00 
+Constraint_Node_Dir[13][0]= 17 Constraint_Node_Dir[13][1]=0 Value_of_Constraint[13]= 0.000000e+00 
+Constraint_Node_Dir[14][0]= 9 Constraint_Node_Dir[14][1]=1 Value_of_Constraint[14]= 0.000000e+00 
+Constraint_Node_Dir[15][0]= 10 Constraint_Node_Dir[15][1]=1 Value_of_Constraint[15]= 0.000000e+00 
+Constraint_Node_Dir[16][0]= 11 Constraint_Node_Dir[16][1]=1 Value_of_Constraint[16]= 0.000000e+00 
+Constraint_Node_Dir[17][0]= 12 Constraint_Node_Dir[17][1]=1 Value_of_Constraint[17]= 0.000000e+00 
+Constraint_Node_Dir[18][0]= 14 Constraint_Node_Dir[18][1]=1 Value_of_Constraint[18]= 0.000000e+00 
+Constraint_Node_Dir[19][0]= 15 Constraint_Node_Dir[19][1]=1 Value_of_Constraint[19]= 0.000000e+00 
+Constraint_Node_Dir[20][0]= 16 Constraint_Node_Dir[20][1]=1 Value_of_Constraint[20]= 0.000000e+00 
+Constraint_Node_Dir[21][0]= 17 Constraint_Node_Dir[21][1]=1 Value_of_Constraint[21]= 0.000000e+00 
+Finish Get_inputData(Local mesh No.[1]:../input_loc_1ele_2x2_test.txt)
+Total Element=1 Node=9 Constraint=16 Load=0
+E;1.000000e+03 nu;0.000000e+00
+mesh_n_org;0	mesh_n_over;1
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[0];1
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[1];1
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[2];1
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[3];1
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[4];0
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[5];1
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[6];1
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[7];1
+No_line[0]=1
+No_line[1]=1
+n_element_over;1
+n_elements_over_point[8];1
+Total_n_elements;8
+NNLOVER[1]=1
+NELOVER[1][0]=0
+Max_Index_Dof=14
+K_Whole_Size=14
+sort_Node_To_Node[0][0]=0
+sort_Node_To_Node[0][1]=1
+sort_Node_To_Node[0][2]=2
+sort_Node_To_Node[0][3]=3
+sort_Node_To_Node[0][4]=4
+sort_Node_To_Node[0][5]=5
+sort_Node_To_Node[0][6]=6
+sort_Node_To_Node[0][7]=7
+sort_Node_To_Node[0][8]=8
+sort_Node_To_Node[0][9]=9
+sort_Node_To_Node[0][10]=10
+sort_Node_To_Node[0][11]=11
+sort_Node_To_Node[0][12]=12
+sort_Node_To_Node[0][13]=13
+sort_Node_To_Node[0][14]=14
+sort_Node_To_Node[0][15]=15
+sort_Node_To_Node[0][16]=16
+sort_Node_To_Node[0][17]=17
+sort_Node_To_Node[1][0]=0
+sort_Node_To_Node[1][1]=1
+sort_Node_To_Node[1][2]=2
+sort_Node_To_Node[1][3]=3
+sort_Node_To_Node[1][4]=4
+sort_Node_To_Node[1][5]=5
+sort_Node_To_Node[1][6]=6
+sort_Node_To_Node[1][7]=7
+sort_Node_To_Node[1][8]=8
+sort_Node_To_Node[1][9]=9
+sort_Node_To_Node[1][10]=10
+sort_Node_To_Node[1][11]=11
+sort_Node_To_Node[1][12]=12
+sort_Node_To_Node[1][13]=13
+sort_Node_To_Node[1][14]=14
+sort_Node_To_Node[1][15]=15
+sort_Node_To_Node[1][16]=16
+sort_Node_To_Node[1][17]=17
+sort_Node_To_Node[2][0]=0
+sort_Node_To_Node[2][1]=1
+sort_Node_To_Node[2][2]=2
+sort_Node_To_Node[2][3]=3
+sort_Node_To_Node[2][4]=4
+sort_Node_To_Node[2][5]=5
+sort_Node_To_Node[2][6]=6
+sort_Node_To_Node[2][7]=7
+sort_Node_To_Node[2][8]=8
+sort_Node_To_Node[2][9]=9
+sort_Node_To_Node[2][10]=10
+sort_Node_To_Node[2][11]=11
+sort_Node_To_Node[2][12]=12
+sort_Node_To_Node[2][13]=13
+sort_Node_To_Node[2][14]=14
+sort_Node_To_Node[2][15]=15
+sort_Node_To_Node[2][16]=16
+sort_Node_To_Node[2][17]=17
+sort_Node_To_Node[3][0]=0
+sort_Node_To_Node[3][1]=1
+sort_Node_To_Node[3][2]=2
+sort_Node_To_Node[3][3]=3
+sort_Node_To_Node[3][4]=4
+sort_Node_To_Node[3][5]=5
+sort_Node_To_Node[3][6]=6
+sort_Node_To_Node[3][7]=7
+sort_Node_To_Node[3][8]=8
+sort_Node_To_Node[3][9]=9
+sort_Node_To_Node[3][10]=10
+sort_Node_To_Node[3][11]=11
+sort_Node_To_Node[3][12]=12
+sort_Node_To_Node[3][13]=13
+sort_Node_To_Node[3][14]=14
+sort_Node_To_Node[3][15]=15
+sort_Node_To_Node[3][16]=16
+sort_Node_To_Node[3][17]=17
+sort_Node_To_Node[4][0]=0
+sort_Node_To_Node[4][1]=1
+sort_Node_To_Node[4][2]=2
+sort_Node_To_Node[4][3]=3
+sort_Node_To_Node[4][4]=4
+sort_Node_To_Node[4][5]=5
+sort_Node_To_Node[4][6]=6
+sort_Node_To_Node[4][7]=7
+sort_Node_To_Node[4][8]=8
+sort_Node_To_Node[4][9]=9
+sort_Node_To_Node[4][10]=10
+sort_Node_To_Node[4][11]=11
+sort_Node_To_Node[4][12]=12
+sort_Node_To_Node[4][13]=13
+sort_Node_To_Node[4][14]=14
+sort_Node_To_Node[4][15]=15
+sort_Node_To_Node[4][16]=16
+sort_Node_To_Node[4][17]=17
+sort_Node_To_Node[5][0]=0
+sort_Node_To_Node[5][1]=1
+sort_Node_To_Node[5][2]=2
+sort_Node_To_Node[5][3]=3
+sort_Node_To_Node[5][4]=4
+sort_Node_To_Node[5][5]=5
+sort_Node_To_Node[5][6]=6
+sort_Node_To_Node[5][7]=7
+sort_Node_To_Node[5][8]=8
+sort_Node_To_Node[5][9]=9
+sort_Node_To_Node[5][10]=10
+sort_Node_To_Node[5][11]=11
+sort_Node_To_Node[5][12]=12
+sort_Node_To_Node[5][13]=13
+sort_Node_To_Node[5][14]=14
+sort_Node_To_Node[5][15]=15
+sort_Node_To_Node[5][16]=16
+sort_Node_To_Node[5][17]=17
+sort_Node_To_Node[6][0]=0
+sort_Node_To_Node[6][1]=1
+sort_Node_To_Node[6][2]=2
+sort_Node_To_Node[6][3]=3
+sort_Node_To_Node[6][4]=4
+sort_Node_To_Node[6][5]=5
+sort_Node_To_Node[6][6]=6
+sort_Node_To_Node[6][7]=7
+sort_Node_To_Node[6][8]=8
+sort_Node_To_Node[6][9]=9
+sort_Node_To_Node[6][10]=10
+sort_Node_To_Node[6][11]=11
+sort_Node_To_Node[6][12]=12
+sort_Node_To_Node[6][13]=13
+sort_Node_To_Node[6][14]=14
+sort_Node_To_Node[6][15]=15
+sort_Node_To_Node[6][16]=16
+sort_Node_To_Node[6][17]=17
+sort_Node_To_Node[7][0]=0
+sort_Node_To_Node[7][1]=1
+sort_Node_To_Node[7][2]=2
+sort_Node_To_Node[7][3]=3
+sort_Node_To_Node[7][4]=4
+sort_Node_To_Node[7][5]=5
+sort_Node_To_Node[7][6]=6
+sort_Node_To_Node[7][7]=7
+sort_Node_To_Node[7][8]=8
+sort_Node_To_Node[7][9]=9
+sort_Node_To_Node[7][10]=10
+sort_Node_To_Node[7][11]=11
+sort_Node_To_Node[7][12]=12
+sort_Node_To_Node[7][13]=13
+sort_Node_To_Node[7][14]=14
+sort_Node_To_Node[7][15]=15
+sort_Node_To_Node[7][16]=16
+sort_Node_To_Node[7][17]=17
+sort_Node_To_Node[8][0]=0
+sort_Node_To_Node[8][1]=1
+sort_Node_To_Node[8][2]=2
+sort_Node_To_Node[8][3]=3
+sort_Node_To_Node[8][4]=4
+sort_Node_To_Node[8][5]=5
+sort_Node_To_Node[8][6]=6
+sort_Node_To_Node[8][7]=7
+sort_Node_To_Node[8][8]=8
+sort_Node_To_Node[8][9]=9
+sort_Node_To_Node[8][10]=10
+sort_Node_To_Node[8][11]=11
+sort_Node_To_Node[8][12]=12
+sort_Node_To_Node[8][13]=13
+sort_Node_To_Node[8][14]=14
+sort_Node_To_Node[8][15]=15
+sort_Node_To_Node[8][16]=16
+sort_Node_To_Node[8][17]=17
+sort_Node_To_Node[9][0]=0
+sort_Node_To_Node[9][1]=1
+sort_Node_To_Node[9][2]=2
+sort_Node_To_Node[9][3]=3
+sort_Node_To_Node[9][4]=4
+sort_Node_To_Node[9][5]=5
+sort_Node_To_Node[9][6]=6
+sort_Node_To_Node[9][7]=7
+sort_Node_To_Node[9][8]=8
+sort_Node_To_Node[9][9]=9
+sort_Node_To_Node[9][10]=10
+sort_Node_To_Node[9][11]=11
+sort_Node_To_Node[9][12]=12
+sort_Node_To_Node[9][13]=13
+sort_Node_To_Node[9][14]=14
+sort_Node_To_Node[9][15]=15
+sort_Node_To_Node[9][16]=16
+sort_Node_To_Node[9][17]=17
+sort_Node_To_Node[0][0]=0
+sort_Node_To_Node[0][1]=1
+sort_Node_To_Node[0][2]=2
+sort_Node_To_Node[0][3]=3
+sort_Node_To_Node[0][4]=4
+sort_Node_To_Node[0][5]=5
+sort_Node_To_Node[0][6]=6
+sort_Node_To_Node[0][7]=7
+sort_Node_To_Node[0][8]=8
+sort_Node_To_Node[0][9]=9
+sort_Node_To_Node[0][10]=10
+sort_Node_To_Node[0][11]=11
+sort_Node_To_Node[0][12]=12
+sort_Node_To_Node[0][13]=13
+sort_Node_To_Node[0][14]=14
+sort_Node_To_Node[0][15]=15
+sort_Node_To_Node[0][16]=16
+sort_Node_To_Node[0][17]=17
+sort_Node_To_Node[1][0]=0
+sort_Node_To_Node[1][1]=1
+sort_Node_To_Node[1][2]=2
+sort_Node_To_Node[1][3]=3
+sort_Node_To_Node[1][4]=4
+sort_Node_To_Node[1][5]=5
+sort_Node_To_Node[1][6]=6
+sort_Node_To_Node[1][7]=7
+sort_Node_To_Node[1][8]=8
+sort_Node_To_Node[1][9]=9
+sort_Node_To_Node[1][10]=10
+sort_Node_To_Node[1][11]=11
+sort_Node_To_Node[1][12]=12
+sort_Node_To_Node[1][13]=13
+sort_Node_To_Node[1][14]=14
+sort_Node_To_Node[1][15]=15
+sort_Node_To_Node[1][16]=16
+sort_Node_To_Node[1][17]=17
+sort_Node_To_Node[2][0]=0
+sort_Node_To_Node[2][1]=1
+sort_Node_To_Node[2][2]=2
+sort_Node_To_Node[2][3]=3
+sort_Node_To_Node[2][4]=4
+sort_Node_To_Node[2][5]=5
+sort_Node_To_Node[2][6]=6
+sort_Node_To_Node[2][7]=7
+sort_Node_To_Node[2][8]=8
+sort_Node_To_Node[2][9]=9
+sort_Node_To_Node[2][10]=10
+sort_Node_To_Node[2][11]=11
+sort_Node_To_Node[2][12]=12
+sort_Node_To_Node[2][13]=13
+sort_Node_To_Node[2][14]=14
+sort_Node_To_Node[2][15]=15
+sort_Node_To_Node[2][16]=16
+sort_Node_To_Node[2][17]=17
+sort_Node_To_Node[3][0]=0
+sort_Node_To_Node[3][1]=1
+sort_Node_To_Node[3][2]=2
+sort_Node_To_Node[3][3]=3
+sort_Node_To_Node[3][4]=4
+sort_Node_To_Node[3][5]=5
+sort_Node_To_Node[3][6]=6
+sort_Node_To_Node[3][7]=7
+sort_Node_To_Node[3][8]=8
+sort_Node_To_Node[3][9]=9
+sort_Node_To_Node[3][10]=10
+sort_Node_To_Node[3][11]=11
+sort_Node_To_Node[3][12]=12
+sort_Node_To_Node[3][13]=13
+sort_Node_To_Node[3][14]=14
+sort_Node_To_Node[3][15]=15
+sort_Node_To_Node[3][16]=16
+sort_Node_To_Node[3][17]=17
+sort_Node_To_Node[4][0]=0
+sort_Node_To_Node[4][1]=1
+sort_Node_To_Node[4][2]=2
+sort_Node_To_Node[4][3]=3
+sort_Node_To_Node[4][4]=4
+sort_Node_To_Node[4][5]=5
+sort_Node_To_Node[4][6]=6
+sort_Node_To_Node[4][7]=7
+sort_Node_To_Node[4][8]=8
+sort_Node_To_Node[4][9]=9
+sort_Node_To_Node[4][10]=10
+sort_Node_To_Node[4][11]=11
+sort_Node_To_Node[4][12]=12
+sort_Node_To_Node[4][13]=13
+sort_Node_To_Node[4][14]=14
+sort_Node_To_Node[4][15]=15
+sort_Node_To_Node[4][16]=16
+sort_Node_To_Node[4][17]=17
+sort_Node_To_Node[5][0]=0
+sort_Node_To_Node[5][1]=1
+sort_Node_To_Node[5][2]=2
+sort_Node_To_Node[5][3]=3
+sort_Node_To_Node[5][4]=4
+sort_Node_To_Node[5][5]=5
+sort_Node_To_Node[5][6]=6
+sort_Node_To_Node[5][7]=7
+sort_Node_To_Node[5][8]=8
+sort_Node_To_Node[5][9]=9
+sort_Node_To_Node[5][10]=10
+sort_Node_To_Node[5][11]=11
+sort_Node_To_Node[5][12]=12
+sort_Node_To_Node[5][13]=13
+sort_Node_To_Node[5][14]=14
+sort_Node_To_Node[5][15]=15
+sort_Node_To_Node[5][16]=16
+sort_Node_To_Node[5][17]=17
+sort_Node_To_Node[6][0]=0
+sort_Node_To_Node[6][1]=1
+sort_Node_To_Node[6][2]=2
+sort_Node_To_Node[6][3]=3
+sort_Node_To_Node[6][4]=4
+sort_Node_To_Node[6][5]=5
+sort_Node_To_Node[6][6]=6
+sort_Node_To_Node[6][7]=7
+sort_Node_To_Node[6][8]=8
+sort_Node_To_Node[6][9]=9
+sort_Node_To_Node[6][10]=10
+sort_Node_To_Node[6][11]=11
+sort_Node_To_Node[6][12]=12
+sort_Node_To_Node[6][13]=13
+sort_Node_To_Node[6][14]=14
+sort_Node_To_Node[6][15]=15
+sort_Node_To_Node[6][16]=16
+sort_Node_To_Node[6][17]=17
+sort_Node_To_Node[7][0]=0
+sort_Node_To_Node[7][1]=1
+sort_Node_To_Node[7][2]=2
+sort_Node_To_Node[7][3]=3
+sort_Node_To_Node[7][4]=4
+sort_Node_To_Node[7][5]=5
+sort_Node_To_Node[7][6]=6
+sort_Node_To_Node[7][7]=7
+sort_Node_To_Node[7][8]=8
+sort_Node_To_Node[7][9]=9
+sort_Node_To_Node[7][10]=10
+sort_Node_To_Node[7][11]=11
+sort_Node_To_Node[7][12]=12
+sort_Node_To_Node[7][13]=13
+sort_Node_To_Node[7][14]=14
+sort_Node_To_Node[7][15]=15
+sort_Node_To_Node[7][16]=16
+sort_Node_To_Node[7][17]=17
+El_No;i=0
+Total_Element=2	re=0	El_No=0
+El_No;i=1
+Total_Element=2	re=1	El_No=1
+  x: -7.74596669e-01
+  y: -7.74596669e-01
+ xi:  3.70900555e-01
+eta:  3.70900555e-01
+patch_n: 0
+BDBJ_flag
+  x:  0.00000000e+00
+  y: -7.74596669e-01
+ xi:  5.00000000e-01
+eta:  3.70900555e-01
+patch_n: 0
+BDBJ_flag
+  x:  7.74596669e-01
+  y: -7.74596669e-01
+ xi:  6.29099445e-01
+eta:  3.70900555e-01
+patch_n: 0
+BDBJ_flag
+  x: -7.74596669e-01
+  y:  0.00000000e+00
+ xi:  3.70900555e-01
+eta:  5.00000000e-01
+patch_n: 0
+BDBJ_flag
+  x:  0.00000000e+00
+  y:  0.00000000e+00
+ xi:  5.00000000e-01
+eta:  5.00000000e-01
+patch_n: 0
+BDBJ_flag
+  x:  7.74596669e-01
+  y: -3.90312782e-17
+ xi:  6.29099445e-01
+eta:  5.00000000e-01
+patch_n: 0
+BDBJ_flag
+  x: -7.74596669e-01
+  y:  7.74596669e-01
+ xi:  3.70900555e-01
+eta:  6.29099445e-01
+patch_n: 0
+BDBJ_flag
+  x:  0.00000000e+00
+  y:  7.74596669e-01
+ xi:  5.00000000e-01
+eta:  6.29099445e-01
+patch_n: 0
+BDBJ_flag
+  x:  7.74596669e-01
+  y:  7.74596669e-01
+ xi:  6.29099445e-01
+eta:  6.29099445e-01
+patch_n: 0
+BDBJ_flag
+Finish Make_K_Whole
+Value_of_Load;1.0000000000e+00
+Value_of_Load;1.0000000000e+00
+Value_of_Load;1.0000000000e+00
+ppFinish Make_K_Whole
+ndof=14
+diag=5.000000e-02
+K_Whole_Val[14]=4.000000e+02
+sqrt=2.000000e+01
+diag=5.303301e-02
+K_Whole_Val[27]=3.555556e+02
+sqrt=1.885618e+01
+diag=6.123724e-02
+K_Whole_Val[39]=2.666667e+02
+sqrt=1.632993e+01
+diag=6.123724e-02
+K_Whole_Val[50]=2.666667e+02
+sqrt=1.632993e+01
+diag=5.669467e-02
+K_Whole_Val[60]=3.111111e+02
+sqrt=1.763834e+01
+diag=5.303301e-02
+K_Whole_Val[69]=3.555556e+02
+sqrt=1.885618e+01
+diag=5.000000e-02
+K_Whole_Val[77]=4.000000e+02
+sqrt=2.000000e+01
+diag=5.303301e-02
+K_Whole_Val[84]=3.555556e+02
+sqrt=1.885618e+01
+diag=5.669467e-02
+K_Whole_Val[90]=3.111111e+02
+sqrt=1.763834e+01
+diag=5.000000e-02
+K_Whole_Val[95]=4.000000e+02
+sqrt=2.000000e+01
+diag=5.000000e-02
+K_Whole_Val[99]=4.000000e+02
+sqrt=2.000000e+01
+diag=6.123724e-02
+K_Whole_Val[102]=2.666667e+02
+sqrt=1.632993e+01
+diag=6.123724e-02
+K_Whole_Val[104]=2.666667e+02
+sqrt=1.632993e+01
+rhs_vec_before[0]:0.000000e+00 diag_scaling[0]:5.303301e-02
+rhs_vec_before[1]:0.000000e+00 diag_scaling[1]:5.000000e-02
+rhs_vec_before[2]:0.000000e+00 diag_scaling[2]:5.303301e-02
+rhs_vec_before[3]:0.000000e+00 diag_scaling[3]:6.123724e-02
+rhs_vec_before[4]:0.000000e+00 diag_scaling[4]:6.123724e-02
+rhs_vec_before[5]:0.000000e+00 diag_scaling[5]:5.669467e-02
+rhs_vec_before[6]:0.000000e+00 diag_scaling[6]:5.303301e-02
+rhs_vec_before[7]:1.000000e+00 diag_scaling[7]:5.000000e-02
+rhs_vec_before[8]:0.000000e+00 diag_scaling[8]:5.303301e-02
+rhs_vec_before[9]:1.000000e+00 diag_scaling[9]:5.669467e-02
+rhs_vec_before[10]:0.000000e+00 diag_scaling[10]:5.000000e-02
+rhs_vec_before[11]:1.000000e+00 diag_scaling[11]:5.000000e-02
+rhs_vec_before[12]:0.000000e+00 diag_scaling[12]:6.123724e-02
+rhs_vec_before[13]:0.000000e+00 diag_scaling[13]:6.123724e-02
+
+qq
+Finish 1st Diag_Scaling_CG_Pre
+rhs_vec[0]=0.000000 dd[0]=0.000000
+rhs_vec[1]=0.000000 dd[1]=0.000000
+rhs_vec[2]=0.000000 dd[2]=0.000000
+rhs_vec[3]=0.000000 dd[3]=0.000000
+rhs_vec[4]=0.000000 dd[4]=0.000000
+rhs_vec[5]=0.000000 dd[5]=0.000000
+rhs_vec[6]=0.000000 dd[6]=0.000000
+rhs_vec[7]=0.050000 dd[7]=0.000000
+rhs_vec[8]=0.000000 dd[8]=0.000000
+rhs_vec[9]=0.056695 dd[9]=0.000000
+rhs_vec[10]=0.000000 dd[10]=0.000000
+rhs_vec[11]=0.050000 dd[11]=0.000000
+rhs_vec[12]=0.000000 dd[12]=0.000000
+rhs_vec[13]=0.000000 dd[13]=0.000000
+
+rrndof=14 alphak=    8.149606e-01	Iteration# = 0  residual =    6.053415e-01 (   1.000000e-10)
+ndof=14 alphak=    9.636881e-01	Iteration# = 1  residual =    5.903737e-02 (   1.000000e-10)
+ndof=14 alphak=    9.736338e-01	Iteration# = 2  residual =    1.728136e-02 (   1.000000e-10)
+ndof=14 alphak=    1.145685e+00	Iteration# = 3  residual =    1.116866e-02 (   1.000000e-10)
+ndof=14 alphak=    1.322021e+00	Iteration# = 4  residual =    1.023082e-02 (   1.000000e-10)
+ndof=14 alphak=    1.407862e+00	Iteration# = 5  residual =    3.636366e-03 (   1.000000e-10)
+ndof=14 alphak=    1.143633e+00	Iteration# = 6  residual =    1.546632e-03 (   1.000000e-10)
+ndof=14 alphak=    8.110908e-01	Iteration# = 7  residual =    4.810985e-04 (   1.000000e-10)
+ndof=14 alphak=    1.463707e+00	Iteration# = 8  residual =    1.485569e-04 (   1.000000e-10)
+ndof=14 alphak=    9.906164e-01	Iteration# = 9  residual =    2.401441e-05 (   1.000000e-10)
+ndof=14 alphak=    1.087639e+00	Iteration# = 10  residual =    2.822368e-06 (   1.000000e-10)
+ndof=14 alphak=    1.736800e+00	Iteration# = 11  residual =    1.131201e-06 (   1.000000e-10)
+ndof=14 alphak=    3.000376e+00	Iteration# = 12  residual =    1.772466e-07 (   1.000000e-10)
+ndof=14 alphak=    1.016185e+00	Iteration# = 13  residual =    9.638333e-18 (   1.000000e-10)
+
+ssndof=14
+
+qq
+Finish CG_Solver
+0	0.000000e+00	1	0.000000e+00	
+2	1.254614e-19	3	0.000000e+00	
+4	1.079134e-20	5	0.000000e+00	
+6	0.000000e+00	7	1.500000e-03	
+8	-3.015822e-19	9	1.500000e-03	
+10	5.199216e-19	11	1.500000e-03	
+12	0.000000e+00	13	3.000000e-03	
+14	4.060763e-19	15	3.000000e-03	
+16	-6.491177e-20	17	3.000000e-03	
+18	0.000000e+00	19	0.000000e+00	
+20	0.000000e+00	21	0.000000e+00	
+22	0.000000e+00	23	0.000000e+00	
+24	0.000000e+00	25	0.000000e+00	
+26	4.793033e-20	27	-7.805028e-20	
+28	0.000000e+00	29	0.000000e+00	
+30	0.000000e+00	31	0.000000e+00	
+32	0.000000e+00	33	0.000000e+00	
+34	0.000000e+00	35	0.000000e+00	
+Finish Make_Displacement
+Analysis time:2.86[s]
+Finish Make_Strain
+Finish Make_Stress
+Finish Make_ReactionForce
+sol_vec
+Finish Make_Parameter_z
+Element_No:0
+Element_No:1
