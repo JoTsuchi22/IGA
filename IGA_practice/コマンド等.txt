@@ -11,6 +11,12 @@ cd test_analysis
 ../mkdir8.sh
 ../test.x ../input_test.txt > test.dat
 
+重合パッチ
+mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
+../../../s_IGA_array_patch_test_integ3.x ../input_glo_*.txt ../input_loc_*.txt > *.dat
+../../../post/NURBS_input_s.x input_for_NURBS.txt Displacement.dat view.dat input_local.txt overlay_view.dat 10 10 > *.dat
+
+
 データ整理
 コンパイル
 g++ -o sort sort.cpp

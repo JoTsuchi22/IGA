@@ -3,12 +3,7 @@ import matplotlib.pyplot as plt
 import math
 import function_of_NURBS_alt as fn
 
-# NURBSのときノットインサーションが一致しない，
-# 原因:   重み付きのときはknot rate != 0.5
-# sin の厳密解と比較して，どちらが正しいか確認する．
-# igsファイルから作成したものとプログラムから作成したものpatch0
-
-# 追記 パッチ境界では厳密に表現できているが，内部では合わない(なんで?)
+# パッチ境界では厳密に表現できているが，内部では合わない(なんで?)
 
 # output file name
 file_name = "testpatch"
