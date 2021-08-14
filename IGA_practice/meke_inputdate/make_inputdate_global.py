@@ -385,11 +385,9 @@ globalpoint, globalpoint_bool, globalpoint_x, globalpoint_y, globalpoint_w, loca
 
 # 座標，パッチコネクティビティー，境界の辺をtxt出力
 # [patch_number, xi_or_eta, 0_or_1(int)] (auto marge)
-boundary_array_0 = np.array([[0, eta, 0],
-                             [0,  xi, 1]])
+boundary_array_0 = np.array([0, eta, 0])
 
-boundary_array_1 = np.array([[0,  xi, 1],
-                             [0, eta, 1]])
+boundary_array_1 = np.array([0,  xi, 0])
 
 boundary_number = 0
 mif.write_date_header(filename)
