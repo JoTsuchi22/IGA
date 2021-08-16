@@ -18,6 +18,10 @@ patch_info = np.array([[3, 3],
                        [6, 10],
                        [6, 3]])
 
+# patch info 1行2列の時の例外処理
+if np.array(patch_info.shape).shape[0] == 1:
+    patch_info = np.array([[patch_info[0], patch_info[1]]])
+
 xi_max = 0
 eta_max = 0
 for i in range(patch_info.shape[0]):
