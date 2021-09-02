@@ -16,6 +16,11 @@ mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 ../../../s_IGA_array_patch_test_integ3.x ../input_glo_*.txt ../input_loc_*.txt > *.dat
 ../../../post/NURBS_input_s.x input_for_NURBS.txt Displacement.dat view.dat input_local.txt overlay_view.dat 10 10 > *.dat
 
+NURBSviewer
+ローカル領域上の重ね合わせた結果
+../../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_local.txt overlay_view.dat Displacement_loc.dat
+グローバル領域上の重ね合わせた(?)結果
+../../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_for_NURBS.txt view.dat Displacement.dat
 
 データ整理
 コンパイル
@@ -25,3 +30,8 @@ g++ -o sort sort.cpp
 chcp 65001	//utf-8
 sort NURBS_disp.txt disp_y0.txt disp_y5.txt disp_y10.txt
 ↑sort.exeと同じディレクトリにNURBS_disp.txt(NURBS_disp.datの右4列のコピー)を作成しておく
+
+Okadaken wiki
+URL         10.66.52.17
+User Name	Okada_Lab
+PW          6f33urepa42v
