@@ -1,6 +1,7 @@
 コンパイル
 gcc -o test.x iga_analysis.c -lm -Wall
 gcc -o mul_pat_make_input_from_igs.x mul_pat_make_input_from_igs.c
+gcc -o s_IGA.x s_IGA.c -lm -Wall
 
 実行
 cd example_analysis
@@ -15,6 +16,10 @@ cd test_analysis
 mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 ../../../s_IGA_array_patch_test_integ3.x ../input_glo_*.txt ../input_loc_*.txt > *.dat
 ../../../post/NURBS_input_s.x input_for_NURBS.txt Displacement.dat view.dat input_local.txt overlay_view.dat 10 10 > *.dat
+
+new重合パッチ
+mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
+../../../s_IGA.x ../input_glo_*.txt ../input_loc_*.txt  > *.dat
 
 NURBSviewer
 ローカル領域上の重ね合わせた結果
