@@ -969,11 +969,6 @@ void Calc_Bezier_2D(int tm, int elevation_parameter_axis, int other_axis)
         }
         Bezier_update_point_array(tm, i, elevation_parameter_axis);
     }
-    
-    // for (i = 0; i < l_other; i++)
-    // {
-    //     Bezier_update_point_array(tm, i, elevation_parameter_axis);
-    // }
 }
 
 
