@@ -59,8 +59,8 @@ for i in range(knot_n_eta_loc-1):
 calc_eta_loc[k] = knot_vec_eta_loc[knot_n_eta_loc - 1]
 division_n_eta = k + 1
 element_n_eta = l
-print(division_n_eta)
-print(element_n_eta)
+# print(division_n_eta)
+# print(element_n_eta)
 
 
 #-----------------------------------------------------------
@@ -71,3 +71,5 @@ for i in range(int(division_n_xi)):
     for j in range(int(division_n_eta)):
         jj = int(j // division_ele_eta)
         ll = int(j % division_ele_eta)
+
+#-----------------------------------------------------------

@@ -18,15 +18,17 @@ wv = math.cos(th/2.)
 
 CP_matrix_weight = np.array([[0.,  0., 1.],
                              [1.,  0., 1.],
+                             [2.,  0., 2.],
                              [0.,  1., 1.],
-                             [1.,  1., 1.]])
+                             [1.,  1., 1.],
+                             [2.,  1., 1.]])
 
 # Define polynomial order:n
 n_xi =  1
 n_eta  = 1
 
 # (ξ, η)方向のコントロールポイントの数
-l_xi = 2
+l_xi = 3
 l_eta = 2
 
 # n, lとxi, etaの関係
@@ -48,8 +50,8 @@ knot_i = knot_eta
 knot_j = knot_xi
 
 # affine transformation (for CP)
-stretch_x = 10
-stretch_y = 10
+stretch_x = 5
+stretch_y = 5
 stretch_z = 1.0
 
 trans_x = 0.0
@@ -81,19 +83,19 @@ CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
 
 # オーダーエレベーション eta
 elevation_parameter_axis = eta
-elevation_degree = 1
+elevation_degree = 0
 CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
     CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
 
 # autoノットインサーション xi
 insert_parameter_axis = xi
-number_of_auto_insertion = 4
+number_of_auto_insertion = 0
 CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 
 # autoノットインサーション eta
 insert_parameter_axis = eta
-number_of_auto_insertion = 4
+number_of_auto_insertion = 0
 CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 

@@ -19,7 +19,9 @@ CP_matrix_weight = np.array([[1.,  0., 1.],
                              [1.,  1., wv],
                              [2.,  2., wv],
                              [0.,  1., 1.],
-                             [0.,  2., 1.]])
+                             [0.,  2., 1.],
+                             [-1.,  1., 1.],
+                             [-1.,  2., 1.]])
 
 # Define polynomial order:n
 n_xi =  1
@@ -27,7 +29,7 @@ n_eta = 2
 
 # (ξ, η)方向のコントロールポイントの数
 l_xi = 2
-l_eta = 3
+l_eta = 4
 
 # n, lとxi, etaの関係
 n = np.array([n_eta, n_xi])
@@ -75,7 +77,7 @@ eta = 0
 
 # オーダーエレベーション xi
 elevation_parameter_axis = xi
-elevation_degree = 1
+elevation_degree = 0
 CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
     CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
 
@@ -87,7 +89,7 @@ CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
 
 # autoノットインサーション xi
 insert_parameter_axis = xi
-number_of_auto_insertion = 4
+number_of_auto_insertion = 3
 CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 
@@ -170,7 +172,7 @@ ax1.set_axisbelow(True)
 fig.set_figheight(9)
 fig.set_figwidth(12)
 ax1.grid()
-ax1.set_xlim(0, 5)
+ax1.set_xlim(-1, 4)
 ax1.set_ylim(-1, 4)
 plt.show()
 
