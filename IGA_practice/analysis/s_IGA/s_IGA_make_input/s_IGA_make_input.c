@@ -92,11 +92,7 @@ int  main(int argc, char *argv[])
     {
 	    Get_InputData(tm, argv[tm+1]);
 	    Debug_printf(tm, "Get_InputData");
-    }
 
-    //オーダーエレベーションおよびノットインサーション
-    for (tm = 0; tm < Total_file; tm++)
-    {
         //オーダーエレベーション
         for (j = 0; j < Dimension[tm]; j++)
         {
@@ -188,7 +184,7 @@ void Get_InputData(int tm, char *filename)
         for (k = 0; k < knot_n[tm][j]; k++)
         {
             fscanf(fp, "%lf", &temp_knot);
-            printf("%lf\t", temp_knot);
+            printf("%.16e\t", temp_knot);
             knot[tm][j][k] = temp_knot;
         }
         printf("\n");
@@ -203,9 +199,9 @@ void Get_InputData(int tm, char *filename)
         fscanf(fp, "%lf", &temp_y);
         fscanf(fp, "%lf", &temp_w);
         printf("%d\t", temp_num);
-        printf("%lf\t", temp_x);
-        printf("%lf\t", temp_y);
-        printf("%lf\n", temp_w);
+        printf("%.16e\t", temp_x);
+        printf("%.16e\t", temp_y);
+        printf("%.16e\n", temp_w);
         x[tm][i] = temp_x;
         y[tm][i] = temp_y;
         w[tm][i] = temp_w;
@@ -248,7 +244,7 @@ void Get_InputData(int tm, char *filename)
             for (k = 0; k < KI_non_uniform_n[tm][j]; k++)
             {
                 fscanf(fp, "%lf", &temp_insert_knot);
-                printf("%lf\t", temp_insert_knot);
+                printf("%.16e\t", temp_insert_knot);
                 insert_knot[tm][j][k] = temp_insert_knot;
             }
             printf("\n");
@@ -1445,11 +1441,11 @@ void Debug_printf(int tm, char *section)
         {
             if (i == 0)
             {
-                printf("%lf", knot[tm][j][i]);
+                printf("%.16e", knot[tm][j][i]);
             }
             else
             {
-                printf("\t%lf", knot[tm][j][i]);
+                printf("\t%.16e", knot[tm][j][i]);
             }
         }
         printf("\n");
@@ -1460,9 +1456,9 @@ void Debug_printf(int tm, char *section)
     for (i = 0; i < Total_Control_Point[tm]; i++)
     {
         printf("%d\t", i);
-        printf("%lf\t", x[tm][i]);
-        printf("%lf\t", y[tm][i]);
-        printf("%lf\n", w[tm][i]);
+        printf("%.16e\t", x[tm][i]);
+        printf("%.16e\t", y[tm][i]);
+        printf("%.16e\n", w[tm][i]);
     }
     printf("\n");
 
@@ -1517,11 +1513,11 @@ void Debug_printf(int tm, char *section)
             {
                 if (i == 0)
                 {
-                    printf("%lf", insert_knot[tm][j][i]);
+                    printf("%.16e", insert_knot[tm][j][i]);
                 }
                 else
                 {
-                    printf("\t%lf", insert_knot[tm][j][i]);
+                    printf("\t%.16e", insert_knot[tm][j][i]);
                 }
             }
             printf("\n");
@@ -1624,11 +1620,11 @@ void OutputData(int tm, char *filename)
         {
             if (i == 0)
             {
-                fprintf(fp, "%lf", knot[tm][j][i]);
+                fprintf(fp, "%.16e", knot[tm][j][i]);
             }
             else
             {
-                fprintf(fp, "\t%lf", knot[tm][j][i]);
+                fprintf(fp, "\t%.16e", knot[tm][j][i]);
             }
         }
         fprintf(fp, "\n");
@@ -1639,9 +1635,9 @@ void OutputData(int tm, char *filename)
     for (i = 0; i < Total_Control_Point[tm]; i++)
     {
         fprintf(fp, "%d\t", i);
-        fprintf(fp, "%lf\t", x[tm][i]);
-        fprintf(fp, "%lf\t", y[tm][i]);
-        fprintf(fp, "%lf\n", w[tm][i]);
+        fprintf(fp, "%.16e\t", x[tm][i]);
+        fprintf(fp, "%.16e\t", y[tm][i]);
+        fprintf(fp, "%.16e\n", w[tm][i]);
     }
 
     fclose(fp);
