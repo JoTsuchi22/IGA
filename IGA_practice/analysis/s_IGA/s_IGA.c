@@ -2509,7 +2509,6 @@ void Make_K_Whole_Ptr_Col(int tm,
 			{
 				printf("sort_Node_To_Node[%d][%d]=%d\n",i,j,Node_To_Node[i][j]);
 			}
-			
 		}
 
 		//節点からcol ptrを求める

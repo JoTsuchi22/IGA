@@ -31,4 +31,10 @@
 
     knot insertionは等分割と任意のノット挿入の2種類あり，この順番を変更すると
     分割後のコントロールポイントが変化するが，このプログラムでは不均一分割→等分割としている
+
+    コンパイル
+    gcc -o s_IGA_make_input.x s_IGA_make_input.c -lm -Wall
+    実行
+    ./s_IGA_make_input.x **.txt > result.dat
+    ./s_IGA_make_input.x **.txt **.txt > result.dat
 */

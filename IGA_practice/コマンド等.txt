@@ -22,6 +22,7 @@ mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 new重合パッチ
 mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 ../../../s_IGA.x ../input_glo_*.txt ../input_loc_*.txt  > *.dat
+../../../../../../s_IGA_10x10.x ../input_glo_ ../input_loc_ > result.dat
 
 s_IGA_make_input
 ./s_IGA_make_input.x test_input_01.txt > result.dat
