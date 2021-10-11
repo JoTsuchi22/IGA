@@ -1,0 +1,26 @@
+
+Make_K_EL
+    Make_D_Matrix_2D
+        -
+
+    for:
+    Make_B_Matrix
+        Jacobian
+            dShape_func
+                NURBS_deriv
+                    ShapeFunc_from_paren
+                        -
+                    ShapeFunction1D(double Position_Data_param[DIMENSION], int j, int e)
+                        -
+                dShapeFunc_from_paren
+                    -
+        InverseMatrix_2D
+        dShape_func
+            NURBS_deriv
+                ShapeFunc_from_paren
+                    -
+                ShapeFunction1D
+                    -
+            dShapeFunc_from_paren
+                -
+    BDBJ

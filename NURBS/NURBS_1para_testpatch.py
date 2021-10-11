@@ -7,9 +7,9 @@ import function_of_NURBS as fn
 color = np.array(["r", "g", "b", "c", "m", "y", "k"])
 
 # Define control points:CP
-CP = np.array([[5.0, 0.0],
-               [5.0, 5.0],
-               [0.0, 5.0]])
+CP = np.array([[1.0, 0.0],
+               [1.0, 1.0],
+               [0.0, 1.0]])
 
 # Define polynomial order
 n = 2
@@ -38,29 +38,11 @@ y_bool_vec = np.zeros((delta, l), dtype=bool)
 
 # 描写
 fig = plt.figure()
-ax1 = fig.add_subplot(2, 1, 1)
-ax2 = fig.add_subplot(2, 2, 3)
-ax3 = fig.add_subplot(2, 2, 4)
+# ax1 = fig.add_subplot(2, 1, 1)
+ax2 = fig.add_subplot(1, 1, 1)
 
 # 基底関数の計算
 N = fn.basisfunction_return_N(N, delta, knot, l, m, n)
-
-# 基底関数の描写
-for i in range(delta):
-    for j in range(l):
-        nowknot = (i/(delta - 1)) * knot[m-1]
-        x = nowknot
-        y = N[n][i][j]
-        x_vec[i][j] = x
-        y_vec[i][j] = y
-        x_bool_vec[i][j] = True
-        y_bool_vec[i][j] = True
-        if i == delta-1:
-            ax1.plot(x_vec[:, j][x_bool_vec[:, j]], y_vec[:, j]
-                     [y_bool_vec[:, j]], c=color[j % 7], marker="", linewidth=0.5)
-ax1.grid()
-ax1.set_xlim(0, 1)
-ax1.set_ylim(0, 1)
 
 # Bスプラインの描写
 for i in range(delta):
@@ -71,68 +53,38 @@ for i in range(delta):
         Cy += N[n][i][j] * CP[j][1]
     Cx_vec[i] = Cx
     Cy_vec[i] = Cy
-ax2.plot(Cx_vec, Cy_vec, c=color[0], marker="", linewidth=0.5)
+ax2.plot(Cx_vec, Cy_vec, c=color[0], marker="", linewidth=1.0)
 
 # コントロールポイントの描写
 for i in range(l):
     x = CP[i][0]
     y = CP[i][1]
-    ax2.scatter(x, y, c=color[2], s=5)
-ax2.plot(CP[:, 0], CP[:, 1], c=color[2], marker="", linewidth=0.5)
+    ax2.scatter(x, y, c=color[2], s=8)
+ax2.plot(CP[:, 0], CP[:, 1], c=color[2], marker="", linewidth=1.0)
 
 # 描写
 ax2.grid()
-ax2.set_xlim(0, 7)
-ax2.set_ylim(0, 7)
+ax2.set_xlim(0, 1.2)
+ax2.set_ylim(0, 1.2)
 ax2.set_aspect('equal', adjustable='box')
-
-# 描写
-ax3.plot(Cx_vec, Cy_vec, c=color[0], marker="", linewidth=0.5)
-xi = np.unique(knot)
-N_xi = np.zeros((n+1, xi.shape[0], l))
-Cx_vec_xi = np.zeros((xi.shape[0]))
-Cy_vec_xi = np.zeros((xi.shape[0]))
-N_xi = fn.basisfunction_return_N_at_xi(N_xi, xi, knot, l, n)
-for i in range(xi.shape[0]):
-    Cx_xi = 0
-    Cy_xi = 0
-    for j in range(l):
-        Cx_xi += N_xi[n][i][j] * CP[j][0]
-        Cy_xi += N_xi[n][i][j] * CP[j][1]
-        Cx_vec_xi[i] = Cx_xi
-        Cy_vec_xi[i] = Cy_xi
-ax3.scatter(Cx_vec_xi, Cy_vec_xi, c=color[2], marker="s", s=5)
-ax3.set_aspect('equal', adjustable='box')
-ax3.grid()
-ax3.set_xlim(0, 7)
-ax3.set_ylim(0, 7)
-
 
 # Define control points
 # weight value
-hight_rate = math.sqrt(2) - 1.
-wv = math.cos(math.atan(hight_rate / 1.)) * math.cos(math.atan(hight_rate / 1.))
+wv = 1./math.sqrt(2)
 
-CP_kinji_0 = np.array([[5., 0., 0., 1.],
-                       [5., 5.*hight_rate, 0., 1.*wv],
-                       [5.*hight_rate, 5., 0., 1.*wv],
-                       [0., 5., 0., 1.]])
-
-# CP_kinji_0 = np.array([[5., 0., 0., 1.],
-#                        [5., 5., 0., 1.*wv1],
-#                        [0., 5., 0., 1.]])
+CP_kinji_0 = np.array([[1., 0., 0., 1.],
+                       [1., 1., 0., 1.*wv],
+                       [0., 1., 0., 1.]])
 
 CP_kinji = CP_kinji_0[:, :-1]
 w = CP_kinji_0[:, 3:]
 
-knot = np.array([0., 0., 0., .5, 1., 1., 1.])
-# knot = np.array([0., 0., 0., 1., 1., 1.])
+knot = np.array([0., 0., 0., 1., 1., 1.])
 
 # 変数宣言
 delta = 500
 n = 2
-l = 4
-# l = 3
+l = 3
 m = n + l + 1
 N = np.zeros((n+1, delta, l))
 R = np.zeros((delta, l))
@@ -151,14 +103,11 @@ for i in range(delta):
     Cx_vec_1[i] = Cx
     Cy_vec_1[i] = Cy
     Cy_vec_2[i] = 5*math.sin(math.acos(Cx/5.))
-    print(Cy_vec_1[i] - Cy_vec_2[i])
-ax2.plot(Cx_vec_1, Cy_vec_1, c=color[3], marker="", linewidth=0.5)
-ax2.plot(Cx_vec_1, Cy_vec_2, c=color[4], marker="", linewidth=1.0)
+ax2.plot(Cx_vec_1, Cy_vec_1, c=color[3], marker="", linewidth=1.0)
 
-ax1.set_axisbelow(True)
 ax2.set_axisbelow(True)
-ax3.set_axisbelow(True)
-
-fig.set_figheight(9)
-fig.set_figwidth(12)
+ax2.set_xlabel("x")
+ax2.set_ylabel("y")
+fig.set_figheight(4)
+fig.set_figwidth(4)
 plt.show()

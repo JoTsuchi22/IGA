@@ -2578,8 +2578,10 @@ void Make_K_Whole_Val(int tm, double E, double nu, int Total_Element, int K_Whol
 	int a, b, re;
 
 	for (i = 0; i < MAX_NON_ZERO; i++)
+	{
 		K_Whole_Val[i] = 0.0;
-
+	}
+	
 	/*for(rr=0;rr<line_No_real_element[0]*line_No_real_element[1];rr++){
         	printf("real_element[%d]=%d\n",rr,real_element[rr]);
     	}
@@ -3262,8 +3264,8 @@ double dShape_func(int I_No, int xez, double Local_coord[DIMENSION], int El_No, 
 		{
 			//dR = dShape_func1[Controlpoint_of_Element[El_No][I_No]] * dShapeFunc_from_paren(xez, El_No);
 			dR = 
-                dShape_func1[Controlpoint_of_Element[El_No][I_No]] 
-                * dShapeFunc_from_paren(xez, El_No );            
+                dShape_func1[Controlpoint_of_Element[El_No][I_No]]
+                * dShapeFunc_from_paren(xez, El_No );
 			//printf("dShape_func1[%d]:%le\n",Controlpoint_of_Element[El_No][I_No],dShape_func1[Controlpoint_of_Element[El_No][I_No]]);
 		}
 		else if (xez == 1)
@@ -4383,7 +4385,7 @@ int Make_D_Matrix_2D(double D[D_MATRIX_SIZE][D_MATRIX_SIZE], double E, double nu
 	else if (DM == 1) //平面ひずみ状態(2Dの場合はこっち)
 	{
 		//printf("E:%le nu:%le\n",E,nu);
-		double Eone = E * (1.0 - nu) / (1.0 + nu) / (1.0 - 2 * nu);
+		double Eone = E * (1.0 - nu) / (1.0 + nu) / (1.0 - 2.0 * nu);
 		double D1[D_MATRIX_SIZE][D_MATRIX_SIZE] = {{Eone, nu / (1.0 - nu) * Eone, 0}, {nu / (1.0 - nu) * Eone, Eone, 0}, {0, 0, (1 - 2 * nu) / 2 / (1.0 - nu) * Eone}};
 
 		for (i = 0; i < D_MATRIX_SIZE; i++)

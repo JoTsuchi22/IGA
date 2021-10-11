@@ -19,9 +19,7 @@ CP_matrix_weight = np.array([[1.,  0., 1.],
                              [1.,  1., wv],
                              [2.,  2., wv],
                              [0.,  1., 1.],
-                             [0.,  2., 1.],
-                             [-1.,  1., 1.],
-                             [-1.,  2., 1.]])
+                             [0.,  2., 1.]])
 
 # Define polynomial order:n
 n_xi =  1
@@ -29,7 +27,7 @@ n_eta = 2
 
 # (ξ, η)方向のコントロールポイントの数
 l_xi = 2
-l_eta = 4
+l_eta = 3
 
 # n, lとxi, etaの関係
 n = np.array([n_eta, n_xi])
@@ -77,7 +75,7 @@ eta = 0
 
 # オーダーエレベーション xi
 elevation_parameter_axis = xi
-elevation_degree = 0
+elevation_degree = 1
 CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
     CP_2d1w, l, m, n, knot_i, knot_j, elevation_degree, elevation_parameter_axis)
 
@@ -89,13 +87,13 @@ CP_2d1w, l, m, n, knot_i, knot_j = fn.NURBS_order_elevation_2p2d1w(
 
 # autoノットインサーション xi
 insert_parameter_axis = xi
-number_of_auto_insertion = 3
+number_of_auto_insertion = 0
 CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 
 # autoノットインサーション eta
 insert_parameter_axis = eta
-number_of_auto_insertion = 3
+number_of_auto_insertion = 1
 CP_2d1w, l, m, knot_i, knot_j = fn.NURBS_knot_insertion_C_2p2d1w(CP_2d1w, n, l, m, knot_i, knot_j,
                                                            insert_parameter_axis, number_of_auto_insertion)
 
@@ -119,7 +117,6 @@ w = np.reshape(weight, (l[0], l[1]))
 
 # Define 刻み幅
 delta = np.array([l[0]-1, l[1]-1])
-# delta = np.array([100,100])
 
 # 変数宣言
 N = np.zeros((n[0]+1, delta[0], l[0]))
