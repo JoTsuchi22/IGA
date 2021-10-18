@@ -763,7 +763,7 @@ int main(int argc, char *argv[])
         }
         //printf("i=%d\n",i);
     }*/
-    for(i = 0 ; i < Total_Constraint_to_mesh[Total_mesh] ; i++)
+    for(i = 0; i < Total_Constraint_to_mesh[Total_mesh]; i++)
     {
         Constraint_ID[Constraint_Node_Dir[i][0] * DIMENSION + Constraint_Node_Dir[i][1]] = 1;
         Displacement[Constraint_Node_Dir[i][0] * DIMENSION + Constraint_Node_Dir[i][1]] 

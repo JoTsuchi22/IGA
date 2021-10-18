@@ -1,0 +1,272 @@
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+-nan 
+
+
+
+Displacement
+0	0.0000000000000e+00	 0.0000000000000e+00	 
+1	-nan	 0.0000000000000e+00	 
+2	-nan	 0.0000000000000e+00	 
+3	-nan	 0.0000000000000e+00	 
+4	-nan	 0.0000000000000e+00	 
+5	-nan	 0.0000000000000e+00	 
+6	-nan	 0.0000000000000e+00	 
+7	-nan	 0.0000000000000e+00	 
+8	-nan	 0.0000000000000e+00	 
+9	-nan	 0.0000000000000e+00	 
+10	0.0000000000000e+00	 -nan	 
+11	-nan	 -nan	 
+12	-nan	 -nan	 
+13	-nan	 -nan	 
+14	-nan	 -nan	 
+15	-nan	 -nan	 
+
+
+
+Strain
+0	0	-nan	-nan	-nan	0.0000000000000e+00	
+0	1	-nan	-nan	-nan	0.0000000000000e+00	
+0	2	-nan	-nan	-nan	0.0000000000000e+00	
+0	3	-nan	-nan	-nan	0.0000000000000e+00	
+0	4	-nan	-nan	-nan	0.0000000000000e+00	
+0	5	-nan	-nan	-nan	0.0000000000000e+00	
+0	6	-nan	-nan	-nan	0.0000000000000e+00	
+0	7	-nan	-nan	-nan	0.0000000000000e+00	
+0	8	-nan	-nan	-nan	0.0000000000000e+00	
+
+
+
+
+
+
+
+
+
+
+
+Stress
+0	0	-nan	-nan	-nan	-nan	
+0	1	-nan	-nan	-nan	-nan	
+0	2	-nan	-nan	-nan	-nan	
+0	3	-nan	-nan	-nan	-nan	
+0	4	-nan	-nan	-nan	-nan	
+0	5	-nan	-nan	-nan	-nan	
+0	6	-nan	-nan	-nan	-nan	
+0	7	-nan	-nan	-nan	-nan	
+0	8	-nan	-nan	-nan	-nan	
+
+
+
+Reaction Force
+-nan	 -nan	 
+-nan	 -nan	 
+-nan	 -nan	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+-nan	 -nan	 
+-nan	 -nan	 
+-nan	 -nan	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+0.0000000000000e+00	 0.0000000000000e+00	 
+0.0000000000000e+00	 0.0000000000000e+00	 
