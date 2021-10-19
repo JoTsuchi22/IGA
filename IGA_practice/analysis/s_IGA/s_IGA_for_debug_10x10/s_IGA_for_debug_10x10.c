@@ -2385,12 +2385,12 @@ void Make_K_Whole_Ptr_Col(int tm,
 		K_Whole_Ptr[i] = 0;
 
 	for (N = 0; N < Total_Control_Point; N += K_DIVISION_LENGE)
-	{ //大きく分割するためのループ
+	{ 	//大きく分割するためのループ
 		//各節点に接する節点を取得
 		for (i = 0; i < K_DIVISION_LENGE; i++)
 		{
 			Total_Control_Point_To_Node[i] = 0;
-		}		
+		}
         for (i = 0; i < Total_Element; i++)
 		{
 			for (ii = 0; ii < No_Control_point_ON_ELEMENT[Element_patch[i]]; ii++)
