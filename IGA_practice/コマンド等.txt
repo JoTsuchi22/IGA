@@ -19,21 +19,29 @@ mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 ../../../s_IGA_array_patch_test_integ3.x ../input_glo_*.txt ../input_loc_*.txt > *.dat
 ../../../post/NURBS_input_s.x input_for_NURBS.txt Displacement.dat view.dat input_local.txt overlay_view.dat 10 10 > *.dat
 
-new重合パッチ
-mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
-../../../s_IGA.x ../input_glo_*.txt ../input_loc_*.txt  > *.dat
-../../../../../../s_IGA_10x10.x ../input_glo_ ../input_loc_ > result.dat
-
-s_IGA_make_input
-./s_IGA_make_input.x test_input_01.txt > result.dat
-./s_IGA_make_input.x test_input_02.txt > result.dat
-./s_IGA_make_input.x test_input_01.txt test_input_02.txt > result.dat
-
 NURBSviewer
 ローカル領域上の重ね合わせた結果
 ../../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_local.txt overlay_view.dat Displacement_loc.dat
 グローバル領域上の重ね合わせた(?)結果
 ../../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_for_NURBS.txt view.dat Displacement.dat
+
+--new--
+new重合パッチ
+mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
+../../../s_IGA.x ../input_glo_*.txt ../input_loc_*.txt  > *.dat
+../../../../../../s_IGA_10x10.x ../input_glo_ ../input_loc_ > result.dat
+../../../../../../s_IGA_order3_10x10.x ../input_glo_ ../input_loc_ > result.dat
+
+newNURBSviewer
+../../../../../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_local.txt overlay_view.dat Displacement_loc.dat
+../../../../../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_for_NURBS.txt view.dat Displacement.dat
+
+s_IGA_make_input
+./s_IGA_make_input.x test_input_01.txt > result.dat
+./s_IGA_make_input.x test_input_02.txt > result.dat
+./s_IGA_make_input.x test_input_01.txt test_input_02.txt > result.dat
+./s_IGA_make_input.x arc > result.dat
+
 
 データ整理
 コンパイル

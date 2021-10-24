@@ -854,8 +854,7 @@ def weight_basisfunction_2parameter_return_R(R, N, M, w, delta, n, l):
                     a[i][j] += N[n[0]][i][p] * M[n[1]][j][q] * w[p][q]
             for p in range(l[0]):
                 for q in range(l[1]):
-                    R[i][j][p][q] = (N[n[0]][i][p] * M[n[1]]
-                                     [j][q] * w[p][q]) / a[i][j]
+                    R[i][j][p][q] = (N[n[0]][i][p] * M[n[1]][j][q] * w[p][q]) / a[i][j]
     return R
 
 

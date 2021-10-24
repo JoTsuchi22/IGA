@@ -17,7 +17,7 @@ CP = np.array([[1.0, 2.0],
                [2.0, 4.0]])
 
 # Define polynomial order
-n = 2
+n = 3
 l = CP.shape[0]  # 制御点の個数
 m = l + n + 1   # ノットの個数
 

@@ -113,7 +113,7 @@ int  main(int argc, char *argv[])
     return 0;
 }
 
-//ファイルからデータをもらう
+
 void Get_InputData(int tm, char *filename)
 {
 	int i, j, k;
@@ -756,21 +756,21 @@ void Bezier_Order_Elevation_2D(int tm, int elevation_parameter_axis, int Bezier_
             if (j != n)
             {
                 alpha[j] = (j + 1.0) / (n + 1.0);
-                a_x = (1.0 - alpha[j]) * Bezier_x[Bezier_line_number][j + 1];
-                a_y = (1.0 - alpha[j]) * Bezier_y[Bezier_line_number][j + 1];
                 a_w = (1.0 - alpha[j]) * Bezier_w[Bezier_line_number][j + 1];
-                b_x = alpha[j] * Bezier_x[Bezier_line_number][j];
-                b_y = alpha[j] * Bezier_y[Bezier_line_number][j];
+                a_x = (1.0 - alpha[j]) * (Bezier_x[Bezier_line_number][j + 1] * Bezier_w[Bezier_line_number][j + 1]);
+                a_y = (1.0 - alpha[j]) * (Bezier_y[Bezier_line_number][j + 1] * Bezier_w[Bezier_line_number][j + 1]);
                 b_w = alpha[j] * Bezier_w[Bezier_line_number][j];
-                temp_x2[j] = a_x + b_x;
-                temp_y2[j] = a_y + b_y;
+                b_x = alpha[j] * (Bezier_x[Bezier_line_number][j] * Bezier_w[Bezier_line_number][j]);
+                b_y = alpha[j] * (Bezier_y[Bezier_line_number][j] * Bezier_w[Bezier_line_number][j]);
                 temp_w2[j] = a_w + b_w;
+                temp_x2[j] = (a_x + b_x) / temp_w2[j];
+                temp_y2[j] = (a_y + b_y) / temp_w2[j];
             }
             else if (j == n)
             {
+                temp_w2[j] = Bezier_w[Bezier_line_number][j];
                 temp_x2[j] = Bezier_x[Bezier_line_number][j];
                 temp_y2[j] = Bezier_y[Bezier_line_number][j];
-                temp_w2[j] = Bezier_w[Bezier_line_number][j];
             }
         }
         if (i != OE_n[tm][elevation_parameter_axis] - 1 && OE_n[tm][elevation_parameter_axis] != 1)
