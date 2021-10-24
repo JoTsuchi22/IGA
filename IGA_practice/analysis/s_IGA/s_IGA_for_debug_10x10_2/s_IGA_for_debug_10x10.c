@@ -4577,7 +4577,6 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 					  double K_EL[KIEL_SIZE][KIEL_SIZE],
 					  double E, double nu, int DM)
 {
-
 	int i, j, jj, k, l;
 	int BDBJ_flag;
 
