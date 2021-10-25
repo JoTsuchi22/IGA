@@ -54,7 +54,7 @@ mkdir checkAns
 #define DIMENSION 2										   //次元数
 #define MAX_KIEL_SIZE MAX_NO_CCpoint_ON_ELEMENT *DIMENSION //要素分割マトリックスの大きさ
 #define Ng 3											   //Gauss-Legendreの足す回数
-#define POW_Ng Ng *Ng									   //NgのDIMENSION乗の計算
+#define POW_Ng Ng * Ng									   //NgのDIMENSION乗の計算
 #define D_MATRIX_SIZE 3									   //応力歪マトリックスの大きさ（2次元:3 3次元:6）
 
 #define K_DIVISION_LENGE 10 //全体剛性マトリックスのcol&ptrを制作時に分ける節点数
