@@ -573,7 +573,7 @@ int main(int argc, char *argv[])
     {
         printf("IGA carried out.(No local mesh)\n");
     }
-    if (argc <= 3)  /*s-IGA：input file 複数*/
+    if (argc >= 3)  /*s-IGA：input file 複数*/
     {
         printf("s-IGA carried out.(%d local meshes)\n",argc-2);
     }
@@ -3150,22 +3150,11 @@ double Shape_func(int I_No, int Total_Control_Point,
 	weight_func = 0.0;
 	//shape_func[]={0.0};
 
-	int Total_CP = 0;
-
 	// MAX_N_NODEでshape_funcを初期化していたところを修正
 	// for (i = 0; i < MAX_N_NODE; i++)
 	// {
 	// 	shape_func[i] = 1.0;
 	// }
-
-	for (i = 0; i < Total_mesh; i++)
-	{
-		Total_CP += Total_Control_Point_to_mesh[i];
-	}
-	for (i = 0; i < Total_CP; i++)
-	{
-		shape_func[i] = 1.0;
-	}
 
 	// for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[El_No]]; i++)
 	// {
@@ -3188,6 +3177,17 @@ double Shape_func(int I_No, int Total_Control_Point,
 	// 	//printf("weight[%d];%f\n",Controlpoint_of_Element[El_No][i],Node_Coordinate[Controlpoint_of_Element[El_No][i]][DIMENSION]);
 	// 	weight_func += shape_func[Controlpoint_of_Element[El_No][i]] * Node_Coordinate[Controlpoint_of_Element[El_No][i]][DIMENSION];
 	// }
+
+	int Total_CP = 0;
+
+	for (i = 0; i < Total_mesh; i++)
+	{
+		Total_CP += Total_Control_Point_on_mesh[i];
+	}
+	for (i = 0; i < Total_CP; i++)
+	{
+		shape_func[i] = 1.0;
+	}
 
 	for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[El_No]]; i++)
 	{
@@ -3241,7 +3241,7 @@ void NURBS_deriv(double Local_coord[DIMENSION], int El_No, int Total_Control_Poi
 
 	for (i = 0; i < Total_mesh; i++)
 	{
-		Total_CP += Total_Control_Point_to_mesh[i];
+		Total_CP += Total_Control_Point_on_mesh[i];
 	}
 	for (i = 0; i < Total_CP; i++)
 	{
