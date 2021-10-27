@@ -1464,7 +1464,7 @@ int main(int argc, char *argv[])
 
 
 	//重ね合わせの結果
-	if (argc <= 3)  /*s-IGA：input file 複数*/
+	if (argc >= 3)  /*s-IGA：input file 複数*/
 	{
 		// division_ele_xi  = atoi(argv[			]);
 		// division_ele_eta = atoi(argv[			]);
@@ -3150,8 +3150,19 @@ double Shape_func(int I_No, int Total_Control_Point,
 	weight_func = 0.0;
 	//shape_func[]={0.0};
 
-	//for (i = 0; i < Total_Control_Point_to_mesh[Total_mesh]; i++)
-	for (i = 0; i < MAX_N_NODE; i++)
+	int Total_CP = 0;
+
+	// MAX_N_NODEでshape_funcを初期化していたところを修正
+	// for (i = 0; i < MAX_N_NODE; i++)
+	// {
+	// 	shape_func[i] = 1.0;
+	// }
+
+	for (i = 0; i < Total_mesh; i++)
+	{
+		Total_CP += Total_Control_Point_to_mesh[i];
+	}
+	for (i = 0; i < Total_CP; i++)
 	{
 		shape_func[i] = 1.0;
 	}
@@ -3219,7 +3230,20 @@ void NURBS_deriv(double Local_coord[DIMENSION], int El_No, int Total_Control_Poi
 	//printf("\n");
 
 	//for (i = 0; i < Total_Control_Point_to_mesh[Total_mesh]; i++)	//"Total_Control_Point_to_mesh[Total_mesh]"仮
-	for (i = 0; i < MAX_N_NODE; i++)	//"Total_Control_Point_to_mesh[Total_mesh]"仮
+	//"Total_Control_Point_to_mesh[Total_mesh]"仮
+	// MAX_N_NODEでshape_funcを初期化していたところを修正
+	// for (i = 0; i < MAX_N_NODE; i++)
+	// {
+	// 	shape_func[i] = 1.0;
+	// }
+
+	int Total_CP = 0;
+
+	for (i = 0; i < Total_mesh; i++)
+	{
+		Total_CP += Total_Control_Point_to_mesh[i];
+	}
+	for (i = 0; i < Total_CP; i++)
 	{
 		shape_func[i] = 1.0;
 	}
