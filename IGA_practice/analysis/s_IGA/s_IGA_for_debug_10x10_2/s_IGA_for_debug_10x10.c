@@ -1349,7 +1349,7 @@ int main(int argc, char *argv[])
 	printf("Finish Make_Strain\n");
 	Make_Stress_2D( E, nu, Total_Element, DM);
 	printf("Finish Make_Stress\n");
-	Make_ReactionForce_Quad_4( Total_Element, Total_Control_Point, El_No );
+	Make_ReactionForce_Quad_4( Total_Element, Total_Control_Point, El_No);
 	printf("Finish Make_ReactionForce\n");
 	puts("sol_vec");
 	Make_Parameter_z( Total_Element, E, nu, DM);
@@ -3151,7 +3151,7 @@ double Shape_func(int I_No, int Total_Control_Point,
 	//shape_func[]={0.0};
 
 	// MAX_N_NODEでshape_funcを初期化していたところを修正
-	// for (i = 0; i < MAX_N_NODE; i++)
+	// // for (i = 0; i < MAX_N_NODE; i++)
 	// {
 	// 	shape_func[i] = 1.0;
 	// }
@@ -3229,7 +3229,7 @@ void NURBS_deriv(double Local_coord[DIMENSION], int El_No, int Total_Control_Poi
 	//for (jj = 0; jj < MM+1; jj++)printf("NdShape2[%d]= %f\n",jj,dShape2[jj]);
 	//printf("\n");
 
-	//for (i = 0; i < Total_Control_Point_to_mesh[Total_mesh]; i++)	//"Total_Control_Point_to_mesh[Total_mesh]"仮
+	// //for (i = 0; i < Total_Control_Point_to_mesh[Total_mesh]; i++)	//"Total_Control_Point_to_mesh[Total_mesh]"仮
 	//"Total_Control_Point_to_mesh[Total_mesh]"仮
 	// MAX_N_NODEでshape_funcを初期化していたところを修正
 	// for (i = 0; i < MAX_N_NODE; i++)
@@ -3272,7 +3272,7 @@ void NURBS_deriv(double Local_coord[DIMENSION], int El_No, int Total_Control_Poi
 			//printf("after_shape_func:%lf\n",
 			//		shape_func[Controlpoint_of_Element[El_No][i]]);
 		}
-		weight_func += shape_func[Controlpoint_of_Element[El_No ][i]] * Node_Coordinate[Controlpoint_of_Element[El_No ][i]][DIMENSION];
+		weight_func += shape_func[Controlpoint_of_Element[El_No][i]] * Node_Coordinate[Controlpoint_of_Element[El_No][i]][DIMENSION];
 		//printf("Node_Coordinate[%d][%d]:%le\n", Controlpoint_of_Element[El_No][i],DIMENSION,Node_Coordinate[Controlpoint_of_Element[El_No][i]][DIMENSION]);
 		//printf("shape_func[%d]:%le\n",Controlpoint_of_Element[El_No][i],shape_func[Controlpoint_of_Element[El_No][i]]);
 		//printf("weight_func:%le\n", weight_func);
@@ -3282,24 +3282,24 @@ void NURBS_deriv(double Local_coord[DIMENSION], int El_No, int Total_Control_Poi
 	for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[El_No]]; i++)
 	{
 		dWeight_func1 
-            += dShape[0][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No ][i]][0]] 
-            * Shape[1][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No ][i]][1]][Order[Element_patch[El_No]][1]] 
-            * Node_Coordinate[Controlpoint_of_Element[El_No ][i]][DIMENSION];
+            += dShape[0][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No][i]][0]] 
+            * Shape[1][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No][i]][1]][Order[Element_patch[El_No]][1]] 
+            * Node_Coordinate[Controlpoint_of_Element[El_No][i]][DIMENSION];
 		dWeight_func2 
-            += Shape[0][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No ][i]][0]][Order[Element_patch[El_No]][0]] 
-            * dShape[1][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No ][i]][1]] 
-            * Node_Coordinate[Controlpoint_of_Element[El_No ][i]][DIMENSION];
+            += Shape[0][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No][i]][0]][Order[Element_patch[El_No]][0]] 
+            * dShape[1][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No][i]][1]] 
+            * Node_Coordinate[Controlpoint_of_Element[El_No][i]][DIMENSION];
 	}
 	//printf("dWeight_func1:%le dWeight_func2:%le\n",dWeight_func1,dWeight_func2);
 	for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[El_No]]; i++)
 	{
-		dShape_func1[Controlpoint_of_Element[El_No ][i]] 
+		dShape_func1[Controlpoint_of_Element[El_No][i]] 
             = Node_Coordinate[Controlpoint_of_Element[El_No][i]][DIMENSION] 
-            * (weight_func * dShape[0][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No ][i]][0]] 
-            * Shape[1][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No ][i]][1]][Order[Element_patch[El_No]][1]] - dWeight_func1 * shape_func[Controlpoint_of_Element[El_No ][i]]) / (weight_func * weight_func);
-		dShape_func2[Controlpoint_of_Element[El_No ][i]] 
-            = Node_Coordinate[Controlpoint_of_Element[El_No ][i]][DIMENSION] 
-			* (weight_func * Shape[0][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No ][i]][0]][Order[Element_patch[El_No]][0]] * dShape[1][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No ][i]][1]] - dWeight_func2 * shape_func[Controlpoint_of_Element[El_No ][i]]) 
+            * (weight_func * dShape[0][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No][i]][0]] 
+            * Shape[1][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No][i]][1]][Order[Element_patch[El_No]][1]] - dWeight_func1 * shape_func[Controlpoint_of_Element[El_No][i]]) / (weight_func * weight_func);
+		dShape_func2[Controlpoint_of_Element[El_No][i]] 
+            = Node_Coordinate[Controlpoint_of_Element[El_No][i]][DIMENSION] 
+			* (weight_func * Shape[0][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No][i]][0]][Order[Element_patch[El_No]][0]] * dShape[1][INC[Element_patch[El_No]][Controlpoint_of_Element[El_No][i]][1]] - dWeight_func2 * shape_func[Controlpoint_of_Element[El_No][i]]) 
 			/ (weight_func * weight_func);
 		//printf("NURBS_deriv;Controlpoint_of_Element[%d][%d]:%d\n",El_No,i,Controlpoint_of_Element[El_No][i]);
 		//printf("dShape_func1[%d]:%le\n",Controlpoint_of_Element[El_No][i],dShape_func1[Controlpoint_of_Element[El_No][i]]);
@@ -3311,7 +3311,7 @@ double dShape_func(int I_No, int xez, double Local_coord[DIMENSION], int El_No, 
 {
 	double dR;
 
-	//printf("El_No=%d\n",El_No );
+	//printf("El_No=%d\n",El_No);
 
 	NURBS_deriv(Local_coord, El_No, Total_Control_Point);
 
@@ -3325,7 +3325,7 @@ double dShape_func(int I_No, int xez, double Local_coord[DIMENSION], int El_No, 
 			//dR = dShape_func1[Controlpoint_of_Element[El_No][I_No]] * dShapeFunc_from_paren(xez, El_No);
 			dR = 
                 dShape_func1[Controlpoint_of_Element[El_No][I_No]]
-                * dShapeFunc_from_paren(xez, El_No );
+                * dShapeFunc_from_paren(xez, El_No);
 			//printf("dShape_func1[%d]:%le\n",Controlpoint_of_Element[El_No][I_No],dShape_func1[Controlpoint_of_Element[El_No][I_No]]);
 		}
 		else if (xez == 1)
@@ -3333,7 +3333,7 @@ double dShape_func(int I_No, int xez, double Local_coord[DIMENSION], int El_No, 
 			//dR = dShape_func2[Controlpoint_of_Element[El_No][I_No]] * dShapeFunc_from_paren(xez, El_No);
 			dR = 
                 dShape_func2[Controlpoint_of_Element[El_No][I_No]] 
-                * dShapeFunc_from_paren(xez, El_No );
+                * dShapeFunc_from_paren(xez, El_No);
 			//printf("dShape_func2[%d]:%le\n",Controlpoint_of_Element[El_No][I_No],dShape_func2[Controlpoint_of_Element[El_No][I_No]]);
 		}
 		//printf("dR%lf\n",dR);
@@ -4897,7 +4897,7 @@ void Force_Dis( int Total_DistributeForce, int DistributeForce[MAX_N_DISTRIBUTE_
 
 	for( DF = 0; DF < Total_DistributeForce; DF++){
 		//回転させた要素の節点座標の取得
-		Force_Dis_NodeOfElement( DF, DistributeForce, ForceDistribute_Controlpoint_of_Element,El_No );
+		Force_Dis_NodeOfElement( DF, DistributeForce, ForceDistribute_Controlpoint_of_Element,El_No);
 
 		for( i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[El_No]]; i++ ){
 			for(j = 0; j < DIMENSION; j++ )
