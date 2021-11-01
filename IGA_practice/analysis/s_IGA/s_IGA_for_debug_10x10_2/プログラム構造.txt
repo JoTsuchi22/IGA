@@ -100,9 +100,14 @@ NURBSviewer
 mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 ../../../s_IGA_for_debug_10x10.x ../input_arc2.txt > result.dat
 ../../../s_IGA_for_debug_10x10.x ../input_arc3.txt > result.dat
+../../../s_IGA_for_debug_10x10.x ../input_arc2_komakai.txt > result.dat
 ../../../s_IGA_for_debug_10x10.x ../input_arc3_komakai.txt > result.dat
 ../../../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_local.txt overlay_view.dat Displacement_loc.dat
 ../../../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_for_NURBS.txt view.dat Displacement.dat
+
+
+make input data
+./s_IGA_make_input.x **.txt > result.dat
 
 fp = fopen("debug.dat", "w");
 fprintf(fp, "debug\n\n");

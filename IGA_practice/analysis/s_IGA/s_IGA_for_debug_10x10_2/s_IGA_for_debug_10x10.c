@@ -90,6 +90,9 @@ mkdir checkAns
 
 #define DBL_MAX          1.7976931348623158e+308 // max value
 
+#define DIVISION_ELE_XI 10
+#define DIVISION_ELE_ETA 10
+
 /////変更後はmake cleanしてからmakeする/////////////////////////////////////////////////////
 ///////最大値////////////////////////////////////////////////////////////////////////////////
 #define MAX_PATCHES 15									//最大パッチ数
@@ -1464,126 +1467,124 @@ int main(int argc, char *argv[])
 
 
 	//重ね合わせの結果
-	if (argc >= 3)  /*s-IGA：input file 複数*/
-	{
-		// division_ele_xi  = atoi(argv[			]);
-		// division_ele_eta = atoi(argv[			]);
-		division_ele_xi  = 10;
-		division_ele_eta = 10;
 
-		if (division_ele_xi > MAX_DIVISION) {
-			printf("Error!!\n");
-			printf("Too many Divsion at xi!\n"
-				"Maximum of division is %d (Now %d)\n"
-				"\n", MAX_DIVISION, division_ele_xi);
-			exit(1);
-		}
-		if (division_ele_eta > MAX_DIVISION) {
-			printf("Error!!\n");
-			printf("Too many Divsion at eta!\n"
-				"Maximum of division is %d (Now %d)\n"
-				"\n", MAX_DIVISION, division_ele_eta);
-			exit(1);
-		}
+	// division_ele_xi  = atoi(argv[			]);
+	// division_ele_eta = atoi(argv[			]);
+	division_ele_xi  = DIVISION_ELE_XI;
+	division_ele_eta = DIVISION_ELE_ETA;
 
-		//ローカルメッシュの情報取得
-		GetLocData ();
-	
-		int patch_n_loc, patch_n_glo;	//パッチ番号
+	if (division_ele_xi > MAX_DIVISION) {
+		printf("Error!!\n");
+		printf("Too many Divsion at xi!\n"
+			"Maximum of division is %d (Now %d)\n"
+			"\n", MAX_DIVISION, division_ele_xi);
+		exit(1);
+	}
+	if (division_ele_eta > MAX_DIVISION) {
+		printf("Error!!\n");
+		printf("Too many Divsion at eta!\n"
+			"Maximum of division is %d (Now %d)\n"
+			"\n", MAX_DIVISION, division_ele_eta);
+		exit(1);
+	}
 
-		ReadFile ();
-		fp = fopen("view.dat", "w");
-		fprintf(fp, "%d\t%d\t%d\n",
+	//ローカルメッシュの情報取得
+	GetLocData ();
+
+	int patch_n_loc, patch_n_glo;	//パッチ番号
+
+	ReadFile ();
+	fp = fopen("view.dat", "w");
+	fprintf(fp, "%d\t%d\t%d\n",
+			fields_flag, division_ele_xi, division_ele_eta);
+	fclose(fp);
+
+	n_patch_glo = patch_n - n_patch_loc;
+
+	//for s-IGA
+	//重ね合わせ結果出力のためのoverlay_view.dat作成
+	fp = fopen("overlay_view.dat", "w");
+	fprintf(fp, "%d\t%d\t%d\n",
 				fields_flag, division_ele_xi, division_ele_eta);
-		fclose(fp);
+	fclose(fp);
 
-		n_patch_glo = patch_n - n_patch_loc;
+	//グラフ作成のための出力
+	fp = fopen("disp_graph.txt", "w");
+	fprintf(fp, "patch_n\tx\ty\tdisp_x\tdisp_y\n");
+	fclose(fp);
 
-		//for s-IGA
-		//重ね合わせ結果出力のためのoverlay_view.dat作成
-		fp = fopen("overlay_view.dat", "w");
-		fprintf(fp, "%d\t%d\t%d\n",
-					fields_flag, division_ele_xi, division_ele_eta);
-		fclose(fp);
+	fp = fopen("stress_y_graph.txt", "w");
+	fprintf(fp, "patch_n\tx\ty\tstress_yy\n");
+	fclose(fp);
 
-		//グラフ作成のための出力
-		fp = fopen("disp_graph.txt", "w");
-		fprintf(fp, "patch_n\tx\ty\tdisp_x\tdisp_y\n");
-		fclose(fp);
+	fp = fopen("stress_vm_graph.txt", "w");
+	fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
+	fclose(fp);
 
-		fp = fopen("stress_y_graph.txt", "w");
-		fprintf(fp, "patch_n\tx\ty\tstress_yy\n");
-		fclose(fp);
+	fp = fopen("over_disp_graph.txt", "w");
+	fprintf(fp, "patch_n\tx\ty\tdisp_x\tdisp_y\n");
+	fclose(fp);
 
-		fp = fopen("stress_vm_graph.txt", "w");
-		fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
-		fclose(fp);
+	fp = fopen("over_stress_x_graph.txt", "w");
+	fprintf(fp, "x\ty\tstress_xx\n");
+	fclose(fp);
 
-		fp = fopen("over_disp_graph.txt", "w");
-		fprintf(fp, "patch_n\tx\ty\tdisp_x\tdisp_y\n");
-		fclose(fp);
+	fp = fopen("over_stress_y_graph.txt", "w");
+	fprintf(fp, "x\ty\tstress_yy\n");
+	fclose(fp);
 
-		fp = fopen("over_stress_x_graph.txt", "w");
-		fprintf(fp, "x\ty\tstress_xx\n");
-		fclose(fp);
+	fp = fopen("over_stress_r_graph.txt", "w");
+	fprintf(fp, "xi\teta\tx\ty\tstress_rr\tstress_sita\n");
+	fclose(fp);
 
-		fp = fopen("over_stress_y_graph.txt", "w");
-		fprintf(fp, "x\ty\tstress_yy\n");
-		fclose(fp);
+	fp = fopen("over_stress_vm_graph.txt", "w");
+	fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
+	fclose(fp);
 
-		fp = fopen("over_stress_r_graph.txt", "w");
-		fprintf(fp, "xi\teta\tx\ty\tstress_rr\tstress_sita\n");
-		fclose(fp);
+	for (i = 0; i < patch_n; i++) {
 
-		fp = fopen("over_stress_vm_graph.txt", "w");
-		fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
-		fclose(fp);
+		fp = fopen("stress_vm_graph.txt", "a");
+		fprintf(fp, "\npatch_n;%d\n\n",i);
+		fclose(fp);	
 
-		for (i = 0; i < patch_n; i++) {
+		graph_patch_n = i;
 
-			fp = fopen("stress_vm_graph.txt", "a");
-			fprintf(fp, "\npatch_n;%d\n\n",i);
-			fclose(fp);	
-
-			graph_patch_n = i;
-
-			printf("----------Start calculation at patch %d----------\n\n", i);
-			Calculation(order_xi[i], order_eta[i],
-						knot_n_xi[i], knot_n_eta[i],
-						cntl_p_n_xi[i], cntl_p_n_eta[i],
-						knot_vec_xi[i], knot_vec_eta[i],
-						cntl_px[i], cntl_py[i],
-						disp_cntl_px[i], disp_cntl_py[i],
-						weight[i]);
-			printf("-----------End calculation at patch %d-----------\n\n", i);
-		
-			if (i >= n_patch_glo)	//ローカル上のパッチに対しては重合計算行う
+		printf("----------Start calculation at patch %d----------\n\n", i);
+		Calculation(order_xi[i], order_eta[i],
+					knot_n_xi[i], knot_n_eta[i],
+					cntl_p_n_xi[i], cntl_p_n_eta[i],
+					knot_vec_xi[i], knot_vec_eta[i],
+					cntl_px[i], cntl_py[i],
+					disp_cntl_px[i], disp_cntl_py[i],
+					weight[i]);
+		printf("-----------End calculation at patch %d-----------\n\n", i);
+	
+		if (i >= n_patch_glo)	//ローカル上のパッチに対しては重合計算行う
+		{
+			patch_n_loc = i;
+			printf("----------Start overlay calculation at patch %d in LOCAL patch----------\n\n", i);
+			for (j = 0; j < n_patch_glo; j++)
 			{
-				patch_n_loc = i;
-				printf("----------Start overlay calculation at patch %d in LOCAL patch----------\n\n", i);
-				for (j = 0; j < n_patch_glo; j++)
-				{
-					patch_n_glo = j;
-					//printf("patch_n_loc: %d \tpatch_n_glo: %d\n",
-					//		  patch_n_loc, patch_n_glo);
-					Calculation_overlay(order_xi[patch_n_loc],order_eta[patch_n_loc],
-										knot_n_xi[patch_n_loc], knot_n_eta[patch_n_loc],
-										cntl_p_n_xi[patch_n_loc], cntl_p_n_eta[patch_n_loc],
-										knot_vec_xi[patch_n_loc], knot_vec_eta[patch_n_loc],
-										cntl_px[patch_n_loc], cntl_py[patch_n_loc],
-										disp_cntl_px[patch_n_loc], disp_cntl_py[patch_n_loc],
-										weight[patch_n_loc],
-										order_xi[patch_n_glo],order_eta[patch_n_glo],
-										knot_n_xi[patch_n_glo], knot_n_eta[patch_n_glo],
-										cntl_p_n_xi[patch_n_glo], cntl_p_n_eta[patch_n_glo],
-										knot_vec_xi[patch_n_glo], knot_vec_eta[patch_n_glo],
-										cntl_px[patch_n_glo], cntl_py[patch_n_glo],
-										disp_cntl_px[patch_n_glo], disp_cntl_py[patch_n_glo],
-										weight[patch_n_glo]);
+				patch_n_glo = j;
+				//printf("patch_n_loc: %d \tpatch_n_glo: %d\n",
+				//		  patch_n_loc, patch_n_glo);
+				Calculation_overlay(order_xi[patch_n_loc],order_eta[patch_n_loc],
+									knot_n_xi[patch_n_loc], knot_n_eta[patch_n_loc],
+									cntl_p_n_xi[patch_n_loc], cntl_p_n_eta[patch_n_loc],
+									knot_vec_xi[patch_n_loc], knot_vec_eta[patch_n_loc],
+									cntl_px[patch_n_loc], cntl_py[patch_n_loc],
+									disp_cntl_px[patch_n_loc], disp_cntl_py[patch_n_loc],
+									weight[patch_n_loc],
+									order_xi[patch_n_glo],order_eta[patch_n_glo],
+									knot_n_xi[patch_n_glo], knot_n_eta[patch_n_glo],
+									cntl_p_n_xi[patch_n_glo], cntl_p_n_eta[patch_n_glo],
+									knot_vec_xi[patch_n_glo], knot_vec_eta[patch_n_glo],
+									cntl_px[patch_n_glo], cntl_py[patch_n_glo],
+									disp_cntl_px[patch_n_glo], disp_cntl_py[patch_n_glo],
+									weight[patch_n_glo]);
 
-				}
-			}	
-		}
+			}
+		}	
 	}
 
 	return 0;
@@ -3030,7 +3031,7 @@ void ShapeFunction1D(double Position_Data_param[DIMENSION], int j, int e)
 	{
 		for (p = 1; p <= Order[Element_patch[e]][j]; p++)
 		{
-			Shape[j][ii][p] = 0;
+			Shape[j][ii][p] = 0.0;
 		}
 	}
 	double left_term, right_term;
@@ -4751,7 +4752,7 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 	return 0;	
 }
 
-///////////////////////////////////////////////////
+//////////////////////////////////////////////////
 //////////////歪と応力
 //////////////////////////////////////////////////
 void Make_Strain(double E, double nu, int Total_Element, int El_No, int Total_Control_Point)
