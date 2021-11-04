@@ -1529,7 +1529,7 @@ void Debug_printf(int tm, char *section)
 void OutputData(int tm, char *filename)
 {
     int a = strlen(filename);
-    char str[a + 7];
+    char str[256];
 
     int i, j;
     int temp1 = 0;
@@ -1562,7 +1562,7 @@ void OutputData(int tm, char *filename)
     temp1++;
     str[temp1] = '\0';
     temp1++;
-    
+
     fp = fopen(str, "w");
 
     fprintf(fp, "input file name:\t");

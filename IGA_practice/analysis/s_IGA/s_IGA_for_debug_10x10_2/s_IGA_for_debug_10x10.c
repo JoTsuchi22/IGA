@@ -4102,7 +4102,8 @@ int Calc_xi_eta(double px, double py,
 	int i;
 	// int repeat = 1000;
 	// double tol = 10e-8;
-	int repeat = 10000;
+	// int repeat = 10000;
+	int repeat = 100;
 	double tol = 10e-14;
 
 	//初期値の設定
@@ -6447,7 +6448,8 @@ int CalcXiEtaByNR(double px, double py,
 	int i;
 	// int repeat = 1000;
 	// double tol = 10e-8;
-	int repeat = 10000;
+	// int repeat = 10000;
+	int repeat = 100;
 	double tol = 10e-14;
 
 	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
@@ -6474,6 +6476,7 @@ int CalcXiEtaByNR(double px, double py,
 		//if (temp_tol_x < tol && temp_tol_y < tol) {
         if (temp_tol_x + temp_tol_y < tol) {
 			printf("rNURBS\n");
+			printf("repeat = %d\n", i);
 			if (temp_xi == knot_vec_xi[0] || temp_eta == knot_vec_eta[0])
 			{
 				break;
@@ -6642,7 +6645,8 @@ int CalcXiEtaByNR(double px, double py,
 		//収束した場合////////////////////////////////////////////////////////////////
 		//if (temp_tol_x < tol && temp_tol_y < tol) {
         if (temp_tol_x + temp_tol_y < tol) {
-			printf("lNURBS\n");		
+			printf("lNURBS\n");
+			printf("repeat = %d\n", i);	
 			if (temp_xi == knot_vec_xi[cntl_p_n_xi + order_xi] || temp_eta == knot_vec_eta[cntl_p_n_eta + order_eta])
 			{
 				break;
