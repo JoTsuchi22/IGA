@@ -497,7 +497,8 @@ void KI_update(int tm, int insert_parameter_axis)
 void KI_reset_array()
 {
     int i, j;
-    for (i = 0; i < MAX_N_Controlpoint_each_parameter; i++){
+    for (i = 0; i < MAX_N_Controlpoint_each_parameter; i++)
+    {
         for (j = 0; j < MAX_N_Controlpoint_each_parameter; j++)
         {
             x_array[i][j] = 0.0;
@@ -1166,30 +1167,39 @@ void KR_calc_Tinv_1D(int tm, int removal_parameter_axis)
 
     double temp;
 
-    for (i = 0; i < l; i++) {
-        for (j = 0; j < l; j++) {
-        B_inv[i][j] = 0.0;
+    for (i = 0; i < l; i++)
+    {
+        for (j = 0; j < l; j++)
+        {
+            B_inv[i][j] = 0.0;
         }
     }
 
-    for (i = 0; i < l; i++) {
+    for (i = 0; i < l; i++)
+    {
         B_inv[i][i] = 1.0;
     }
 
-    for (k = 0; k < l; k++) {
+    for (k = 0; k < l; k++)
+    {
         temp = B[k][k];
-        for (i = 0; i < l; i++) {
-        B[k][i] /= temp;
-        B_inv[k][i] /= temp;
+        for (i = 0; i < l; i++)
+        {
+            B[k][i] /= temp;
+            B_inv[k][i] /= temp;
         }
-        for (i = 0; i < l; i++) {
-        if (i != k) {
-            temp = B[i][k];
-            for (j = 0; j < l; j++) {
-            B[i][j] -= B[k][j] * temp;
-            B_inv[i][j] -= B_inv[k][j] * temp;
+        
+        for (i = 0; i < l; i++)
+        {
+            if (i != k)
+            {
+                temp = B[i][k];
+                for (j = 0; j < l; j++)
+                {
+                    B[i][j] -= B[k][j] * temp;
+                    B_inv[i][j] -= B_inv[k][j] * temp;
+                }
             }
-        }
         }
     }
 
@@ -1292,7 +1302,8 @@ void KR_update(int tm, int removal_parameter_axis)
 void KR_reset_array()
 {
     int i, j;
-    for (i = 0; i < MAX_N_Controlpoint_each_parameter; i++){
+    for (i = 0; i < MAX_N_Controlpoint_each_parameter; i++)
+    {
         for (j = 0; j < MAX_N_Controlpoint_each_parameter; j++)
         {
             x_array[i][j] = 0.0;
