@@ -529,7 +529,7 @@ void KI_reset_array()
 void KI_non_uniform_2D(int tm, int insert_parameter_axis, int KI_non_uniform)
 {
     int i;
-    int other_axis;
+    int other_axis = 0;
     if (insert_parameter_axis == 0)
     {
         other_axis = 1;
@@ -1334,7 +1334,7 @@ void KR_reset_array()
 void KR_non_uniform_2D(int tm, int removal_parameter_axis)
 {
     int i;
-    int other_axis;
+    int other_axis = 0;
     if (removal_parameter_axis == 0)
     {
         other_axis = 1;
@@ -1365,7 +1365,7 @@ void KR_non_uniform_2D(int tm, int removal_parameter_axis)
 
 void OE_2D(int tm, int elevation_parameter_axis)
 {
-    int other_axis;
+    int other_axis = 0;
     if (elevation_parameter_axis == 0)
     {
         other_axis = 1;

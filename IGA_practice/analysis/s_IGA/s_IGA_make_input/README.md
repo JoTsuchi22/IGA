@@ -7,7 +7,7 @@ inputdataを編集するためのプログラムです．
 編集可能なパッチは1つだけです．
 
 コンパイル
-gcc -o s_IGA_make_input.x s_IGA_make_input.c -lm -Wall
+gcc -o s_IGA_make_input.x s_IGA_make_input.c -O2 -lm -Wall
 
 実行
 s_IGA_make_input

@@ -50,16 +50,16 @@ mkdir checkAns
 //#define ERROR					0
 #define PI  3.14159265359
 
-#define MAX_NO_CCpoint_ON_ELEMENT 16						//分割節点数
-#define DIMENSION 2											//次元数
-#define MAX_KIEL_SIZE MAX_NO_CCpoint_ON_ELEMENT * DIMENSION	//要素分割マトリックスの大きさ
-#define Ng 4												//Gauss-Legendreの足す回数
-#define POW_Ng Ng * Ng										//NgのDIMENSION乗の計算
-#define D_MATRIX_SIZE 3										//応力歪マトリックスの大きさ（2次元:3 3次元:6）
+#define MAX_NO_CCpoint_ON_ELEMENT 16					   //分割節点数
+#define DIMENSION 2										   //次元数
+#define MAX_KIEL_SIZE MAX_NO_CCpoint_ON_ELEMENT *DIMENSION //要素分割マトリックスの大きさ
+#define Ng 3											   //Gauss-Legendreの足す回数
+#define POW_Ng Ng * Ng									   //NgのDIMENSION乗の計算
+#define D_MATRIX_SIZE 3									   //応力歪マトリックスの大きさ（2次元:3 3次元:6）
 
-#define K_DIVISION_LENGE 10 	//全体剛性マトリックスのcol&ptrを制作時に分ける節点数
-// #define EPS 0.0000000001		//連立1次方程式の残差
-#define EPS 1.0e-13				//連立1次方程式の残差
+#define K_DIVISION_LENGE 10 //全体剛性マトリックスのcol&ptrを制作時に分ける節点数
+#define EPS 0.0000000001		//連立1次方程式の残差
+// #define EPS 1.0e-13		//連立1次方程式の残差
 #define N_STRAIN 4
 #define N_STRESS 4
 //各種最大配置可能数
@@ -68,7 +68,7 @@ mkdir checkAns
 #define MAX_N_NODE 110000
 #define MAX_N_LOAD 100000
 #define MAX_N_CONSTRAINT 100000
-#define MAX_K_WHOLE_SIZE MAX_N_NODE * DIMENSION
+#define MAX_K_WHOLE_SIZE MAX_N_NODE *DIMENSION
 #define MAX_NON_ZERO 10000000
 #define MAX_N_PATCH 100
 #define MAX_N_Controlpoint_in_Patch 10000
@@ -301,7 +301,7 @@ void Add_Equivalent_Nodal_Forec_to_F_Vec(int Total_Control_Point);
 void GetLocData();
 void ReadFile();
 int CalcXiEtaByNR(double px, double py,
-                  double *input_knot_vec_xi, double *input_knot_vec_eta,
+                  double *knot_vec_xi, double *knot_vec_eta,
                   double *cntl_px, double *cntl_py,
                   double *disp_cntl_px, double *disp_cntl_py,
                   int cntl_p_n_xi, int cntl_p_n_eta,
@@ -312,7 +312,7 @@ int CalcXiEtaByNR(double px, double py,
 static void Calculation(int order_xi, int order_eta,
 						int knot_n_xi, int knot_n_eta,
 						int cntl_p_n_xi, int cntl_p_n_eta,
-						double *input_knot_vec_xi, double *input_knot_vec_eta,
+						double *knot_vec_xi, double *knot_vec_eta,
 						double *cntl_px, double *cntl_py,
 						double *disp_cntl_px, double *disp_cntl_py,
 						double *weight);
@@ -745,11 +745,7 @@ int main(int argc, char *argv[])
 
     //for s-IGA
     //反復回数の設定
-
-	/* 反復回数を ndof*5 として収束判定を1.0e-14 にしている(収束しない場合の対策)
-	   収束判定は厳しくしているが収束しなくても最後の反復結果が反映されるので収束しやすくなる */
-
-    max_itr = K_Whole_Size * 5;
+    max_itr = K_Whole_Size;
 
 	Diag_Scaling_CG_pre(K_Whole_Size, 0);
     printf("Finish 1st Diag_Scaling_CG_Pre\n");
@@ -3551,12 +3547,6 @@ double rBasisFunc(double *knot_vec, int knot_index,
 			}
 			sum1 = 0.0;
 			sum2 = 0.0;
-
-			// for (int temp_i = 0; temp_i < No_knot[0][0]; temp_i++)
-			// {
-			// 	printf("knot_vec[%d] = %f\n", temp_i, knot_vec[temp_i]);
-			// }
-
 			if ( (knot_vec[knot_index + order] - knot_vec[knot_index]) != 0.0) {
 				sum1 = order
 					   / (knot_vec[knot_index + order] - knot_vec[knot_index])
@@ -3642,7 +3632,7 @@ double lBasisFunc(double *knot_vec, int knot_index,
 	return (*output);
 }
 
-double NURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
+double NURBS_surface(double *knot_vec_xi, double *knot_vec_eta,
                      double *cntl_px, double *cntl_py,
                      int cntl_p_n_xi, int cntl_p_n_eta,
                      double *weight, int order_xi, int order_eta,
@@ -3676,7 +3666,7 @@ double NURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	int index_max_eta = cntl_p_n_eta - 1; //2020_09_12
 
 	for (i = 0; i < cntl_p_n_xi; i++) {
-		if ( input_knot_vec_xi[i + 1] > xi ) {
+		if ( knot_vec_xi[i + 1] > xi ) {
 			index_min_xi = i - order_xi;
 			index_max_xi = i + 1;
 			break;
@@ -3686,7 +3676,7 @@ double NURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_xi > cntl_p_n_xi) index_max_xi = cntl_p_n_xi; //2020_09_12
 
 	for (i = 0; i < cntl_p_n_eta; i++) {
-		if ( input_knot_vec_eta[i + 1] > eta ) {
+		if ( knot_vec_eta[i + 1] > eta ) {
 			index_min_eta = i - order_eta;
 			index_max_eta = i + 1;
 			break;
@@ -3696,10 +3686,10 @@ double NURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_eta > cntl_p_n_eta) index_max_eta = cntl_p_n_eta; //2020_09_12
 
 	for (i = index_min_xi; i <= index_max_xi; i++) {
-		BasisFunc(input_knot_vec_xi, i, order_xi, xi,
+		BasisFunc(knot_vec_xi, i, order_xi, xi,
 		          &temp_output_xi, &temp_d_output_xi);
 		for (j = index_min_eta; j <= index_max_eta; j++) {
-			BasisFunc(input_knot_vec_eta, j, order_eta, eta,
+			BasisFunc(knot_vec_eta, j, order_eta, eta,
 			          &temp_output_eta, &temp_d_output_eta);
 			temp_index = i + j * cntl_p_n_xi;
 			temp1 = temp_output_xi * temp_output_eta
@@ -3734,7 +3724,7 @@ double NURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	return denominator;
 }
 
-double rNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
+double rNURBS_surface(double *knot_vec_xi, double *knot_vec_eta,
                       double *cntl_px, double *cntl_py,
                       int cntl_p_n_xi, int cntl_p_n_eta,
                       double *weight, int order_xi, int order_eta,
@@ -3767,7 +3757,7 @@ double rNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	int index_max_eta = cntl_p_n_eta - 1;
 
 	for (i = 0; i < cntl_p_n_xi; i++) {
-		if ( input_knot_vec_xi[i + 1] >= xi ) {
+		if ( knot_vec_xi[i + 1] >= xi ) {
 			index_min_xi = i - order_xi;
 			index_max_xi = i + 1;
 			break;
@@ -3777,7 +3767,7 @@ double rNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_xi > cntl_p_n_xi) index_max_xi = cntl_p_n_xi;
 
 	for (i = 0; i < cntl_p_n_eta; i++) {
-		if ( input_knot_vec_eta[i + 1] >= eta ) {
+		if ( knot_vec_eta[i + 1] >= eta ) {
 			index_min_eta = i - order_eta;
 			index_max_eta = i + 1;
 			break;
@@ -3787,10 +3777,10 @@ double rNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_eta > cntl_p_n_eta) index_max_eta = cntl_p_n_eta;
 
 	for (i = index_min_xi; i <= index_max_xi; i++) {
-		rBasisFunc(input_knot_vec_xi, i, order_xi, xi,
+		rBasisFunc(knot_vec_xi, i, order_xi, xi,
 				   &temp_output_xi, &temp_d_output_xi);
 		for (j = index_min_eta; j <= index_max_eta; j++) {
-			rBasisFunc(input_knot_vec_eta, j, order_eta, eta,
+			rBasisFunc(knot_vec_eta, j, order_eta, eta,
 					   &temp_output_eta, &temp_d_output_eta);
 			temp_index = i + j * cntl_p_n_xi;
 			temp1 = temp_output_xi * temp_output_eta
@@ -3825,7 +3815,7 @@ double rNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	return denominator;
 }
 
-double lNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
+double lNURBS_surface(double *knot_vec_xi, double *knot_vec_eta,
                       double *cntl_px, double *cntl_py,
                       int cntl_p_n_xi, int cntl_p_n_eta,
                       double *weight, int order_xi, int order_eta,
@@ -3857,7 +3847,7 @@ double lNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	int index_max_eta = cntl_p_n_eta - 1;
 
 	for (i = 0; i < cntl_p_n_xi; i++) {
-		if ( input_knot_vec_xi[i + 1] >= xi ) {
+		if ( knot_vec_xi[i + 1] >= xi ) {
 			index_min_xi = i - order_xi;
 			index_max_xi = i + 1;
 			break;
@@ -3867,7 +3857,7 @@ double lNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_xi > cntl_p_n_xi) index_max_xi = cntl_p_n_xi;
 
 	for (i = 0; i < cntl_p_n_eta; i++) {
-		if ( input_knot_vec_eta[i + 1] >= eta ) {
+		if ( knot_vec_eta[i + 1] >= eta ) {
 			index_min_eta = i - order_eta;
 			index_max_eta = i + 1;
 			break;
@@ -3877,11 +3867,11 @@ double lNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_eta > cntl_p_n_eta) index_max_eta = cntl_p_n_eta;
 
 	for (i = index_min_xi; i <= index_max_xi; i++) {
-		lBasisFunc(input_knot_vec_xi, i,
+		lBasisFunc(knot_vec_xi, i,
 				   cntl_p_n_xi, order_xi, xi,
 				   &temp_output_xi, &temp_d_output_xi);
 		for (j = index_min_eta; j <= index_max_eta; j++) {
-			lBasisFunc(input_knot_vec_eta, j,
+			lBasisFunc(knot_vec_eta, j,
 					   cntl_p_n_eta, order_eta, eta,
 					   &temp_output_eta, &temp_d_output_eta);
 			temp_index = i + j * cntl_p_n_xi;
@@ -3917,7 +3907,7 @@ double lNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	return denominator;
 }
 
-double rlNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
+double rlNURBS_surface(double *knot_vec_xi, double *knot_vec_eta,
                        double *cntl_px, double *cntl_py,
                        int cntl_p_n_xi, int cntl_p_n_eta,
                        double *weight, int order_xi, int order_eta,
@@ -3950,7 +3940,7 @@ double rlNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	int index_max_eta = cntl_p_n_eta - 1;
 
 	for (i = 0; i < cntl_p_n_xi; i++) {
-		if ( input_knot_vec_xi[i + 1] >= xi ) {
+		if ( knot_vec_xi[i + 1] >= xi ) {
 			index_min_xi = i - order_xi;
 			index_max_xi = i + 1;
 			break;
@@ -3960,7 +3950,7 @@ double rlNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_xi > cntl_p_n_xi) index_max_xi = cntl_p_n_xi;
 
 	for (i = 0; i < cntl_p_n_eta; i++) {
-		if ( input_knot_vec_eta[i + 1] >= eta ) {
+		if ( knot_vec_eta[i + 1] >= eta ) {
 			index_min_eta = i - order_eta;
 			index_max_eta = i + 1;
 			break;
@@ -3970,10 +3960,10 @@ double rlNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_eta > cntl_p_n_eta) index_max_eta = cntl_p_n_eta;
 
 	for (i = index_min_xi; i <= index_max_xi; i++) {
-		rBasisFunc(input_knot_vec_xi, i, order_xi, xi,
+		rBasisFunc(knot_vec_xi, i, order_xi, xi,
 				   &temp_output_xi, &temp_d_output_xi);
 		for (j = index_min_eta; j <= index_max_eta; j++) {
-			lBasisFunc(input_knot_vec_eta, j,
+			lBasisFunc(knot_vec_eta, j,
 					   cntl_p_n_eta, order_eta, eta,
 					   &temp_output_eta, &temp_d_output_eta);
 			temp_index = i + j * cntl_p_n_xi;
@@ -4009,7 +3999,7 @@ double rlNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	return denominator;
 }
 
-double lrNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
+double lrNURBS_surface(double *knot_vec_xi, double *knot_vec_eta,
                        double *cntl_px, double *cntl_py,
                        int cntl_p_n_xi, int cntl_p_n_eta,
                        double *weight, int order_xi, int order_eta,
@@ -4042,7 +4032,7 @@ double lrNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	int index_max_eta = cntl_p_n_eta - 1;
 
 	for (i = 0; i < cntl_p_n_xi; i++) {
-		if ( input_knot_vec_xi[i + 1] >= xi ) {
+		if ( knot_vec_xi[i + 1] >= xi ) {
 			index_min_xi = i - order_xi;
 			index_max_xi = i + 1;
 			break;
@@ -4052,7 +4042,7 @@ double lrNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_xi > cntl_p_n_xi) index_max_xi = cntl_p_n_xi;
 
 	for (i = 0; i < cntl_p_n_eta; i++) {
-		if ( input_knot_vec_eta[i + 1] >= eta ) {
+		if ( knot_vec_eta[i + 1] >= eta ) {
 			index_min_eta = i - order_eta;
 			index_max_eta = i + 1;
 			break;
@@ -4062,11 +4052,11 @@ double lrNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 	if (index_max_eta > cntl_p_n_eta) index_max_eta = cntl_p_n_eta;
 
 	for (i = index_min_xi; i <= index_max_xi; i++) {
-		lBasisFunc(input_knot_vec_xi, i,
+		lBasisFunc(knot_vec_xi, i,
 				   cntl_p_n_xi, order_xi, xi,
 				   &temp_output_xi, &temp_d_output_xi);
 		for (j = index_min_eta; j <= index_max_eta; j++) {
-			rBasisFunc(input_knot_vec_eta, j, order_eta, eta,
+			rBasisFunc(knot_vec_eta, j, order_eta, eta,
 					   &temp_output_eta, &temp_d_output_eta);
 			temp_index = i + j * cntl_p_n_xi;
 			temp1 = temp_output_xi * temp_output_eta
@@ -4103,7 +4093,7 @@ double lrNURBS_surface(double *input_knot_vec_xi, double *input_knot_vec_eta,
 
 //算出したローカルパッチ各要素の頂点の物理座標のグローバルパッチでの(xi,eta)算出
 int Calc_xi_eta(double px, double py,
-                  double *input_knot_vec_xi, double *input_knot_vec_eta,
+                  double *knot_vec_xi, double *knot_vec_eta,
                   double *cntl_px, double *cntl_py,
                   int cntl_p_n_xi, int cntl_p_n_eta,
                   double *weight, int order_xi, int order_eta,
@@ -4128,9 +4118,9 @@ int Calc_xi_eta(double px, double py,
 	double tol = 10e-14;
 
 	//初期値の設定
-	temp_xi = input_knot_vec_xi[0] + input_knot_vec_xi[cntl_p_n_xi + order_xi];
+	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
 	temp_xi *= 0.5;
-	temp_eta = input_knot_vec_eta[0] + input_knot_vec_eta[cntl_p_n_eta + order_eta];
+	temp_eta = knot_vec_eta[0] + knot_vec_eta[cntl_p_n_eta + order_eta];
 	temp_eta *= 0.5;
 	//printf("r_temp_xi_eta % 1.8e % 1.8e\n", temp_xi, temp_eta);
 
@@ -4180,14 +4170,14 @@ int Calc_xi_eta(double px, double py,
 		            + temp_matrix[1][1] * (py - temp_y);
 		temp_xi = temp_xi + temp_dxi;
 		temp_eta = temp_eta + temp_deta;
-		if (temp_xi < input_knot_vec_xi[0])
-			temp_xi = input_knot_vec_xi[0];
-		if (temp_xi > input_knot_vec_xi[cntl_p_n_xi + order_xi])
-			temp_xi = input_knot_vec_xi[cntl_p_n_xi + order_xi];
-		if (temp_eta < input_knot_vec_eta[0])
-			temp_eta = input_knot_vec_eta[0];
-		if (temp_eta > input_knot_vec_eta[cntl_p_n_eta + order_eta])
-			temp_eta = input_knot_vec_eta[cntl_p_n_eta + order_eta];
+		if (temp_xi < knot_vec_xi[0])
+			temp_xi = knot_vec_xi[0];
+		if (temp_xi > knot_vec_xi[cntl_p_n_xi + order_xi])
+			temp_xi = knot_vec_xi[cntl_p_n_xi + order_xi];
+		if (temp_eta < knot_vec_eta[0])
+			temp_eta = knot_vec_eta[0];
+		if (temp_eta > knot_vec_eta[cntl_p_n_eta + order_eta])
+			temp_eta = knot_vec_eta[cntl_p_n_eta + order_eta];
 
         //printf("r_xi:  % 1.8e\n", temp_xi);
 		//printf("r_eta: % 1.8e\n", temp_eta);
@@ -4198,9 +4188,9 @@ int Calc_xi_eta(double px, double py,
     }
 
 	//初期値の設定
-	temp_xi = input_knot_vec_xi[0] + input_knot_vec_xi[cntl_p_n_xi + order_xi];
+	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
 	temp_xi *= 0.5;
-	temp_eta = input_knot_vec_eta[0] + input_knot_vec_eta[cntl_p_n_eta + order_eta];
+	temp_eta = knot_vec_eta[0] + knot_vec_eta[cntl_p_n_eta + order_eta];
 	temp_eta *= 0.5;
 	//printf("l_temp_xi_eta % 1.8e % 1.8e\n", temp_xi, temp_eta);
 
@@ -4242,23 +4232,23 @@ int Calc_xi_eta(double px, double py,
 		            + temp_matrix[1][1] * (py - temp_y);
 		temp_xi = temp_xi + temp_dxi;
 		temp_eta = temp_eta + temp_deta;
-		if (temp_xi < input_knot_vec_xi[0])
-			temp_xi = input_knot_vec_xi[0];
-		if (temp_xi > input_knot_vec_xi[cntl_p_n_xi + order_xi])
-			temp_xi = input_knot_vec_xi[cntl_p_n_xi + order_xi];
-		if (temp_eta < input_knot_vec_eta[0])
-			temp_eta = input_knot_vec_eta[0];
-		if (temp_eta > input_knot_vec_eta[cntl_p_n_eta + order_eta])
-			temp_eta = input_knot_vec_eta[cntl_p_n_eta + order_eta];
+		if (temp_xi < knot_vec_xi[0])
+			temp_xi = knot_vec_xi[0];
+		if (temp_xi > knot_vec_xi[cntl_p_n_xi + order_xi])
+			temp_xi = knot_vec_xi[cntl_p_n_xi + order_xi];
+		if (temp_eta < knot_vec_eta[0])
+			temp_eta = knot_vec_eta[0];
+		if (temp_eta > knot_vec_eta[cntl_p_n_eta + order_eta])
+			temp_eta = knot_vec_eta[cntl_p_n_eta + order_eta];
 
 		//double temp_tol = sqrt(temp_dxi * temp_dxi + temp_deta * temp_deta);
 		//printf("% 1.15e % 1.15e % 1.15e\n", temp_xi, temp_eta, temp_tol);
     }
 
 	//初期値の設定
-	temp_xi = input_knot_vec_xi[0] + input_knot_vec_xi[cntl_p_n_xi + order_xi];
+	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
 	temp_xi *= 0.5;
-	temp_eta = input_knot_vec_eta[0] + input_knot_vec_eta[cntl_p_n_eta + order_eta];
+	temp_eta = knot_vec_eta[0] + knot_vec_eta[cntl_p_n_eta + order_eta];
 	temp_eta *= 0.5;
 	//printf("rl_temp_xi_eta % 1.8e % 1.8e\n", temp_xi, temp_eta);
 
@@ -4300,23 +4290,23 @@ int Calc_xi_eta(double px, double py,
 		            + temp_matrix[1][1] * (py - temp_y);
 		temp_xi = temp_xi + temp_dxi;
 		temp_eta = temp_eta + temp_deta;
-		if (temp_xi < input_knot_vec_xi[0])
-			temp_xi = input_knot_vec_xi[0];
-		if (temp_xi > input_knot_vec_xi[cntl_p_n_xi + order_xi])
-			temp_xi = input_knot_vec_xi[cntl_p_n_xi + order_xi];
-		if (temp_eta < input_knot_vec_eta[0])
-			temp_eta = input_knot_vec_eta[0];
-		if (temp_eta > input_knot_vec_eta[cntl_p_n_eta + order_eta])
-			temp_eta = input_knot_vec_eta[cntl_p_n_eta + order_eta];
+		if (temp_xi < knot_vec_xi[0])
+			temp_xi = knot_vec_xi[0];
+		if (temp_xi > knot_vec_xi[cntl_p_n_xi + order_xi])
+			temp_xi = knot_vec_xi[cntl_p_n_xi + order_xi];
+		if (temp_eta < knot_vec_eta[0])
+			temp_eta = knot_vec_eta[0];
+		if (temp_eta > knot_vec_eta[cntl_p_n_eta + order_eta])
+			temp_eta = knot_vec_eta[cntl_p_n_eta + order_eta];
 
 		//double temp_tol = sqrt(temp_dxi * temp_dxi + temp_deta * temp_deta);
 		//printf("% 1.15e % 1.15e % 1.15e\n", temp_xi, temp_eta, temp_tol);
     }
 
 	//初期値の設定
-	temp_xi = input_knot_vec_xi[0] + input_knot_vec_xi[cntl_p_n_xi + order_xi];
+	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
 	temp_xi *= 0.5;
-	temp_eta = input_knot_vec_eta[0] + input_knot_vec_eta[cntl_p_n_eta + order_eta];
+	temp_eta = knot_vec_eta[0] + knot_vec_eta[cntl_p_n_eta + order_eta];
 	temp_eta *= 0.5;
 	//printf("lr_temp_xi_eta % 1.8e % 1.8e\n", temp_xi, temp_eta);
 
@@ -4358,14 +4348,14 @@ int Calc_xi_eta(double px, double py,
 		            + temp_matrix[1][1] * (py - temp_y);
 		temp_xi = temp_xi + temp_dxi;
 		temp_eta = temp_eta + temp_deta;
-		if (temp_xi < input_knot_vec_xi[0])
-			temp_xi = input_knot_vec_xi[0];
-		if (temp_xi > input_knot_vec_xi[cntl_p_n_xi + order_xi])
-			temp_xi = input_knot_vec_xi[cntl_p_n_xi + order_xi];
-		if (temp_eta < input_knot_vec_eta[0])
-			temp_eta = input_knot_vec_eta[0];
-		if (temp_eta > input_knot_vec_eta[cntl_p_n_eta + order_eta])
-			temp_eta = input_knot_vec_eta[cntl_p_n_eta + order_eta];
+		if (temp_xi < knot_vec_xi[0])
+			temp_xi = knot_vec_xi[0];
+		if (temp_xi > knot_vec_xi[cntl_p_n_xi + order_xi])
+			temp_xi = knot_vec_xi[cntl_p_n_xi + order_xi];
+		if (temp_eta < knot_vec_eta[0])
+			temp_eta = knot_vec_eta[0];
+		if (temp_eta > knot_vec_eta[cntl_p_n_eta + order_eta])
+			temp_eta = knot_vec_eta[cntl_p_n_eta + order_eta];
 
 		//double temp_tol = sqrt(temp_dxi * temp_dxi + temp_deta * temp_deta);
 		//printf("% 1.15e % 1.15e % 1.15e\n", temp_xi, temp_eta, temp_tol);
@@ -6455,7 +6445,7 @@ void ReadFile()
 }
 
 int CalcXiEtaByNR(double px, double py,
-				  double *input_knot_vec_xi, double *input_knot_vec_eta,
+				  double *knot_vec_xi, double *knot_vec_eta,
 				  double *cntl_px, double *cntl_py,
 				  double *disp_cntl_px, double *disp_cntl_py,
 				  int cntl_p_n_xi, int cntl_p_n_eta,
@@ -6480,14 +6470,14 @@ int CalcXiEtaByNR(double px, double py,
 	int repeat = 100;
 	double tol = 10e-14;
 
-	temp_xi = input_knot_vec_xi[0] + input_knot_vec_xi[cntl_p_n_xi + order_xi];
+	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
 	temp_xi *= 0.5;
-	temp_eta = input_knot_vec_eta[0] + input_knot_vec_eta[cntl_p_n_eta + order_eta];
+	temp_eta = knot_vec_eta[0] + knot_vec_eta[cntl_p_n_eta + order_eta];
 	temp_eta *= 0.5;
 	//printf("% 1.8e % 1.8e\n", temp_xi, temp_eta);
 	
 	for (i = 0; i < repeat; i++) {
-		rNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+		rNURBS_surface(knot_vec_xi, knot_vec_eta,
 		               cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 		               weight, order_xi, order_eta,
 		               temp_xi, temp_eta,
@@ -6505,7 +6495,7 @@ int CalcXiEtaByNR(double px, double py,
         if (temp_tol_x + temp_tol_y < tol) {
 			printf("rNURBS\n");
 			printf("repeat = %d\n", i);
-			if (temp_xi == input_knot_vec_xi[0] || temp_eta == input_knot_vec_eta[0])
+			if (temp_xi == knot_vec_xi[0] || temp_eta == knot_vec_eta[0])
 			{
 				break;
 			}
@@ -6525,21 +6515,21 @@ int CalcXiEtaByNR(double px, double py,
 			double stress_xx, stress_yy, stress_xy;
 
 			for (i = 0; i < knot_n_xi; i++) {
-				if ( input_knot_vec_xi[i] < temp_xi && temp_xi <= input_knot_vec_xi[i + 1]) {
-					dtilda_xi = ( input_knot_vec_xi[i + 1] - input_knot_vec_xi[i] ) / 2.0;
+				if ( knot_vec_xi[i] < temp_xi && temp_xi <= knot_vec_xi[i + 1]) {
+					dtilda_xi = ( knot_vec_xi[i + 1] - knot_vec_xi[i] ) / 2.0;
 					printf("xi%f\n", dtilda_xi);
 					break;
 				}
 			}
 			for (i = 0; i < knot_n_eta; i++) {
-				if ( input_knot_vec_eta[i] < temp_eta && temp_eta <= input_knot_vec_eta[i + 1]) {
-					dtilda_eta = ( input_knot_vec_eta[i + 1] - input_knot_vec_eta[i] ) / 2.0;
+				if ( knot_vec_eta[i] < temp_eta && temp_eta <= knot_vec_eta[i + 1]) {
+					dtilda_eta = ( knot_vec_eta[i + 1] - knot_vec_eta[i] ) / 2.0;
 					printf("eta%f\n", dtilda_eta);
 					break;
 				}
 			}
 
-			rNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			rNURBS_surface(knot_vec_xi, knot_vec_eta,
 			               cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 			               weight, order_xi, order_eta,
 			               temp_xi, temp_eta,
@@ -6549,7 +6539,7 @@ int CalcXiEtaByNR(double px, double py,
 			printf("% 1.4e % 1.4e % 1.4e % 1.4e\n",
 				   dxi_x, deta_x, dxi_y, deta_y);
 
-			rNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			rNURBS_surface(knot_vec_xi, knot_vec_eta,
 			               disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 			               weight, order_xi, order_eta,
 			               temp_xi, temp_eta,
@@ -6640,24 +6630,24 @@ int CalcXiEtaByNR(double px, double py,
 		            + temp_matrix[1][1] * (py - temp_y);
 		temp_xi = temp_xi + temp_dxi;
 		temp_eta = temp_eta + temp_deta;
-		if (temp_xi < input_knot_vec_xi[0])
-			temp_xi = input_knot_vec_xi[0];
-		if (temp_xi > input_knot_vec_xi[cntl_p_n_xi + order_xi])
-			temp_xi = input_knot_vec_xi[cntl_p_n_xi + order_xi];
-		if (temp_eta < input_knot_vec_eta[0])
-			temp_eta = input_knot_vec_eta[0];
-		if (temp_eta > input_knot_vec_eta[cntl_p_n_eta + order_eta])
-			temp_eta = input_knot_vec_eta[cntl_p_n_eta + order_eta];
+		if (temp_xi < knot_vec_xi[0])
+			temp_xi = knot_vec_xi[0];
+		if (temp_xi > knot_vec_xi[cntl_p_n_xi + order_xi])
+			temp_xi = knot_vec_xi[cntl_p_n_xi + order_xi];
+		if (temp_eta < knot_vec_eta[0])
+			temp_eta = knot_vec_eta[0];
+		if (temp_eta > knot_vec_eta[cntl_p_n_eta + order_eta])
+			temp_eta = knot_vec_eta[cntl_p_n_eta + order_eta];
 
 		//temp_tol = sqrt(temp_dxi * temp_dxi + temp_deta * temp_deta);
 		//printf("% 1.15e % 1.15e % 1.15e\n", temp_xi, temp_eta, temp_tol);
 	}
-	temp_xi = input_knot_vec_xi[0] + input_knot_vec_xi[cntl_p_n_xi + order_xi];
+	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
 	temp_xi *= 0.5;
-	temp_eta = input_knot_vec_eta[0] + input_knot_vec_eta[cntl_p_n_eta + order_eta];
+	temp_eta = knot_vec_eta[0] + knot_vec_eta[cntl_p_n_eta + order_eta];
 	temp_eta *= 0.5;
 	for (i = 0; i < repeat; i++) {
-		lNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+		lNURBS_surface(knot_vec_xi, knot_vec_eta,
 		               cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 		               weight, order_xi, order_eta,
 		               temp_xi, temp_eta,
@@ -6675,7 +6665,7 @@ int CalcXiEtaByNR(double px, double py,
         if (temp_tol_x + temp_tol_y < tol) {
 			printf("lNURBS\n");
 			printf("repeat = %d\n", i);	
-			if (temp_xi == input_knot_vec_xi[cntl_p_n_xi + order_xi] || temp_eta == input_knot_vec_eta[cntl_p_n_eta + order_eta])
+			if (temp_xi == knot_vec_xi[cntl_p_n_xi + order_xi] || temp_eta == knot_vec_eta[cntl_p_n_eta + order_eta])
 			{
 				break;
 			}
@@ -6695,21 +6685,21 @@ int CalcXiEtaByNR(double px, double py,
 			double stress_xx, stress_yy, stress_xy;
 
 			for (i = 0; i < knot_n_xi; i++) {
-				if ( input_knot_vec_xi[i] <= temp_xi && temp_xi < input_knot_vec_xi[i + 1]) {
-					dtilda_xi = ( input_knot_vec_xi[i + 1] - input_knot_vec_xi[i] ) / 2.0;
+				if ( knot_vec_xi[i] <= temp_xi && temp_xi < knot_vec_xi[i + 1]) {
+					dtilda_xi = ( knot_vec_xi[i + 1] - knot_vec_xi[i] ) / 2.0;
 					printf("%f\n", dtilda_xi);
 					break;
 				}
 			}
 			for (i = 0; i < knot_n_eta; i++) {
-				if ( input_knot_vec_eta[i] <= temp_eta && temp_eta < input_knot_vec_eta[i + 1]) {
-					dtilda_eta = ( input_knot_vec_eta[i + 1] - input_knot_vec_eta[i] ) / 2.0;
+				if ( knot_vec_eta[i] <= temp_eta && temp_eta < knot_vec_eta[i + 1]) {
+					dtilda_eta = ( knot_vec_eta[i + 1] - knot_vec_eta[i] ) / 2.0;
 					printf("%f\n", dtilda_eta);
 					break;
 				}
 			}
 
-			lNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			lNURBS_surface(knot_vec_xi, knot_vec_eta,
 			               cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 			               weight, order_xi, order_eta,
 			               temp_xi, temp_eta,
@@ -6719,7 +6709,7 @@ int CalcXiEtaByNR(double px, double py,
 			printf("% 1.4e % 1.4e % 1.4e % 1.4e\n",
 				   dxi_x, deta_x, dxi_y, deta_y);
 
-			lNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			lNURBS_surface(knot_vec_xi, knot_vec_eta,
 			               disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 			               weight, order_xi, order_eta,
 			               temp_xi, temp_eta,
@@ -6810,24 +6800,24 @@ int CalcXiEtaByNR(double px, double py,
 		            + temp_matrix[1][1] * (py - temp_y);
 		temp_xi = temp_xi + temp_dxi;
 		temp_eta = temp_eta + temp_deta;
-		if (temp_xi < input_knot_vec_xi[0])
-			temp_xi = input_knot_vec_xi[0];
-		if (temp_xi > input_knot_vec_xi[cntl_p_n_xi + order_xi])
-			temp_xi = input_knot_vec_xi[cntl_p_n_xi + order_xi];
-		if (temp_eta < input_knot_vec_eta[0])
-			temp_eta = input_knot_vec_eta[0];
-		if (temp_eta > input_knot_vec_eta[cntl_p_n_eta + order_eta])
-			temp_eta = input_knot_vec_eta[cntl_p_n_eta + order_eta];
+		if (temp_xi < knot_vec_xi[0])
+			temp_xi = knot_vec_xi[0];
+		if (temp_xi > knot_vec_xi[cntl_p_n_xi + order_xi])
+			temp_xi = knot_vec_xi[cntl_p_n_xi + order_xi];
+		if (temp_eta < knot_vec_eta[0])
+			temp_eta = knot_vec_eta[0];
+		if (temp_eta > knot_vec_eta[cntl_p_n_eta + order_eta])
+			temp_eta = knot_vec_eta[cntl_p_n_eta + order_eta];
 
 		//temp_tol = sqrt(temp_dxi * temp_dxi + temp_deta * temp_deta);
 		//printf("% 1.15e % 1.15e % 1.15e\n", temp_xi, temp_eta, temp_tol);
 	}
-	temp_xi = input_knot_vec_xi[0] + input_knot_vec_xi[cntl_p_n_xi + order_xi];
+	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
 	temp_xi *= 0.5;
-	temp_eta = input_knot_vec_eta[0] + input_knot_vec_eta[cntl_p_n_eta + order_eta];
+	temp_eta = knot_vec_eta[0] + knot_vec_eta[cntl_p_n_eta + order_eta];
 	temp_eta *= 0.5;
 	for (i = 0; i < repeat; i++) {
-		rlNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+		rlNURBS_surface(knot_vec_xi, knot_vec_eta,
 		               cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 		               weight, order_xi, order_eta,
 		               temp_xi, temp_eta,
@@ -6844,7 +6834,7 @@ int CalcXiEtaByNR(double px, double py,
 		//if (temp_tol_x < tol && temp_tol_y < tol) {
         if (temp_tol_x + temp_tol_y < tol) {
 			printf("rlNURBS\n");
-			if (temp_xi == input_knot_vec_xi[0])
+			if (temp_xi == knot_vec_xi[0])
 			{
 				break;
 			}
@@ -6864,21 +6854,21 @@ int CalcXiEtaByNR(double px, double py,
 			double stress_xx, stress_yy, stress_xy;
 
 			for (i = 0; i < knot_n_xi; i++) {
-				if ( input_knot_vec_xi[i] < temp_xi && temp_xi <= input_knot_vec_xi[i + 1]) {
-					dtilda_xi = ( input_knot_vec_xi[i + 1] - input_knot_vec_xi[i] ) / 2.0;
+				if ( knot_vec_xi[i] < temp_xi && temp_xi <= knot_vec_xi[i + 1]) {
+					dtilda_xi = ( knot_vec_xi[i + 1] - knot_vec_xi[i] ) / 2.0;
 					//printf("%f\n", dtilda_xi);
 					break;
 				}
 			}
 			for (i = 0; i < knot_n_eta; i++) {
-				if ( input_knot_vec_eta[i] <= temp_eta && temp_eta < input_knot_vec_eta[i + 1]) {
-					dtilda_eta = ( input_knot_vec_eta[i + 1] - input_knot_vec_eta[i] ) / 2.0;
+				if ( knot_vec_eta[i] <= temp_eta && temp_eta < knot_vec_eta[i + 1]) {
+					dtilda_eta = ( knot_vec_eta[i + 1] - knot_vec_eta[i] ) / 2.0;
 					//printf("%f\n", dtilda_eta);
 					break;
 				}
 			}
 
-			rlNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			rlNURBS_surface(knot_vec_xi, knot_vec_eta,
 			               cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 			               weight, order_xi, order_eta,
 			               temp_xi, temp_eta,
@@ -6888,7 +6878,7 @@ int CalcXiEtaByNR(double px, double py,
 			//printf("% 1.4e % 1.4e % 1.4e % 1.4e\n",
 			//	   dxi_x, deta_x, dxi_y, deta_y);
 
-			rlNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			rlNURBS_surface(knot_vec_xi, knot_vec_eta,
 			               disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 			               weight, order_xi, order_eta,
 			               temp_xi, temp_eta,
@@ -6979,24 +6969,24 @@ int CalcXiEtaByNR(double px, double py,
 		            + temp_matrix[1][1] * (py - temp_y);
 		temp_xi = temp_xi + temp_dxi;
 		temp_eta = temp_eta + temp_deta;
-		if (temp_xi < input_knot_vec_xi[0])
-			temp_xi = input_knot_vec_xi[0];
-		if (temp_xi > input_knot_vec_xi[cntl_p_n_xi + order_xi])
-			temp_xi = input_knot_vec_xi[cntl_p_n_xi + order_xi];
-		if (temp_eta < input_knot_vec_eta[0])
-			temp_eta = input_knot_vec_eta[0];
-		if (temp_eta > input_knot_vec_eta[cntl_p_n_eta + order_eta])
-			temp_eta = input_knot_vec_eta[cntl_p_n_eta + order_eta];
+		if (temp_xi < knot_vec_xi[0])
+			temp_xi = knot_vec_xi[0];
+		if (temp_xi > knot_vec_xi[cntl_p_n_xi + order_xi])
+			temp_xi = knot_vec_xi[cntl_p_n_xi + order_xi];
+		if (temp_eta < knot_vec_eta[0])
+			temp_eta = knot_vec_eta[0];
+		if (temp_eta > knot_vec_eta[cntl_p_n_eta + order_eta])
+			temp_eta = knot_vec_eta[cntl_p_n_eta + order_eta];
 
 		//temp_tol = sqrt(temp_dxi * temp_dxi + temp_deta * temp_deta);
 		//printf("% 1.15e % 1.15e % 1.15e\n", temp_xi, temp_eta, temp_tol);
 	}
-	temp_xi = input_knot_vec_xi[0] + input_knot_vec_xi[cntl_p_n_xi + order_xi];
+	temp_xi = knot_vec_xi[0] + knot_vec_xi[cntl_p_n_xi + order_xi];
 	temp_xi *= 0.5;
-	temp_eta = input_knot_vec_eta[0] + input_knot_vec_eta[cntl_p_n_eta + order_eta];
+	temp_eta = knot_vec_eta[0] + knot_vec_eta[cntl_p_n_eta + order_eta];
 	temp_eta *= 0.5;
 	for (i = 0; i < repeat; i++) {
-		lrNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+		lrNURBS_surface(knot_vec_xi, knot_vec_eta,
 		               cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 		               weight, order_xi, order_eta,
 		               temp_xi, temp_eta,
@@ -7029,21 +7019,21 @@ int CalcXiEtaByNR(double px, double py,
 			double stress_xx, stress_yy, stress_xy;
 
 			for (i = 0; i < knot_n_xi; i++) {
-				if ( input_knot_vec_xi[i] <= temp_xi && temp_xi < input_knot_vec_xi[i + 1]) {
-					dtilda_xi = ( input_knot_vec_xi[i + 1] - input_knot_vec_xi[i] ) / 2.0;
+				if ( knot_vec_xi[i] <= temp_xi && temp_xi < knot_vec_xi[i + 1]) {
+					dtilda_xi = ( knot_vec_xi[i + 1] - knot_vec_xi[i] ) / 2.0;
 					//printf("%f\n", dtilda_xi);
 					break;
 				}
 			}
 			for (i = 0; i < knot_n_eta; i++) {
-				if ( input_knot_vec_eta[i] < temp_eta && temp_eta <= input_knot_vec_eta[i + 1]) {
-					dtilda_eta = ( input_knot_vec_eta[i + 1] - input_knot_vec_eta[i] ) / 2.0;
+				if ( knot_vec_eta[i] < temp_eta && temp_eta <= knot_vec_eta[i + 1]) {
+					dtilda_eta = ( knot_vec_eta[i + 1] - knot_vec_eta[i] ) / 2.0;
 					//printf("%f\n", dtilda_eta);
 					break;
 				}
 			}
 
-			lrNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			lrNURBS_surface(knot_vec_xi, knot_vec_eta,
 			               cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 			               weight, order_xi, order_eta,
 			               temp_xi, temp_eta,
@@ -7053,7 +7043,7 @@ int CalcXiEtaByNR(double px, double py,
 			//printf("% 1.4e % 1.4e % 1.4e % 1.4e\n",
 			//	   dxi_x, deta_x, dxi_y, deta_y);
 
-			lrNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			lrNURBS_surface(knot_vec_xi, knot_vec_eta,
 			               disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 			               weight, order_xi, order_eta,
 			               temp_xi, temp_eta,
@@ -7144,14 +7134,14 @@ int CalcXiEtaByNR(double px, double py,
 		            + temp_matrix[1][1] * (py - temp_y);
 		temp_xi = temp_xi + temp_dxi;
 		temp_eta = temp_eta + temp_deta;
-		if (temp_xi < input_knot_vec_xi[0])
-			temp_xi = input_knot_vec_xi[0];
-		if (temp_xi > input_knot_vec_xi[cntl_p_n_xi + order_xi])
-			temp_xi = input_knot_vec_xi[cntl_p_n_xi + order_xi];
-		if (temp_eta < input_knot_vec_eta[0])
-			temp_eta = input_knot_vec_eta[0];
-		if (temp_eta > input_knot_vec_eta[cntl_p_n_eta + order_eta])
-			temp_eta = input_knot_vec_eta[cntl_p_n_eta + order_eta];
+		if (temp_xi < knot_vec_xi[0])
+			temp_xi = knot_vec_xi[0];
+		if (temp_xi > knot_vec_xi[cntl_p_n_xi + order_xi])
+			temp_xi = knot_vec_xi[cntl_p_n_xi + order_xi];
+		if (temp_eta < knot_vec_eta[0])
+			temp_eta = knot_vec_eta[0];
+		if (temp_eta > knot_vec_eta[cntl_p_n_eta + order_eta])
+			temp_eta = knot_vec_eta[cntl_p_n_eta + order_eta];
 
 		//temp_tol = sqrt(temp_dxi * temp_dxi + temp_deta * temp_deta);
 		//printf("% 1.15e % 1.15e % 1.15e\n", temp_xi, temp_eta, temp_tol);
@@ -7163,7 +7153,7 @@ int CalcXiEtaByNR(double px, double py,
 static void Calculation(int order_xi, int order_eta,
 						int knot_n_xi, int knot_n_eta,
 						int cntl_p_n_xi, int cntl_p_n_eta,
-						double *input_knot_vec_xi, double *input_knot_vec_eta,
+						double *knot_vec_xi, double *knot_vec_eta,
 						double *cntl_px, double *cntl_py,
 						double *disp_cntl_px, double *disp_cntl_py,
 						double *weight) {
@@ -7179,15 +7169,15 @@ static void Calculation(int order_xi, int order_eta,
 	k = 0;
 	l = 0;
 	for (i = 0; i < knot_n_xi - 1; i++) {
-		if ( input_knot_vec_xi[i] != input_knot_vec_xi[i + 1] ) {
-			calc_xi[k] = input_knot_vec_xi[i];
+		if ( knot_vec_xi[i] != knot_vec_xi[i + 1] ) {
+			calc_xi[k] = knot_vec_xi[i];
 			printf("%d\t%f\n", k, calc_xi[k]);
-			dtilda_xi[l] = ( input_knot_vec_xi[i + 1] - input_knot_vec_xi[i] ) / 2.0;
+			dtilda_xi[l] = ( knot_vec_xi[i + 1] - knot_vec_xi[i] ) / 2.0;
 			printf("%d\t%f\n", k, dtilda_xi[k]);
 			k++;
 			l++;
 			if (division_ele_xi > 1) {
-				temp1 = (input_knot_vec_xi[i + 1] - input_knot_vec_xi[i])
+				temp1 = (knot_vec_xi[i + 1] - knot_vec_xi[i])
 						/ (double)division_ele_xi;
 				for (j = 1; j < division_ele_xi; j++) {
 					calc_xi[k] = calc_xi[k - 1] + temp1;
@@ -7197,7 +7187,7 @@ static void Calculation(int order_xi, int order_eta,
 			}
 		}
 	}
-	calc_xi[k] = input_knot_vec_xi[knot_n_xi - 1];
+	calc_xi[k] = knot_vec_xi[knot_n_xi - 1];
 	printf("%d\t%f\n", k, calc_xi[k]);
 	//printf("\n");
 	division_n_xi = k + 1;
@@ -7206,15 +7196,15 @@ static void Calculation(int order_xi, int order_eta,
 	k = 0;
 	l = 0;
 	for (i = 0; i < knot_n_eta - 1; i++) {
-		if ( input_knot_vec_eta[i] != input_knot_vec_eta[i + 1] ) {
-			calc_eta[k] = input_knot_vec_eta[i];
+		if ( knot_vec_eta[i] != knot_vec_eta[i + 1] ) {
+			calc_eta[k] = knot_vec_eta[i];
 			//printf("%d\t%f\n", k, calc_eta[k]);
-			dtilda_eta[l] = ( input_knot_vec_eta[i + 1] - input_knot_vec_eta[i] ) / 2.0;
+			dtilda_eta[l] = ( knot_vec_eta[i + 1] - knot_vec_eta[i] ) / 2.0;
 			//printf("%d\t%f\n", k, dtilda_eta[k]);
 			k++;
 			l++;
 			if (division_ele_eta > 1) {
-				temp1 = (input_knot_vec_eta[i + 1] - input_knot_vec_eta[i])
+				temp1 = (knot_vec_eta[i + 1] - knot_vec_eta[i])
 						/ (double)division_ele_eta;
 				for (j = 1; j < division_ele_eta; j++) {
 					calc_eta[k] = calc_eta[k - 1] + temp1;
@@ -7224,7 +7214,7 @@ static void Calculation(int order_xi, int order_eta,
 			}
 		}
 	}
-	calc_eta[k] = input_knot_vec_eta[knot_n_eta - 1];
+	calc_eta[k] = knot_vec_eta[knot_n_eta - 1];
 	//printf("%d\t%f\n", k, calc_eta[k]);
 	//printf("\n");
 	division_n_eta = k + 1;
@@ -7255,7 +7245,7 @@ static void Calculation(int order_xi, int order_eta,
 		for (j = 0; j < division_n_eta; j++) {
 			jj = j / division_ele_eta;
 			ll = j % division_ele_eta;
-			lNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+			lNURBS_surface(knot_vec_xi, knot_vec_eta,
 						   cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 						   weight, order_xi, order_eta,
 						   calc_xi[i], calc_eta[j],
@@ -7283,7 +7273,7 @@ static void Calculation(int order_xi, int order_eta,
 			for (j = 0; j < division_n_eta; j++) {
 				jj = j / division_ele_eta;
 				ll = j % division_ele_eta;
-				lNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+				lNURBS_surface(knot_vec_xi, knot_vec_eta,
 							   disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 							   weight, order_xi, order_eta,
 							   calc_xi[i], calc_eta[j],
@@ -7310,14 +7300,14 @@ static void Calculation(int order_xi, int order_eta,
 				j = jj * division_ele_eta;
 				for (ll = 1; ll < division_ele_eta; ll++) {
 					j++;
-					rNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+					rNURBS_surface(knot_vec_xi, knot_vec_eta,
 								   cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 								   weight, order_xi, order_eta,
 								   calc_xi[i], calc_eta[j],
 								   &coord_x[i][j], &coord_y[i][j],
 								   &dxi_x[ii][jj][kk][ll], &deta_x[ii][jj][kk][ll],
 								   &dxi_y[ii][jj][kk][ll], &deta_y[ii][jj][kk][ll]);
-					rNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+					rNURBS_surface(knot_vec_xi, knot_vec_eta,
 								   disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 								   weight, order_xi, order_eta,
 								   calc_xi[i], calc_eta[j],
@@ -7341,14 +7331,14 @@ static void Calculation(int order_xi, int order_eta,
 				j = (jj + 1) * division_ele_eta;
 				for (kk = 1; kk <= division_ele_xi; kk++) {
 					i++;
-					rNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+					rNURBS_surface(knot_vec_xi, knot_vec_eta,
 								   cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 								   weight, order_xi, order_eta,
 								   calc_xi[i], calc_eta[j],
 								   &coord_x[i][j], &coord_y[i][j],
 								   &dxi_x[ii][jj][kk][ll], &deta_x[ii][jj][kk][ll],
 								   &dxi_y[ii][jj][kk][ll], &deta_y[ii][jj][kk][ll]);
-					rNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+					rNURBS_surface(knot_vec_xi, knot_vec_eta,
 								   disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 								   weight, order_xi, order_eta,
 								   calc_xi[i], calc_eta[j],
@@ -7371,14 +7361,14 @@ static void Calculation(int order_xi, int order_eta,
 				ll = 0;
 				i = (ii + 1) * division_ele_xi;
 				j = jj * division_ele_eta;
-				rlNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+				rlNURBS_surface(knot_vec_xi, knot_vec_eta,
 								cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 								weight, order_xi, order_eta,
 								calc_xi[i], calc_eta[j],
 								&coord_x[i][j], &coord_y[i][j],
 								&dxi_x[ii][jj][kk][ll], &deta_x[ii][jj][kk][ll],
 								&dxi_y[ii][jj][kk][ll], &deta_y[ii][jj][kk][ll]);
-				rlNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+				rlNURBS_surface(knot_vec_xi, knot_vec_eta,
 								disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 								weight, order_xi, order_eta,
 								calc_xi[i], calc_eta[j],
@@ -7400,14 +7390,14 @@ static void Calculation(int order_xi, int order_eta,
 				ll = division_ele_eta;
 				i = ii * division_ele_xi;
 				j = (jj + 1) * division_ele_eta;
-				lrNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+				lrNURBS_surface(knot_vec_xi, knot_vec_eta,
 								cntl_px, cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 								weight, order_xi, order_eta,
 								calc_xi[i], calc_eta[j],
 								&coord_x[i][j], &coord_y[i][j],
 								&dxi_x[ii][jj][kk][ll], &deta_x[ii][jj][kk][ll],
 								&dxi_y[ii][jj][kk][ll], &deta_y[ii][jj][kk][ll]);
-				lrNURBS_surface(input_knot_vec_xi, input_knot_vec_eta,
+				lrNURBS_surface(knot_vec_xi, knot_vec_eta,
 								disp_cntl_px, disp_cntl_py, cntl_p_n_xi, cntl_p_n_eta,
 								weight, order_xi, order_eta,
 								calc_xi[i], calc_eta[j],

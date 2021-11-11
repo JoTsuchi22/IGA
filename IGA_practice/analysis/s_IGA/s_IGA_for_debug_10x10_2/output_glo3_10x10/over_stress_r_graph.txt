@@ -1,1 +1,0 @@
-xi	eta	x	y	stress_rr	stress_sita

@@ -77,10 +77,18 @@
 
 
 コンパイル
-gcc -o s_IGA_for_debug_10x10.x s_IGA_for_debug_10x10.c -lm -Wall
-gcc -o s_IGA_for_debug_integ5_10x10.x s_IGA_for_debug_integ5_10x10.c -lm -Wall
+gcc -o s_IGA_for_debug_10x10.x s_IGA_for_debug_10x10.c -lm -Wall -O2
+gcc -o s_IGA_for_debug_integ5_10x10.x s_IGA_for_debug_integ5_10x10.c -lm -Wall -O2
 
-実行(デバッグ)
+最適化コンパイル(ガウスの積分点別)
+gcc -g -o s_IGA_for_debug_10x10_integ3.x s_IGA_for_debug_10x10.c -O2 -lm -Wall
+gcc -g -o s_IGA_for_debug_10x10_integ4.x s_IGA_for_debug_10x10.c -O2 -lm -Wall
+gcc -g -o s_IGA_for_debug_10x10_integ5.x s_IGA_for_debug_10x10.c -O2 -lm -Wall
+
+gcc -g -o s_IGA_for_debug_10x10_integ3_O0.x s_IGA_for_debug_10x10.c -O0 -lm -Wall
+gcc -g -o s_IGA_for_debug_10x10_integ3_O3.x s_IGA_for_debug_10x10.c -O3 -lm -Wall
+
+実行
 mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 
 ../s_IGA_for_debug_10x10.x ../input_glo_arc_ ../input_loc_arc_ > result.dat
@@ -88,13 +96,34 @@ mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 ../s_IGA_for_debug_10x10.x ../input_glo_arc_3_10x10.txt ../input_loc_arc_3_10x10.txt > result.dat
 ../s_IGA_for_debug_10x10.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18.txt > result.dat
 
-ガウスの積分点5
-../s_IGA_for_debug_integ5_10x10.x ../input_glo_arc_3_10x10.txt ../input_loc_arc_3_10x10.txt > result.dat
+デバッグ(core dump)
+gdb ../s_IGA_for_debug_10x10_integ3.x
+run ../input_glo_arc_2_18x18.txt ../input_loc_arc_2_18x18.txt
+
+ガウスの積分点別
+../s_IGA_for_debug_10x10_integ3.x ../input_glo_arc_ ../input_loc_arc_ > result.dat
+../s_IGA_for_debug_10x10_integ4.x ../input_glo_arc_ ../input_loc_arc_ > result.dat
+../s_IGA_for_debug_10x10_integ5.x ../input_glo_arc_ ../input_loc_arc_ > result.dat
+
+../s_IGA_for_debug_10x10_integ3.x ../input_glo_arc_2_18x18.txt ../input_loc_arc_2_18x18.txt > result3.dat
+../s_IGA_for_debug_10x10_integ4.x ../input_glo_arc_2_18x18.txt ../input_loc_arc_2_18x18.txt > result4.dat
+../s_IGA_for_debug_10x10_integ5.x ../input_glo_arc_2_18x18.txt ../input_loc_arc_2_18x18.txt > result5.dat
+
+../s_IGA_for_debug_10x10_integ3.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18.txt > result3.dat
+../s_IGA_for_debug_10x10_integ4.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18.txt > result4.dat
+../s_IGA_for_debug_10x10_integ5.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18.txt > result5.dat
+
+../s_IGA_for_debug_10x10_integ3.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18_boundary.txt > result3.dat
+../s_IGA_for_debug_10x10_integ4.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18_boundary.txt > result4.dat
+../s_IGA_for_debug_10x10_integ5.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18_boundary.txt > result5.dat
+
 
 NURBSviewer
 ../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_local.txt overlay_view.dat Displacement_loc.dat
 ../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_for_NURBS.txt view.dat Displacement.dat
 
+export CYGWIN="error_start=dumper.exe"
+ulimit -c unlimited
 
 パッチテスト
 mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
@@ -126,6 +155,12 @@ fclose(fp);
 
 ガウス点変更で変える関数等
     ヘッダー
+        Ng
+        POW_Ng
+        MAX_N_POINT_OVER
+        GAUSS_1DIR
+        NO_GAUSS_PT
+
     Make_K_EL
     Make_coupled_K_EL       (G_Gxiの宣言をコメントアウトにしないように注意)
     Make_Strain             (ガウス点のみ)
@@ -134,32 +169,5 @@ fclose(fp);
     Check_coupled_Glo_Loc_element_for_Gauss     (ガウス点のみ，変数名変える必要あるので注意)
     Setting_Dist_Load_2D    (分布荷重の積分のときに使う，等分布荷重の場合はガウス点関係ないと思われる)
 
-ガウス点5の例
-    // int i, j;
-    double A = pow((10.0 / 7.0), 0.5);
-	double G1 = pow((5.0 - 2.0 * A), 0.5) / 3.0;
-	double G2 = pow((5.0 + 2.0 * A), 0.5) / 3.0;
-	double G_vec[5] = {-G2, -G1, 0.0, G1, G2};
-	double w1 = 128.0 / 225.0;
-	double w2 = (322.0 + 13.0 * pow(70.0, 0.5)) / 900.0;
-	double w3 = (322.0 - 13.0 * pow(70.0, 0.5)) / 900.0;
-	double w_vec[5] = {w3, w2, w1, w2, w3};
-
-	double w[POW_Ng];
-	for (i = 0; i < Ng; i++)
-	{
-		for (j = 0; j < Ng; j++)
-		{
-			w[j + (Ng * i)] = w_vec[i] * w_vec[j];
-		}
-	}
-
-	double Gxi[POW_Ng][DIMENSION];
-	for (i = 0; i < Ng; i++)
-	{
-		for (j = 0; j < Ng; j++)
-		{
-			Gxi[j + (Ng * i)][0] = G_vec[j];
-			Gxi[j + (Ng * i)][1] = G_vec[i];
-		}
-	}
+    
+cntl_p_n    input_ctrl_pn
