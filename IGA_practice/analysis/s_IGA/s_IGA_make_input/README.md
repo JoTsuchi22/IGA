@@ -6,11 +6,12 @@ inputdataを編集するためのプログラムです．
 
 編集可能なパッチは1つだけです．
 
+入力データのテキストファイルはtemplate_input.txtを参照してください．
+
 コンパイル
-gcc -o s_IGA_make_input.x s_IGA_make_input.c -O2 -lm -Wall
+gcc -g -o s_IGA_make_input.x s_IGA_make_input.c -O2 -lm -Wall
 
 実行
-s_IGA_make_input
 ./s_IGA_make_input.x test_input_01.txt > result.dat
 ./s_IGA_make_input.x test_input_02.txt > result.dat
 ./s_IGA_make_input.x test_input_01.txt test_input_02.txt > result.dat
