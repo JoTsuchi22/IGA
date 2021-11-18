@@ -92,8 +92,8 @@ mkdir checkAns
 
 #define DBL_MAX          1.7976931348623158e+308 // max value
 
-#define DIVISION_ELE_XI 10
-#define DIVISION_ELE_ETA 10
+#define DIVISION_ELE_XI 5
+#define DIVISION_ELE_ETA 5
 
 /////変更後はmake cleanしてからmakeする/////////////////////////////////////////////////////
 ///////最大値////////////////////////////////////////////////////////////////////////////////

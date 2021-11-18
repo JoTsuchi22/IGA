@@ -53,7 +53,7 @@ mkdir checkAns
 #define MAX_NO_CCpoint_ON_ELEMENT 16						//分割節点数
 #define DIMENSION 2											//次元数
 #define MAX_KIEL_SIZE MAX_NO_CCpoint_ON_ELEMENT * DIMENSION	//要素分割マトリックスの大きさ
-#define Ng 3												//Gauss-Legendreの足す回数
+#define Ng 5												//Gauss-Legendreの足す回数
 #define POW_Ng Ng * Ng										//NgのDIMENSION乗の計算
 #define D_MATRIX_SIZE 3										//応力歪マトリックスの大きさ（2次元:3 3次元:6）
 
@@ -2378,7 +2378,7 @@ int Make_Index_Dof(int Total_Control_Point,
 			Index_Dof[i] = k;
 			k++;
 		}
-        //printf("Index_Dof[%d]=%d\n",i,Index_Dof[i]);
+        printf("Index_Dof[%d]=%d\n",i,Index_Dof[i]);
 	}
 	printf("Max_Index_Dof=%d\n", k);
 	return k;
@@ -2543,6 +2543,9 @@ void Make_K_Whole_Ptr_Col(int tm,
 				if (N + i < Total_Control_Point)
 				{
 					i_index = Index_Dof[(N + i) * DIMENSION + ii];
+					// printf("i = %d\n", i);
+					// printf("N = %d\n", N);
+					// printf("i_index = %d\n", i_index);
 					k = 0;
 					if (i_index >= 0)
 					{
@@ -2552,6 +2555,7 @@ void Make_K_Whole_Ptr_Col(int tm,
                         //printf("K_Whole_Ptr[%d][%d]=%d\n",tm,i_index,K_Whole_Ptr[tm][i_index+1]);
 						for (j = 0; j < Total_Control_Point_To_Node[i]; j++)
 						{
+							// printf("Total_Control_Point_To_Node[%d] = %d\n", i, Total_Control_Point_To_Node[i]);
 							for (jj = 0; jj < DIMENSION; jj++)
 							{
 								j_index = Index_Dof[Node_To_Node[i][j] * DIMENSION + jj];
@@ -2564,7 +2568,7 @@ void Make_K_Whole_Ptr_Col(int tm,
                                     //       ,K_Whole_Ptr[i_index]+k
                                     //       ,K_Whole_Col[K_Whole_Ptr[i_index]+k]);
 									k++;
-									//printf("ptr[%d]=%d,col[%d]=%d\n",i_index+1,K_Whole_Ptr[i_index+1],K_Whole_Ptr[i_index]+k,K_Whole_Col[K_Whole_Ptr[i_index]+k]);
+									// printf("ptr[%d]=%d,col[%d]=%d\n",i_index+1,K_Whole_Ptr[i_index+1],K_Whole_Ptr[i_index]+k,K_Whole_Col[K_Whole_Ptr[i_index]+k]);
 								}
 							}
 						}
@@ -2652,13 +2656,13 @@ void Make_K_Whole_Val(int tm, double E, double nu, int Total_Element, int K_Whol
 								{
 									if (K_Whole_Col[l] == b)
 									{
-										printf("real_element[%d] = %d\n", re, real_element[re]);
-										printf("Controlpoint_of_Element[%d][%d] = %d\n", i, k1, Controlpoint_of_Element[i][k1]);
-										printf("l = %d\n", l);
-										printf("K_Whole_Col[%d] = %d\n", l, K_Whole_Col[l]);
-										printf("b = %d\n", b);
+										// printf("real_element[%d] = %d\n", re, real_element[re]);
+										// printf("Controlpoint_of_Element[%d][%d] = %d\n", i, k1, Controlpoint_of_Element[i][k1]);
+										// printf("l = %d\n", l);
+										// printf("K_Whole_Col[%d] = %d\n", l, K_Whole_Col[l]);
+										// printf("b = %d\n", b);
 										K_Whole_Val[l] += K_EL[j1 * DIMENSION + j2][k1 * DIMENSION + k2];
-										printf("K_Whole_Val[%d] = %.20e\n", l, K_Whole_Val[l]);
+										// printf("K_Whole_Val[%d] = %.20e\n", l, K_Whole_Val[l]);
 										//printf("K_Whole_Val[%d]=%le\n",l,K_Whole_Val[l]);
 										break;
 									}
