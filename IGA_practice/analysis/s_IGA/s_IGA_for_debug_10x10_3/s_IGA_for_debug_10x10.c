@@ -1107,7 +1107,8 @@ int main(int argc, char *argv[])
 	}
 	fprintf(fp, "\n\n\nStrain\n");
 	//for( i = 0; i < Total_Element; i++ ){
-	for (re = 0; re < real_Total_Element; re++)
+	// for (re = 0; re < real_Total_Element; re++)
+	for (re = 0; re < real_Total_Element_to_mesh[Total_mesh]; re++)
 	{
 		i = real_element[re];
 		for (k = 0; k < POW_Ng; k++)
@@ -1129,7 +1130,8 @@ int main(int argc, char *argv[])
 
 	fprintf(fp, "\n\n\n\n\n\n\n\n\n\n\nStress\n");
 	//for( i = 0; i < Total_Element; i++ ){
-	for (re = 0; re < real_Total_Element; re++)
+	// for (re = 0; re < real_Total_Element; re++)
+	for (re = 0; re < real_Total_Element_to_mesh[Total_mesh]; re++)
 	{
 		i = real_element[re];
 		for (k = 0; k < POW_Ng; k++)
@@ -2549,7 +2551,6 @@ void Make_K_Whole_Ptr_Col(int tm,
 					k = 0;
 					if (i_index >= 0)
 					{
-						
                         //K_Whole_Ptr[i_index + 1] = K_Whole_Ptr[i_index];
                         K_Whole_Ptr[i_index + 1] = K_Whole_Ptr[i_index]; 
                         //printf("K_Whole_Ptr[%d][%d]=%d\n",tm,i_index,K_Whole_Ptr[tm][i_index+1]);
