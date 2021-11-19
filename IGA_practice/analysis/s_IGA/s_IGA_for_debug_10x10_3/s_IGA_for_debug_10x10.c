@@ -53,7 +53,7 @@ mkdir checkAns
 #define MAX_NO_CCpoint_ON_ELEMENT 16						//分割節点数
 #define DIMENSION 2											//次元数
 #define MAX_KIEL_SIZE MAX_NO_CCpoint_ON_ELEMENT * DIMENSION	//要素分割マトリックスの大きさ
-#define Ng 5												//Gauss-Legendreの足す回数
+#define Ng 4												//Gauss-Legendreの足す回数
 #define POW_Ng Ng * Ng										//NgのDIMENSION乗の計算
 #define D_MATRIX_SIZE 3										//応力歪マトリックスの大きさ（2次元:3 3次元:6）
 
@@ -539,12 +539,12 @@ FILE *fp;
 int main(int argc, char *argv[])
 {
 	//printf("aaaaaaa\n");
-	clock_t start , end;
+	clock_t start, end;
 
 	//解析条件パラメータの設定
 	int DM = stress_type_flag;		//平面応力状態:DM=0	平面ひずみ状態:DM=1
 	int check_over_parameter = 1;	//要素の重なりの判定(要素の物体上の端点:0 ガウス点:1)
-	
+
 
 	int i, j, k;
 	//int l;
@@ -1157,7 +1157,8 @@ int main(int argc, char *argv[])
 	fprintf(fp, "\n");
 	for (j = 0; j < Total_Control_Point_to_mesh[Total_mesh]; j++)
 	{
-		fprintf(fp, "%d:	%le %le ", j, Displacement[j * DIMENSION + 0], Displacement[j * DIMENSION + 1]);
+		// fprintf(fp, "%d:	%le %le ", j, Displacement[j * DIMENSION + 0], Displacement[j * DIMENSION + 1]);
+		fprintf(fp, "%d:	%.16e %.16e ", j, Displacement[j * DIMENSION + 0], Displacement[j * DIMENSION + 1]);
 		fprintf(fp, "\n");
 	}
 	fclose(fp);
@@ -2940,7 +2941,7 @@ void Diag_Scaling_CG_pre(int ndof, int flag_operation)
 			//printf("%d %le\n",K_Whole_Ptr[i], K_Whole_Val[K_Whole_Ptr[i]]);
 			diag_scaling[i] = 1.0 / sqrt(K_Whole_Val[K_Whole_Ptr[i]]);
 			printf("diag=%le\n",diag_scaling[i]);
-			printf("K_Whole_Val[%d]=%le\n",K_Whole_Ptr[i],K_Whole_Val[K_Whole_Ptr[i]]);
+			printf("K_Whole_Val[%d]=%.16e\n",K_Whole_Ptr[i],K_Whole_Val[K_Whole_Ptr[i]]);
             printf("sqrt=%le\n",sqrt(K_Whole_Val[K_Whole_Ptr[i]]) );
 			//diag_scaling[i] 
             //    = 1.0 / sqrt(K_Whole_overlaid_Val[K_Whole_overlaid_Ptr[i]]);
@@ -6447,8 +6448,8 @@ void ReadFile()
 				"num_items=%d\n\n", loc_cntl_p_n);
 	for (i = 0; i < loc_cntl_p_n; i++)
 	{
-		fprintf(fp, "%d:	%le %le \n", 
-				i, temp_disp_x[i + glo_cntl_p_n], temp_disp_y[i + glo_cntl_p_n]);
+		// fprintf(fp, "%d:	%le %le \n", i, temp_disp_x[i + glo_cntl_p_n], temp_disp_y[i + glo_cntl_p_n]);
+		fprintf(fp, "%d:	%.16e %.16e \n", i, temp_disp_x[i + glo_cntl_p_n], temp_disp_y[i + glo_cntl_p_n]);
 	}
 	fclose(fp);
 }
