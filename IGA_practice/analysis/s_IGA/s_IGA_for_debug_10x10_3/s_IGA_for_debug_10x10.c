@@ -753,9 +753,11 @@ int main(int argc, char *argv[])
     //反復回数の設定
 
 	/* 反復回数を ndof*5 (K_Whole_Size*5)として収束判定を1.0e-14 にしている(収束しない場合の対策)
-	   収束判定は厳しくしているが収束しなくても最後の反復結果が反映されるので収束しやすくなる */
+	   収束判定は厳しくしているが収束しなくても最後の反復結果が反映されるので収束しやすくなる
+	   数学的にはndofで収束するが数値計算では誤差が生じる(?) */
 
-    max_itr = K_Whole_Size * 5;
+    // max_itr = K_Whole_Size;
+	max_itr = K_Whole_Size * 5;
 
 	Diag_Scaling_CG_pre(K_Whole_Size, 0);
     printf("Finish 1st Diag_Scaling_CG_Pre\n");
@@ -803,15 +805,25 @@ int main(int argc, char *argv[])
 	printf("Finish Make_Displacement\n");
 	end = clock();
 	printf("Analysis time:%.2f[s]\n",(double)(end-start)/CLOCKS_PER_SEC);
-	Make_Strain(E, nu, Total_Element_to_mesh[Total_mesh], 
-				El_No, Total_Control_Point);
+	// Make_Strain(E, nu, Total_Element_to_mesh[Total_mesh], 
+	// 			El_No, Total_Control_Point);
+	// printf("Finish Make_Strain\n");
+	// Make_Stress_2D(E, nu, Total_Element, DM);
+	// printf("Finish Make_Stress\n");
+	// Make_ReactionForce(Total_Element, Total_Control_Point, El_No);
+	// printf("Finish Make_ReactionForce\n");
+	// puts("sol_vec");
+	// Make_Parameter_z(Total_Element, E, nu, DM);
+	// printf("Finish Make_Parameter_z\n");
+	Make_Strain(E, nu, real_Total_Element_to_mesh[Total_mesh], 
+				El_No, Total_Control_Point_to_mesh[Total_mesh]);
 	printf("Finish Make_Strain\n");
-	Make_Stress_2D(E, nu, Total_Element, DM);
+	Make_Stress_2D(E, nu, real_Total_Element_to_mesh[Total_mesh], DM);
 	printf("Finish Make_Stress\n");
-	Make_ReactionForce(Total_Element, Total_Control_Point, El_No);
+	Make_ReactionForce(real_Total_Element_to_mesh[Total_mesh], Total_Control_Point_to_mesh[Total_mesh], El_No);
 	printf("Finish Make_ReactionForce\n");
 	puts("sol_vec");
-	Make_Parameter_z(Total_Element, E, nu, DM);
+	Make_Parameter_z(real_Total_Element_to_mesh[Total_mesh], E, nu, DM);
 	printf("Finish Make_Parameter_z\n");
 	//Make_Output( Total_Control_Point, Total_Element );
 	//printf("Finish Make_Output\n" );
@@ -1143,7 +1155,8 @@ int main(int argc, char *argv[])
 		}
 	}
 	fprintf(fp, "\n\n\nReaction Force\n");
-	for (j = 0; j < Total_Control_Point; j++)
+	// for (j = 0; j < Total_Control_Point; j++)
+	for (j = 0; j < Total_Control_Point_to_mesh[Total_mesh]; j++)
 	{
 		for (i = 0; i < DIMENSION; i++)
 			fprintf(fp, "%.13e\t ", ReactionForce[j * DIMENSION + i]);
@@ -2296,7 +2309,7 @@ void Get_InputData(int tm,
 			}
 		}
         //for s-IGA real_Total_Elementの初期化
-        real_Total_Element=0;
+        real_Total_Element = 0;
 
 		for (l = 0; l < *No_Patch; l++)
 		{
@@ -2797,7 +2810,8 @@ void Make_F_Vec_disp_const(int Mesh_No, int Total_Constraint,
 
 	double K_EL[KIEL_SIZE][KIEL_SIZE];
 
-	for (ie = 0; ie < real_Total_Element; ie++)
+	// for (ie = 0; ie < real_Total_Element; ie++)
+	for (ie = 0; ie < real_Total_Element_to_mesh[Total_mesh]; ie++)
 	{
 
 		double X[No_Control_point_ON_ELEMENT[Element_patch[real_El_No_on_mesh[Mesh_No][ie]]]][DIMENSION];

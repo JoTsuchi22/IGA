@@ -1,0 +1,42 @@
+最適化コンパイル
+gcc -g -o s_IGA_for_debug_10x10.x s_IGA_for_debug_10x10.c -O2 -lm -Wall
+gcc -g -o s_IGA_for_debug_10x10.x s_IGA_for_debug_10x10.c -O3 -lm -Wall
+
+
+実行
+mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
+
+../s_IGA_for_debug_10x10.x ../input_glo_arc_ ../input_loc_arc_ > result.dat
+
+../s_IGA_for_debug_10x10.x ../input_glo_arc_2_18x18.txt ../input_loc_arc_2_18x18.txt > result.dat
+../s_IGA_for_debug_10x10.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18.txt > result.dat
+../s_IGA_for_debug_10x10.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18_boundary.txt > result.dat
+
+デバッグ(core dump)
+gdb ../s_IGA_for_debug_10x10.x
+run ../input_glo_arc_2_18x18.txt ../input_loc_arc_2_18x18.txt
+
+NURBSviewer
+../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_local.txt overlay_view.dat Displacement_loc.dat
+../../../../../NURBS_viewer/NURBS_view/NURBS_view.exe input_for_NURBS.txt view.dat Displacement.dat
+
+make input data
+./s_IGA_make_input.x **.txt > result.dat
+
+--メモ--
+
+ガウス点変更で変える関数等
+    ヘッダー
+        Ng
+        POW_Ng
+        MAX_N_POINT_OVER
+        GAUSS_1DIR
+        NO_GAUSS_PT
+
+    Make_K_EL
+    Make_coupled_K_EL       (G_Gxiの宣言をコメントアウトにしないように注意)
+    Make_Strain             (ガウス点のみ)
+    Make_ReactionForce
+    Gausspoint_coordinate   (ガウス点のみ)
+    Check_coupled_Glo_Loc_element_for_Gauss     (ガウス点のみ，変数名変える必要あるので注意)
+    Setting_Dist_Load_2D    (分布荷重の積分のときに使う，等分布荷重の場合はガウス点関係ないと思われる)
