@@ -1559,8 +1559,8 @@ int main(int argc, char *argv[])
 	fprintf(fp, "x\ty\tstress_yy\n");
 	fclose(fp);
 
-	fp = fopen("over_stress_r_graph.txt", "w");
-	fprintf(fp, "xi\teta\tx\ty\tstress_rr\tstress_sita\n");
+	fp = fopen("over_stress_r_theta_graph.txt", "w");
+	fprintf(fp, "xi\teta\tx\ty\tstress_r\tstress_theta\n");
 	fclose(fp);
 
 	fp = fopen("over_stress_vm_graph.txt", "w");
@@ -2384,7 +2384,7 @@ int Make_Index_Dof(int Total_Control_Point,
 			Index_Dof[i] = k;
 			k++;
 		}
-        printf("Index_Dof[%d]=%d\n",i,Index_Dof[i]);
+        //printf("Index_Dof[%d]=%d\n",i,Index_Dof[i]);
 	}
 	printf("Max_Index_Dof=%d\n", k);
 	return k;
@@ -2800,8 +2800,8 @@ void Make_F_Vec_disp_const(int Mesh_No, int Total_Constraint,
 
 	double K_EL[KIEL_SIZE][KIEL_SIZE];
 
-	// for (ie = 0; ie < real_Total_Element; ie++)
-	for (ie = 0; ie < real_Total_Element_to_mesh[Total_mesh]; ie++)
+	for (ie = 0; ie < real_Total_Element; ie++)
+	// for (ie = 0; ie < real_Total_Element_to_mesh[Total_mesh]; ie++)
 	{
 
 		double X[No_Control_point_ON_ELEMENT[Element_patch[real_El_No_on_mesh[Mesh_No][ie]]]][DIMENSION];
@@ -4668,26 +4668,32 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 
 		double R_shape_func;
 
+		// for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
+		// {
+		// 	for (jj = 0; jj < DIMENSION; jj++)
+		// 	{
+		// 		data_result_shape[jj]
+		// 			+= Shape_func(j, Total_Control_Point_to_mesh[Total_mesh],
+		// 						  Gxi[i], El_No_loc) * X[j][jj];
+		// 						  //Node_coordinate[controlpoint_of_element[element_n_loc][j]][jj]
+		// 	}
+		// }
+
 		for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
 		{
+			R_shape_func = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
+			// printf("(Shape_func return) R = %lf\n", R_shape_func);
 			for (jj = 0; jj < DIMENSION; jj++)
 			{
-				data_result_shape[jj] += Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc) * X[j][jj];
-				//Node_coordinate[controlpoint_of_element[element_n_loc][j]][jj]
+				data_result_shape[jj] += R_shape_func * X[j][jj];
 			}
 		}
 
+		// NURBS基底関数Rと要素(エレメント)内の全コントロールポイント座標(x, y)の出力
 		// for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
 		// {
-		// 	R_shape_func = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
-
-		// 	printf("(Shape_func return) R = %lf\n", R_shape_func);
-
-		// 	for (jj = 0; jj < DIMENSION; jj++)
-		// 	{
-		// 		data_result_shape[jj] += R_shape_func * X[j][jj];
-		// 		//Node_coordinate[controlpoint_of_element[element_n_loc][j]][jj]
-		// 	}
+		// 	double RR = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
+		// 	printf("(Shape_func return) R = %lf\n", RR);
 		// }
 
 		// for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
@@ -4987,6 +4993,7 @@ void element_coordinate(int Total_Element, int Total_Control_Point)
 	int i, j, k, e, l=0;
 	double element_edge[9][DIMENSION] = {{-1.0, -1.0}, {1.0, -1.0}, {1.0, 1.0}, {-1.0, 1.0}, {0.0, -1.0}, {1.0, 0.0}, {0.0, 1.0}, {-1.0, 0.0}, {0.0, 0.0}};
 	//double data_result_shape[2]={0.0};
+	double R_shape_func;
 
 	for (e = 0; e < Total_Element; e++)
 	{
@@ -4995,9 +5002,10 @@ void element_coordinate(int Total_Element, int Total_Control_Point)
 			double data_result_shape[2] = {0.0};
 			for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[e]]; i++)
 			{
+				R_shape_func = Shape_func(i, Total_Control_Point, element_edge[k], e);
 				for (j = 0; j < DIMENSION; j++)
 				{
-					data_result_shape[j] += Shape_func(i, Total_Control_Point, element_edge[k], e) * Node_Coordinate[Controlpoint_of_Element[e][i]][j];
+					data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][i]][j];
 				}
 			}
 			element_coordinate_Nopoint[l][0] = data_result_shape[0];
@@ -5038,6 +5046,8 @@ void calculate_Controlpoint_using_NURBS(double element[DIMENSION], int Total_Ele
 	int e, b, j, re, i;
 	//int p = 0;
 	//for(e=0; e < Total_Element; e++){
+	
+	double R_shape_func;
 
 	for (re = 0; re < Total_Element; re++)
 	{
@@ -5068,14 +5078,13 @@ void calculate_Controlpoint_using_NURBS(double element[DIMENSION], int Total_Ele
 
 				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
 				{
+					R_shape_func = Shape_func(b, Total_Control_Point, element, e);
 					for (j = 0; j < DIMENSION; j++)
 					{
 						//printf("%d %d %le\n",Controlpoint_of_Element[e][b],j,Displacement[Controlpoint_of_Element[e][b]*DIMENSION+j]);
 						//printf("%d %d %20.13le\n",Controlpoint_of_Element[e][b],j,Displacement[Controlpoint_of_Element[e][b]*DIMENSION+j]);
-						data_result_disp[j] += Shape_func(b, Total_Control_Point, element, e) * Displacement[Controlpoint_of_Element[e][b] * DIMENSION + j];
-						data_result_shape[j] 
-							+= Shape_func(b, Total_Control_Point, element, e) 
-							* Node_Coordinate[Controlpoint_of_Element[e][b]][j];
+						data_result_disp[j] += R_shape_func * Displacement[Controlpoint_of_Element[e][b] * DIMENSION + j];
+						data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][b]][j];
 					}
 				}
 
@@ -5129,6 +5138,7 @@ void Gausspoint_coordinate(int Total_Element, int Total_Control_Point)
 	int i, j, k, e;
 	// double G = pow(0.6, 0.5);
 	// double Gxi[POW_Ng][DIMENSION] = {{-G, -G}, {0.0, -G}, {G, -G}, {-G, 0.0}, {0.0, 0.0}, {G, 0.0}, {-G, G}, {0.0, G}, {G, G}};
+	double R_shape_func;
 
 	for (e = 0; e < Total_Element; e++)
 	{
@@ -5137,10 +5147,11 @@ void Gausspoint_coordinate(int Total_Element, int Total_Control_Point)
 			double data_result_shape[2] = {0.0};
 			for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[e]]; i++)
 			{
+				R_shape_func = Shape_func(i, Total_Control_Point, Gxi[k], e);
 				for (j = 0; j < DIMENSION; j++)
 				{
 					//printf("i:%d Gxi[%d][%d]:%le\n", i,k,j,Gxi[k][i]);
-					data_result_shape[j] += Shape_func(i, Total_Control_Point, Gxi[k], e) * Node_Coordinate[Controlpoint_of_Element[e][i]][j];
+					data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][i]][j];
 				}
 			}
 			Gausspoint_coordinates[e][k][0] = data_result_shape[0];
@@ -5154,6 +5165,7 @@ void calculate_extendmesh_using_NURBS(double element_emsh[DIMENSION], int Total_
 	int e, b, j, re;
 	//int p = Total_Control_Point;
 	//for(e=0; e < Total_Element; e++){
+	double R_shape_func;
 
 	for (re = 0; re < real_Total_Element; re++)
 	{
@@ -5185,12 +5197,13 @@ void calculate_extendmesh_using_NURBS(double element_emsh[DIMENSION], int Total_
 
 				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
 				{
+					R_shape_func = Shape_func(b, Total_Control_Point, element_emsh, e);
 					for (j = 0; j < DIMENSION; j++)
 					{
 						//printf("%d %d %le\n",Controlpoint_of_Element[e][b],j,Displacement[Controlpoint_of_Element[e][b]*DIMENSION+j]);
 						//printf("%d %d %20.13le\n",Controlpoint_of_Element[e][b],j,Displacement[Controlpoint_of_Element[e][b]*DIMENSION+j]);
-						data_result_disp[j] += Shape_func(b, Total_Control_Point, element_emsh, e) * Displacement[Controlpoint_of_Element[e][b] * DIMENSION + j];
-						data_result_shape[j] += Shape_func(b, Total_Control_Point, element_emsh, e) * Node_Coordinate[Controlpoint_of_Element[e][b]][j];
+						data_result_disp[j] += R_shape_func * Displacement[Controlpoint_of_Element[e][b] * DIMENSION + j];
+						data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][b]][j];
 					}
 				}
 
@@ -5437,6 +5450,8 @@ void Check_coupled_Glo_Loc_element_for_end(double element_loc[DIMENSION],
 		double output_para[DIMENSION];
 		int Total_n_elements = 0;
 
+		double R_shape_func;
+
 		k = 0;
 		ll = 0;
 		element_delta = 2.0 / element_ndiv;
@@ -5460,12 +5475,13 @@ void Check_coupled_Glo_Loc_element_for_end(double element_loc[DIMENSION],
 
 				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
 				{
+					R_shape_func = Shape_func(b, 
+											  Total_Control_Point_on_mesh[mesh_n_over], 
+											  element_loc, e);
 					for (j = 0; j < DIMENSION; j++)
 					{
                         data_result_shape[j] 
-							+= Shape_func(b, 
-										  Total_Control_Point_on_mesh[mesh_n_over], 
-										  element_loc, e)
+							+= R_shape_func
                             * Node_Coordinate[Controlpoint_of_Element[e][b]][j]; 
 							//* Node_Coordinate[Controlpoint_of_Element[e][b]+Total_Control_Point_to_mesh[mesh_n_over+1]][j];
                     }
@@ -5583,6 +5599,8 @@ void Check_coupled_Glo_Loc_element_for_Gauss(double element_loc[DIMENSION],
 		double output_para[DIMENSION];
 		int Total_n_elements = 0;
 
+		double R_shape_func;
+
 		k = 0;
 		ll = 0;
 
@@ -5604,12 +5622,13 @@ void Check_coupled_Glo_Loc_element_for_Gauss(double element_loc[DIMENSION],
 
 				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
 				{
+					R_shape_func = Shape_func(b, 
+											  Total_Control_Point_on_mesh[mesh_n_over], 
+											  element_loc, e);
 					for (j = 0; j < DIMENSION; j++)
 					{
                         data_result_shape[j] 
-							+= Shape_func(b, 
-										  Total_Control_Point_on_mesh[mesh_n_over], 
-										  element_loc, e)
+							+= R_shape_func
                             * Node_Coordinate[Controlpoint_of_Element[e][b]][j]; 
 							//* Node_Coordinate[Controlpoint_of_Element[e][b]+Total_Control_Point_to_mesh[mesh_n_over+1]][j];
                     }
@@ -7944,7 +7963,7 @@ static void Calculation_overlay(int order_xi_loc, int order_eta_loc,
 	}
 	fclose(fp);
 
-	fp = fopen("over_stress_r_graph.txt", "a");
+	fp = fopen("over_stress_r_theta_graph.txt", "a");
  	for (i = 0; i < element_n_xi; i++) {
 		for (j = 0; j < element_n_eta; j++) {
 			for (k = 0; k < division_ele_xi + 1; k++) {
