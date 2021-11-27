@@ -12,6 +12,9 @@ mkdir checkAns colored_point Gauss_stress mesh_net new_zarusoba NURBS shapefunc
 ../s_IGA_for_debug_10x10.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18.txt > result.dat
 ../s_IGA_for_debug_10x10.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18_boundary.txt > result.dat
 
+../s_IGA_for_debug_10x10_backup20211123.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18.txt > result_backup.dat
+../s_IGA_for_debug_10x10_baka.x ../input_glo_arc_3_18x18.txt ../input_loc_arc_3_18x18.txt > result_baka.dat
+
 デバッグ(core dump)
 gdb ../s_IGA_for_debug_10x10.x
 run ../input_glo_arc_2_18x18.txt ../input_loc_arc_2_18x18.txt

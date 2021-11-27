@@ -2800,8 +2800,8 @@ void Make_F_Vec_disp_const(int Mesh_No, int Total_Constraint,
 
 	double K_EL[KIEL_SIZE][KIEL_SIZE];
 
-	for (ie = 0; ie < real_Total_Element; ie++)
-	// for (ie = 0; ie < real_Total_Element_to_mesh[Total_mesh]; ie++)
+	// for (ie = 0; ie < real_Total_Element; ie++)
+	for (ie = 0; ie < real_Total_Element_to_mesh[Total_mesh]; ie++)
 	{
 
 		double X[No_Control_point_ON_ELEMENT[Element_patch[real_El_No_on_mesh[Mesh_No][ie]]]][DIMENSION];
@@ -4667,6 +4667,7 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 		int patch_n = 0;
 
 		double R_shape_func;
+		// double temp99;
 
 		// for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
 		// {
@@ -4681,11 +4682,21 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 
 		for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
 		{
+			// double R_shape_func = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
 			R_shape_func = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
 			// printf("(Shape_func return) R = %lf\n", R_shape_func);
 			for (jj = 0; jj < DIMENSION; jj++)
 			{
+				// double R_shape_func = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
+				// printf("R = %.15e\n", R_shape_func);
 				data_result_shape[jj] += R_shape_func * X[j][jj];
+				// if (jj == 1) {
+				// 	if (temp99 - R_shape_func >= 1.0e-15) {
+				// 		printf("error 1\n");
+				// 		printf("%.15e\t%.15e\n", temp99, R_shape_func);
+				// 	}
+				// }
+				// temp99 = R_shape_func;
 			}
 		}
 
@@ -4994,6 +5005,7 @@ void element_coordinate(int Total_Element, int Total_Control_Point)
 	double element_edge[9][DIMENSION] = {{-1.0, -1.0}, {1.0, -1.0}, {1.0, 1.0}, {-1.0, 1.0}, {0.0, -1.0}, {1.0, 0.0}, {0.0, 1.0}, {-1.0, 0.0}, {0.0, 0.0}};
 	//double data_result_shape[2]={0.0};
 	double R_shape_func;
+	// double temp99;
 
 	for (e = 0; e < Total_Element; e++)
 	{
@@ -5002,10 +5014,20 @@ void element_coordinate(int Total_Element, int Total_Control_Point)
 			double data_result_shape[2] = {0.0};
 			for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[e]]; i++)
 			{
+				// double R_shape_func = Shape_func(i, Total_Control_Point, element_edge[k], e);
 				R_shape_func = Shape_func(i, Total_Control_Point, element_edge[k], e);
 				for (j = 0; j < DIMENSION; j++)
 				{
+					// double R_shape_func = Shape_func(i, Total_Control_Point, element_edge[k], e);
+					// printf("R = %.15e\n", R_shape_func);
 					data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][i]][j];
+					// if (j == 1) {
+					// 	if (temp99 - R_shape_func >= 1.0e-15) {
+					// 		printf("error 2\n");
+					// 		printf("%.15e\t%.15e\n", temp99, R_shape_func);
+					// 	}
+					// }
+					// temp99 = R_shape_func;
 				}
 			}
 			element_coordinate_Nopoint[l][0] = data_result_shape[0];
@@ -5048,6 +5070,7 @@ void calculate_Controlpoint_using_NURBS(double element[DIMENSION], int Total_Ele
 	//for(e=0; e < Total_Element; e++){
 	
 	double R_shape_func;
+	// double temp99;
 
 	for (re = 0; re < Total_Element; re++)
 	{
@@ -5078,13 +5101,23 @@ void calculate_Controlpoint_using_NURBS(double element[DIMENSION], int Total_Ele
 
 				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
 				{
+					// double R_shape_func = Shape_func(b, Total_Control_Point, element, e);
 					R_shape_func = Shape_func(b, Total_Control_Point, element, e);
 					for (j = 0; j < DIMENSION; j++)
 					{
 						//printf("%d %d %le\n",Controlpoint_of_Element[e][b],j,Displacement[Controlpoint_of_Element[e][b]*DIMENSION+j]);
 						//printf("%d %d %20.13le\n",Controlpoint_of_Element[e][b],j,Displacement[Controlpoint_of_Element[e][b]*DIMENSION+j]);
+						// double R_shape_func = Shape_func(b, Total_Control_Point, element, e);
+						// printf("R = %.15e\n", R_shape_func);
 						data_result_disp[j] += R_shape_func * Displacement[Controlpoint_of_Element[e][b] * DIMENSION + j];
 						data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][b]][j];
+						// if (j == 1) {
+						// 	if (temp99 - R_shape_func >= 1.0e-15) {
+						// 		printf("error 3\n");
+						// 		printf("%.15e\t%.15e\n", temp99, R_shape_func);
+						// 	}
+						// }
+						// temp99 = R_shape_func;
 					}
 				}
 
@@ -5139,6 +5172,7 @@ void Gausspoint_coordinate(int Total_Element, int Total_Control_Point)
 	// double G = pow(0.6, 0.5);
 	// double Gxi[POW_Ng][DIMENSION] = {{-G, -G}, {0.0, -G}, {G, -G}, {-G, 0.0}, {0.0, 0.0}, {G, 0.0}, {-G, G}, {0.0, G}, {G, G}};
 	double R_shape_func;
+	// double temp99;
 
 	for (e = 0; e < Total_Element; e++)
 	{
@@ -5147,11 +5181,21 @@ void Gausspoint_coordinate(int Total_Element, int Total_Control_Point)
 			double data_result_shape[2] = {0.0};
 			for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[e]]; i++)
 			{
+				// double R_shape_func = Shape_func(i, Total_Control_Point, Gxi[k], e);
 				R_shape_func = Shape_func(i, Total_Control_Point, Gxi[k], e);
 				for (j = 0; j < DIMENSION; j++)
 				{
 					//printf("i:%d Gxi[%d][%d]:%le\n", i,k,j,Gxi[k][i]);
+					// double R_shape_func = Shape_func(i, Total_Control_Point, Gxi[k], e);
+					// printf("R = %.15e\n", R_shape_func);
 					data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][i]][j];
+					// if (j == 1) {
+					// 	if (temp99 - R_shape_func >= 1.0e-15) {
+					// 		printf("error 4\n");
+					// 		printf("%.15e\t%.15e\n", temp99, R_shape_func);
+					// 	}
+					// }
+					// temp99 = R_shape_func;
 				}
 			}
 			Gausspoint_coordinates[e][k][0] = data_result_shape[0];
@@ -5166,6 +5210,7 @@ void calculate_extendmesh_using_NURBS(double element_emsh[DIMENSION], int Total_
 	//int p = Total_Control_Point;
 	//for(e=0; e < Total_Element; e++){
 	double R_shape_func;
+	// double temp99;
 
 	for (re = 0; re < real_Total_Element; re++)
 	{
@@ -5197,13 +5242,23 @@ void calculate_extendmesh_using_NURBS(double element_emsh[DIMENSION], int Total_
 
 				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
 				{
+					// double R_shape_func = Shape_func(b, Total_Control_Point, element_emsh, e);
 					R_shape_func = Shape_func(b, Total_Control_Point, element_emsh, e);
 					for (j = 0; j < DIMENSION; j++)
 					{
 						//printf("%d %d %le\n",Controlpoint_of_Element[e][b],j,Displacement[Controlpoint_of_Element[e][b]*DIMENSION+j]);
 						//printf("%d %d %20.13le\n",Controlpoint_of_Element[e][b],j,Displacement[Controlpoint_of_Element[e][b]*DIMENSION+j]);
+						// double R_shape_func = Shape_func(b, Total_Control_Point, element_emsh, e);
+						// printf("R = %.15e\n", R_shape_func);
 						data_result_disp[j] += R_shape_func * Displacement[Controlpoint_of_Element[e][b] * DIMENSION + j];
 						data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][b]][j];
+						// if (j == 1) {
+						// 	if (temp99 - R_shape_func >= 1.0e-15) {
+						// 		printf("error 5\n");
+						// 		printf("%.15e\t%.15e\n", temp99, R_shape_func);
+						// 	}
+						// }
+						// temp99 = R_shape_func;
 					}
 				}
 
@@ -5424,6 +5479,9 @@ void Check_coupled_Glo_Loc_element_for_end(double element_loc[DIMENSION],
 	// int patch_n, itr_n;
 	int patch_n = 0, itr_n = 0;
 
+	double R_shape_func;
+	// double temp99;
+
 	int element_ndiv = 1;
 	/*n_points = (element_ndiv + 1) * (element_ndiv + 1) 
 		     * real_Total_Element_on_mesh[mesh_n_over];*/
@@ -5450,8 +5508,6 @@ void Check_coupled_Glo_Loc_element_for_end(double element_loc[DIMENSION],
 		double output_para[DIMENSION];
 		int Total_n_elements = 0;
 
-		double R_shape_func;
-
 		k = 0;
 		ll = 0;
 		element_delta = 2.0 / element_ndiv;
@@ -5475,15 +5531,27 @@ void Check_coupled_Glo_Loc_element_for_end(double element_loc[DIMENSION],
 
 				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
 				{
+					// double R_shape_func = Shape_func(b, 
+					// 								 Total_Control_Point_on_mesh[mesh_n_over], 
+					// 								element_loc, e);
 					R_shape_func = Shape_func(b, 
 											  Total_Control_Point_on_mesh[mesh_n_over], 
 											  element_loc, e);
 					for (j = 0; j < DIMENSION; j++)
 					{
-                        data_result_shape[j] 
-							+= R_shape_func
-                            * Node_Coordinate[Controlpoint_of_Element[e][b]][j]; 
-							//* Node_Coordinate[Controlpoint_of_Element[e][b]+Total_Control_Point_to_mesh[mesh_n_over+1]][j];
+						// double R_shape_func = Shape_func(b, 
+						// 								 Total_Control_Point_on_mesh[mesh_n_over], 
+						// 								 element_loc, e);
+						// printf("R = %.15e\n", R_shape_func);
+                        data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][b]][j]; 
+						//* Node_Coordinate[Controlpoint_of_Element[e][b]+Total_Control_Point_to_mesh[mesh_n_over+1]][j];
+						// if (j == 1) {
+						// 	if (temp99 - R_shape_func >= 1.0e-15) {
+						// 		printf("error 6\n");
+						// 		printf("%.15e\t%.15e\n", temp99, R_shape_func);
+						// 	}
+						// }
+						// temp99 = R_shape_func;
                     }
 				}
                 //printf("data_result_shape[0]=%le\n",data_result_shape[0]);
@@ -5600,6 +5668,7 @@ void Check_coupled_Glo_Loc_element_for_Gauss(double element_loc[DIMENSION],
 		int Total_n_elements = 0;
 
 		double R_shape_func;
+		// double temp99;
 
 		k = 0;
 		ll = 0;
@@ -5622,15 +5691,27 @@ void Check_coupled_Glo_Loc_element_for_Gauss(double element_loc[DIMENSION],
 
 				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
 				{
+					// double R_shape_func = Shape_func(b, 
+					// 						  Total_Control_Point_on_mesh[mesh_n_over], 
+					// 						  element_loc, e);
 					R_shape_func = Shape_func(b, 
 											  Total_Control_Point_on_mesh[mesh_n_over], 
 											  element_loc, e);
 					for (j = 0; j < DIMENSION; j++)
 					{
-                        data_result_shape[j] 
-							+= R_shape_func
-                            * Node_Coordinate[Controlpoint_of_Element[e][b]][j]; 
-							//* Node_Coordinate[Controlpoint_of_Element[e][b]+Total_Control_Point_to_mesh[mesh_n_over+1]][j];
+						// double R_shape_func = Shape_func(b, 
+						// 					  Total_Control_Point_on_mesh[mesh_n_over], 
+						// 					  element_loc, e);
+						// printf("R = %.15e\n", R_shape_func);
+                        data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][b]][j]; 
+						//* Node_Coordinate[Controlpoint_of_Element[e][b]+Total_Control_Point_to_mesh[mesh_n_over+1]][j];
+						// if (j == 1) {
+						// 	if (temp99 - R_shape_func >= 1.0e-15) {
+						// 		printf("error 7\n");
+						// 	printf("%.15e\t%.15e\n", temp99, R_shape_func);
+						// 	}
+						// }
+						// temp99 = R_shape_func;
                     }
 				}
                 //printf("data_result_shape[0]=%le\n",data_result_shape[0]);

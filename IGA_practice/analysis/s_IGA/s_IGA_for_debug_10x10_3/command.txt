@@ -5,6 +5,7 @@ gcc -g -o s_IGA_for_debug_10x10_integ5.x s_IGA_for_debug_10x10.c -O2 -lm -Wall
 
 gcc -g -o s_IGA_for_debug_10x10_integ3.x s_IGA_for_debug_10x10.c -O3 -lm -Wall
 gcc -g -o s_IGA_for_debug_10x10_integ4.x s_IGA_for_debug_10x10.c -O3 -lm -Wall
+gcc -g -o s_IGA_for_debug_10x10_integ4_2.x s_IGA_for_debug_10x10.c -O3 -lm -Wall
 gcc -g -o s_IGA_for_debug_10x10_integ5.x s_IGA_for_debug_10x10.c -O3 -lm -Wall
 
 gcc -g -o s_IGA_for_debug_10x10_integ3_O0.x s_IGA_for_debug_10x10.c -O0 -lm -Wall
