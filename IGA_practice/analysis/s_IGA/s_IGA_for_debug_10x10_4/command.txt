@@ -1,6 +1,8 @@
 最適化コンパイル
-gcc -g -o s_IGA_for_debug_10x10.x s_IGA_for_debug_10x10.c -O2 -lm -Wall
-gcc -g -o s_IGA_for_debug_10x10.x s_IGA_for_debug_10x10.c -O3 -lm -Wall
+gcc -o -g s_IGA_for_debug_10x10.x s_IGA_for_debug_10x10.c -O2 -lm -Wall
+gcc -o -g s_IGA_for_debug_10x10.x s_IGA_for_debug_10x10.c -O3 -lm -Wall
+
+gcc -o -g s_IGA_for_debug_10x10_baka.x s_IGA_for_debug_10x10_baka.c -O3 -lm -Wall
 
 
 実行

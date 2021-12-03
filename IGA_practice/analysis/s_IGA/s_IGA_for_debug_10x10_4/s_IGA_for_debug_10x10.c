@@ -596,11 +596,11 @@ int main(int argc, char *argv[])
 	    //printf("Finish Get_InputData\n");
         if(tm==0 && Total_mesh>1)
         {
-            printf("Finish Get_InputData(Global mesh:%s)\n",argv[1]);
+            printf("Finish Get_InputData(Global mesh:%s)\n", argv[1]);
         }
         if(tm>0)
         {
-            printf("Finish Get_inputData(Local mesh No.[%d]:%s)\n",tm,argv[tm+1]);
+            printf("Finish Get_inputData(Local mesh No.[%d]:%s)\n", tm, argv[tm+1]);
         }
 	    printf("Total Element=%d Node=%d Constraint=%d Load=%d\n", Total_Element, Total_Control_Point, Total_Constraint, Total_Load);
 	    printf("E;%le nu;%le\n", E, nu);
@@ -608,9 +608,11 @@ int main(int argc, char *argv[])
 	}	//ローカルメッシュのためにinput fileの読み込みのループ終了
 	//グローバルパッチとローカルパッチの重なり
 	//ローカルメッシュ同士は被りなしと仮定
+	
+	printf("\ncheck_over_parameter;%d\n\n", check_over_parameter);
 	for (i = 1; i < Total_mesh; i++)
 	{
-		printf("mesh_n_org;0\tmesh_n_over;%d\n",i);
+		printf("mesh_n_org;0\tmesh_n_over;%d\n", i);
 		//NNLOVER[over_ele][]=org_eleの算出
 		if (check_over_parameter == 0)
 		{
@@ -683,12 +685,15 @@ int main(int argc, char *argv[])
         printf("Finish Make_K_Whole(Local mesh No.[%d]:%s)\n",tm,argv[1+tm]);
     }
 	*/
-	for (i = 0; i < Total_Load_to_mesh[Total_mesh]; i++)
+	
 	//for s-IGA　複数メッシュのループ内に移動
 	//荷重ベクトルの算出部分
+	for (i = 0; i < Total_Load_to_mesh[Total_mesh]; i++)
 	{
-		printf("Value_of_Load;%11.10e\n", Value_of_Load[i]);
+		// printf("Value_of_Load;%11.10e\n", Value_of_Load[i]);
+		printf("Value_of_Load;%.20e\n", Value_of_Load[i]);
 	}
+	
 	printf("pp\n");
 	//max_itr = K_Whole_Size;
 	//printf("K_Whole_Size:%d\n", K_Whole_Size);
@@ -2625,10 +2630,10 @@ void Make_K_Whole_Val(int tm, double E, double nu, int Total_Element, int K_Whol
 		//if(i==real_element[re]){
 		//printf("re=%d\n",re);
 		i = real_element[re];
-		printf("El_No;i=%d\n", real_element[re]);
+		// printf("El_No;i=%d\n", real_element[re]);
 		KIEL_SIZE = No_Control_point_ON_ELEMENT[Element_patch[i]] * DIMENSION;
 		double X[No_Control_point_ON_ELEMENT[Element_patch[i]]][DIMENSION], K_EL[KIEL_SIZE][KIEL_SIZE];
-		printf("Total_Element=%d\tre=%d\tEl_No=%d\n", Total_Element, re, i);
+		// printf("Total_Element=%d\tre=%d\tEl_No=%d\n", Total_Element, re, i);
 		//各要素のKelを求める
 		for (j1 = 0; j1 < No_Control_point_ON_ELEMENT[Element_patch[i]]; j1++)
 		{
@@ -4739,7 +4744,7 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 			output_eta < Position_Knots[patch_n][1][Order[patch_n][1]+ENC[patch_n][El_No_glo][1]+1])	//要素内であるとき
 		{
 			BDBJ_flag = 1;
-			printf("BDBJ_flag\n");
+			// printf("BDBJ_flag\n");
 
 			//親要素座標の算出
 			G_Gxi[i][0] = -1 
@@ -5390,7 +5395,7 @@ int ele_check(int patch_n,
 			}
         }
 		No_line[j] = l;
-        printf("No_line[%d]=%d\n", j, No_line[j]);
+        // printf("No_line[%d]=%d\n", j, No_line[j]);
 		n *= l;	//各方向のNo_lineを掛け合わせる
     }
 	/*
@@ -5415,7 +5420,7 @@ int ele_check(int patch_n,
 			}
 		}
 	}
-	printf("n_element_over;%d\n", n);	//重なっている要素の総数
+	// printf("n_element_over;%d\n", n);	//重なっている要素の総数
 	return n;
 }
 
@@ -5746,8 +5751,8 @@ void Check_coupled_Glo_Loc_element_for_Gauss(double element_loc[DIMENSION],
 				{
 					n_elements_over_point[k] = 0;
 				}
-				printf("n_elements_over_point[%d];%d\n",
-						k,n_elements_over_point[k]);
+				// printf("n_elements_over_point[%d];%d\n",
+				// 		k,n_elements_over_point[k]);
 				Total_n_elements += n_elements_over_point[k];
 				//printf("Total_n_elements;%d\n",Total_n_elements);
 				for (l = 0; l < n_elements_over_point[k]; l++)
@@ -5778,11 +5783,11 @@ void Check_coupled_Glo_Loc_element_for_Gauss(double element_loc[DIMENSION],
 			printf("element_n_point[%d]=%d\n",i,element_n_point[i]);
 		}
 		*/
-		printf("NNLOVER[%d]=%d\n",e,NNLOVER[e]);
+		// printf("NNLOVER[%d]=%d\n",e,NNLOVER[e]);
 		
 		for (i = 0; i < NNLOVER[e]; i++)
 		{
-			printf("NELOVER[%d][%d]=%d\n",e,i,NELOVER[e][i]);
+			// printf("NELOVER[%d][%d]=%d\n",e,i,NELOVER[e][i]);
 		}
 	}
 
@@ -6080,20 +6085,20 @@ int SerchForElement(int mesh_n, int iPatch, int Total_Element, int iX, int iY)
 	printf("Total_Element%d\n",Total_Element);
 	for (iii = 0; iii < Total_Element; iii++)
 	{
-		printf("%d\n",iii+Total_Element_to_mesh[mesh_n]);
-		printf("ipatch%d\n",iPatch);
+		// printf("%d\n",iii+Total_Element_to_mesh[mesh_n]);
+		// printf("ipatch%d\n",iPatch);
 		if (Element_patch[iii+Total_Element_to_mesh[mesh_n]] == iPatch)
 		{
-			printf("Check SerchForElement 1 iii = %d\n", iii+Total_Element_to_mesh[mesh_n]);
-			printf("ENC[iPatch][iii][0] = %d ENC[iPatch][iii][1] = %d  iX = %d  iY = %d\n", 
-					ENC[iPatch][iii+Total_Element_to_mesh[mesh_n]][0], 
-					ENC[iPatch][iii+Total_Element_to_mesh[mesh_n]][1], 
-					iX, iY);
+			// printf("Check SerchForElement 1 iii = %d\n", iii+Total_Element_to_mesh[mesh_n]);
+			// printf("ENC[iPatch][iii][0] = %d ENC[iPatch][iii][1] = %d  iX = %d  iY = %d\n", 
+			// 		ENC[iPatch][iii+Total_Element_to_mesh[mesh_n]][0], 
+			// 		ENC[iPatch][iii+Total_Element_to_mesh[mesh_n]][1], 
+			// 		iX, iY);
 			if (iX == ENC[iPatch][iii+Total_Element_to_mesh[mesh_n]][0] && iY == ENC[iPatch][iii+Total_Element_to_mesh[mesh_n]][1])
 				goto loopend;
 			/* iii --; */
 
-			printf("Check SerchForElement 2 iii = %d\n", iii);
+			// printf("Check SerchForElement 2 iii = %d\n", iii);
 		}
 	}
 loopend:

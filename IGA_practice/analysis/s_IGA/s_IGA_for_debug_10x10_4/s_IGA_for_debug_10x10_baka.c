@@ -4869,7 +4869,8 @@ void Make_ReactionForce(int Total_Element, int Total_Control_Point, int El_No)
 	for (i = 0; i < Total_Control_Point * DIMENSION; i++)
 		ReactionForce[i] = 0.0;
 	//printf("ReactionForce\n");
-	for (re = 0; re < real_Total_Element_to_mesh[Total_mesh]; re++)
+	// for (re = 0; re < real_Total_Element_to_mesh[Total_mesh]; re++)
+	for (re = 0; re < real_Total_Element;  re++)
 	{
 		e = real_element[re];
 		//printf("%d,No_Control_point_ON_ELEMENT[%d]:%d\n",e,Element_patch[e], No_Control_point_ON_ELEMENT[Element_patch[e]]);
