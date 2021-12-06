@@ -4,9 +4,9 @@
 
 #define MAX_N_INPUTFILE 5
 #define MAX_DIMENSION 3
-#define MAX_ORDER 10
+#define MAX_ORDER 3
 #define MAX_N_Controlpoint_in_Patch 10000
-#define MAX_N_Controlpoint_each_parameter 100
+#define MAX_N_Controlpoint_each_parameter 1000
 #define MAX_N_KNOT 1000
 
 static int Dimension[MAX_N_INPUTFILE];
@@ -20,6 +20,7 @@ static double y[MAX_N_INPUTFILE][MAX_N_Controlpoint_in_Patch];
 static double w[MAX_N_INPUTFILE][MAX_N_Controlpoint_in_Patch];
 static int OE_n[MAX_N_INPUTFILE][MAX_DIMENSION];
 static int KI_uniform_n[MAX_N_INPUTFILE][MAX_DIMENSION];
+static int KI_cp_n[MAX_N_INPUTFILE][MAX_DIMENSION];
 static int KI_non_uniform_n[MAX_N_INPUTFILE][MAX_DIMENSION];
 static double insert_knot[MAX_N_INPUTFILE][MAX_DIMENSION][MAX_N_KNOT];
 static double insert_knot_in_KI[MAX_N_INPUTFILE][MAX_DIMENSION][MAX_N_KNOT];
@@ -46,8 +47,11 @@ static double Bezier_x[MAX_N_Controlpoint_each_parameter][MAX_ORDER];
 static double Bezier_y[MAX_N_Controlpoint_each_parameter][MAX_ORDER];
 static double Bezier_w[MAX_N_Controlpoint_each_parameter][MAX_ORDER];
 static int number_of_Bezier_line;
+static int error_check = 0;
+static int mode;
 
 void Get_InputData(int tm, char *filename);
+void print_error();
 void KI_calc_point_array(int tm);
 void KI_calc_knot_1D(int tm, int insert_parameter_axis);
 void KI_define_temp_point_array(int tm, int line_number, int insert_parameter_axis);
@@ -56,6 +60,10 @@ void KI_update_point_array(int tm, int line_number, int insert_parameter_axis);
 void KI_update(int tm, int insert_parameter_axis);
 void KI_reset_array();
 void KI_non_uniform_2D(int tm, int insert_parameter_axis, int KI_non_uniform);
+
+void Calc_cp_insert_knot(int tm, int insert_parameter_axis);
+void KI_cp_2D(int tm, int insert_parameter_axis);
+
 void Calc_uniform_insert_knot(int tm, int insert_parameter_axis);
 void KI_uniform_2D(int tm, int insert_parameter_axis);
 void OE_calc_point_array(int tm);
@@ -91,6 +99,11 @@ int  main(int argc, char *argv[])
     for (tm = 0; tm < Total_file; tm++)
     {
 	    Get_InputData(tm, argv[tm+1]);
+        if(error_check == 1)
+        {
+            print_error();
+            break;
+        }
 	    Debug_printf(tm, "Get_InputData");
 
         //オーダーエレベーション
@@ -103,8 +116,18 @@ int  main(int argc, char *argv[])
         //ノットインサーション
         for (j = 0; j < Dimension[tm]; j++)
         {
-            KI_non_uniform_2D(tm, j, 1);
-            KI_uniform_2D(tm, j);
+            if (mode == 0)
+            {
+                KI_non_uniform_2D(tm, j, 1);
+            }
+            else if (mode == 1)
+            {
+                KI_cp_2D(tm, j);
+            }
+            else if (mode == 2)
+            {
+                KI_uniform_2D(tm, j);
+            }
             Debug_printf(tm, "Knot Insertion");
         }
 
@@ -129,6 +152,7 @@ void Get_InputData(int tm, char *filename)
     double temp_x, temp_y, temp_w;
     int temp_OE_n;
     int temp_KI_uniform_n;
+    int temp_KI_cp_n;
     int temp_KI_non_uniform_n;
     double temp_insert_knot;
 
@@ -226,8 +250,16 @@ void Get_InputData(int tm, char *filename)
     }
 	fgets(s, 256, fp);
 
+    //ξη方向のk.i.(コントロールポイントに合わせて分割)の回数
+    for (j = 0; j < Dimension[tm]; j++)
+    {
+        fscanf(fp, "%d", &temp_KI_cp_n);
+        printf("KI_cp_n[%d][%d]:%d\n", tm, j, temp_KI_cp_n);
+        KI_cp_n[tm][j] = temp_KI_cp_n;
+    }
+    fgets(s, 256, fp);
 
-    //ξη方向のk.i.(任意のノット)の個数
+    //ξη方向のk.i.(任意のノット)の回数
     for (j = 0; j < Dimension[tm]; j++)
     {
         fscanf(fp, "%d", &temp_KI_non_uniform_n);
@@ -250,6 +282,59 @@ void Get_InputData(int tm, char *filename)
             printf("\n");
         }
     }
+
+    //コントロールポイントに合わせて分割と任意のノット挿入を同時に行っていないか確認
+    int temp_check_a = 0;
+    int temp_check_b = 0;
+    int temp_check_c = 0;
+    int temp_check_total = 0;
+    for (j = 0; j < Dimension[tm]; j++)
+    {
+        if(KI_non_uniform_n[tm][j] =! 0)
+        {
+            temp_check_a += 1;
+        }
+        if(KI_cp_n[tm][j] =! 0)
+        {
+            temp_check_b += 1;
+        }
+        if(KI_uniform_n[tm][j] =! 0)
+        {
+            temp_check_c += 1;
+        }
+    }
+    if (temp_check_a > 0)
+    {
+        mode = 0;
+        temp_check_total++;
+    }
+    if (temp_check_b > 0)
+    {
+        mode = 1;
+        temp_check_total++;
+    }
+    if (temp_check_c > 0)
+    {
+        mode = 2;
+        temp_check_total++;
+    }
+
+    if (temp_check_total > 1)
+    {
+        error_check = 1;
+    }
+    else
+    {
+        error_check = 0;
+    }
+}
+
+
+void print_error()
+{
+    printf("インプットデータが間違っています．\n
+    ノットインサーションの各操作(3種類)は同時に行えません．\n
+    操作を行わない該当するパラメータを(0  0)としてください．\n")
 }
 
 
@@ -564,6 +649,23 @@ void KI_non_uniform_2D(int tm, int insert_parameter_axis, int KI_non_uniform)
 
     KI_update(tm, insert_parameter_axis);
     KI_reset_array();
+}
+
+
+void Calc_cp_insert_knot(int tm, int insert_parameter_axis)
+{
+
+}
+
+
+void KI_cp_2D(int tm, int insert_parameter_axis)
+{
+    int i;
+    for (i = 0; i < KI_uniform_n[tm][insert_parameter_axis]; i++)
+    {
+        Calc_cp_insert_knot(tm, insert_parameter_axis);
+        KI_non_uniform_2D(tm, insert_parameter_axis, 0);
+    }
 }
 
 

@@ -20,20 +20,22 @@
 
 1   1   //k.i.(等分割)の回数    xi  eta
 
+0   0   //k.i.(コントロールポイントに合わせて分割)の回数    xi  eta
+
 0   3   //k.i.(任意のノット)の個数  xi eta
 
             //xi方向の挿入するノット(0個の場合は書かない)
 0.2 0.4 0.5 //eta方向の挿入するノット(0個の場合は書かない)
 
 /*
+    knot insertionの各手法は同時に行えないので，
+    いずれかを行うとき他方は0,0としないとエラーを返す
+
     knot insertionとorder elebationは順番によって連続性が変化するので，
     o.e.→k.i.の順で行う
 
-    knot insertionは等分割と任意のノット挿入の2種類あり，この順番を変更すると
-    分割後のコントロールポイントが変化するが，このプログラムでは不均一分割→等分割としている
-
     コンパイル
-    gcc -o s_IGA_make_input.x s_IGA_make_input.c -lm -Wall
+    gcc -o s_IGA_make_input.x s_IGA_make_input.c -Og -lm -Wall
     実行
     ./s_IGA_make_input.x **.txt > result.dat
     ./s_IGA_make_input.x **.txt **.txt > result.dat
