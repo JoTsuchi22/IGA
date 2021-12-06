@@ -5,15 +5,17 @@
 #define MAX_N_INPUTFILE 5
 #define MAX_DIMENSION 3
 #define MAX_ORDER 3
-#define MAX_N_Controlpoint_in_Patch 10000
 #define MAX_N_Controlpoint_each_parameter 1000
-#define MAX_N_KNOT 1000
+#define MAX_N_Controlpoint_in_Patch MAX_N_Controlpoint_each_parameter * MAX_N_Controlpoint_each_parameter
+#define MAX_N_KNOT MAX_N_Controlpoint_each_parameter + MAX_ORDER + 1
 
 static int Dimension[MAX_N_INPUTFILE];
 static int Total_Control_Point[MAX_N_INPUTFILE];
 static int Order[MAX_N_INPUTFILE][MAX_DIMENSION];
+static int Order_before[MAX_N_INPUTFILE][MAX_DIMENSION];
 static int knot_n[MAX_N_INPUTFILE][MAX_DIMENSION];
 static int Control_point_n[MAX_N_INPUTFILE][MAX_DIMENSION];
+static int Control_point_n_before[MAX_N_INPUTFILE][MAX_DIMENSION];
 static double knot[MAX_N_INPUTFILE][MAX_DIMENSION][MAX_N_KNOT];
 static double x[MAX_N_INPUTFILE][MAX_N_Controlpoint_in_Patch];
 static double y[MAX_N_INPUTFILE][MAX_N_Controlpoint_in_Patch];
@@ -60,10 +62,8 @@ void KI_update_point_array(int tm, int line_number, int insert_parameter_axis);
 void KI_update(int tm, int insert_parameter_axis);
 void KI_reset_array();
 void KI_non_uniform_2D(int tm, int insert_parameter_axis, int KI_non_uniform);
-
 void Calc_cp_insert_knot(int tm, int insert_parameter_axis);
 void KI_cp_2D(int tm, int insert_parameter_axis);
-
 void Calc_uniform_insert_knot(int tm, int insert_parameter_axis);
 void KI_uniform_2D(int tm, int insert_parameter_axis);
 void OE_calc_point_array(int tm);
@@ -181,6 +181,7 @@ void Get_InputData(int tm, char *filename)
         fscanf(fp, "%d", &temp_Order);
         printf("Order[%d][%d]=%d\n", tm, j, temp_Order);
         Order[tm][j] = temp_Order;
+        Order_before[tm][j] = temp_Order;
     }
 	fgets(s, 256, fp);
 
@@ -199,6 +200,7 @@ void Get_InputData(int tm, char *filename)
         fscanf(fp, "%d", &temp_Control_point_n);
         printf("Control_point_n[%d][%d]:%d\n", tm, j, temp_Control_point_n);
         Control_point_n[tm][j] = temp_Control_point_n;
+        Control_point_n_before[tm][j] = temp_Control_point_n;
     }
 	fgets(s, 256, fp);
 
@@ -250,7 +252,7 @@ void Get_InputData(int tm, char *filename)
     }
 	fgets(s, 256, fp);
 
-    //ξη方向のk.i.(コントロールポイントに合わせて分割)の回数
+    //ξη方向のk.i.(コントロールポイントに合わせて等分割)の回数
     for (j = 0; j < Dimension[tm]; j++)
     {
         fscanf(fp, "%d", &temp_KI_cp_n);
@@ -290,15 +292,15 @@ void Get_InputData(int tm, char *filename)
     int temp_check_total = 0;
     for (j = 0; j < Dimension[tm]; j++)
     {
-        if(KI_non_uniform_n[tm][j] =! 0)
+        if(KI_non_uniform_n[tm][j] != 0)
         {
             temp_check_a += 1;
         }
-        if(KI_cp_n[tm][j] =! 0)
+        if(KI_cp_n[tm][j] != 0)
         {
             temp_check_b += 1;
         }
-        if(KI_uniform_n[tm][j] =! 0)
+        if(KI_uniform_n[tm][j] != 0)
         {
             temp_check_c += 1;
         }
@@ -332,9 +334,7 @@ void Get_InputData(int tm, char *filename)
 
 void print_error()
 {
-    printf("インプットデータが間違っています．\n
-    ノットインサーションの各操作(3種類)は同時に行えません．\n
-    操作を行わない該当するパラメータを(0  0)としてください．\n")
+    printf("インプットデータが間違っています．\nノットインサーションの各操作(3種類)は同時に行えません．\n操作を行わない該当するパラメータを(0  0)としてください．\n");
 }
 
 
@@ -654,18 +654,21 @@ void KI_non_uniform_2D(int tm, int insert_parameter_axis, int KI_non_uniform)
 
 void Calc_cp_insert_knot(int tm, int insert_parameter_axis)
 {
+    int i;
+    int cp_n_after_OE = Control_point_n_before[tm][insert_parameter_axis] + (Control_point_n_before[tm][insert_parameter_axis] - Order_before[tm][insert_parameter_axis]);
+    vec_length1[tm][insert_parameter_axis] = KI_cp_n[tm][insert_parameter_axis] - cp_n_after_OE;
 
+    for (i = 0; i < vec_length1[tm][insert_parameter_axis]; i++)
+    {
+        insert_knot_in_KI[tm][insert_parameter_axis][i] = (i + 1.0) / (vec_length1[tm][insert_parameter_axis] + 1.0);
+    }
 }
 
 
 void KI_cp_2D(int tm, int insert_parameter_axis)
 {
-    int i;
-    for (i = 0; i < KI_uniform_n[tm][insert_parameter_axis]; i++)
-    {
-        Calc_cp_insert_knot(tm, insert_parameter_axis);
-        KI_non_uniform_2D(tm, insert_parameter_axis, 0);
-    }
+    Calc_cp_insert_knot(tm, insert_parameter_axis);
+    KI_non_uniform_2D(tm, insert_parameter_axis, 0);
 }
 
 
@@ -1037,7 +1040,7 @@ void Calc_Bezier_2D(int tm, int elevation_parameter_axis, int other_axis)
     l_other = Control_point_n[tm][other_axis];
     n = Order[tm][elevation_parameter_axis];
 
-    number_of_Bezier_line = (l - 1) / n;
+    number_of_Bezier_line = l - n;
 
     for (i = 0; i < number_of_Bezier_line; i++)
     {
