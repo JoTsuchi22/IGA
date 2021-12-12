@@ -53,7 +53,7 @@ static int error_check = 0;
 static int mode;
 
 void Get_InputData(int tm, char *filename);
-void print_error();
+void Print_error();
 void KI_calc_point_array(int tm);
 void KI_calc_knot_1D(int tm, int insert_parameter_axis);
 void KI_define_temp_point_array(int tm, int line_number, int insert_parameter_axis);
@@ -83,6 +83,7 @@ void KR_reset_array();
 void KR_non_uniform_2D(int tm, int removal_parameter_axis);
 void OE_2D(int tm, int elevation_parameter_axis);
 void Debug_printf(int tm, char *section);
+void Fix_numerical_error(int tm);
 void OutputData(int tm, char *filename);
 
 FILE *fp;
@@ -95,13 +96,13 @@ int  main(int argc, char *argv[])
 
     Total_file = argc - 1;
 
-    //ファイル読み込み
     for (tm = 0; tm < Total_file; tm++)
     {
+        //ファイル読み込み
 	    Get_InputData(tm, argv[tm+1]);
         if(error_check == 1)
         {
-            print_error();
+            Print_error();
             break;
         }
 	    Debug_printf(tm, "Get_InputData");
@@ -131,6 +132,10 @@ int  main(int argc, char *argv[])
             Debug_printf(tm, "Knot Insertion");
         }
 
+        //逆行列での数値誤差を修正
+        //Fix_numerical_error(tm);
+
+        //結果を出力
         OutputData(tm, argv[tm+1]);
     }
     return 0;
@@ -332,7 +337,7 @@ void Get_InputData(int tm, char *filename)
 }
 
 
-void print_error()
+void Print_error()
 {
     printf("インプットデータが間違っています．\nノットインサーションの各操作(3種類)は同時に行えません．\n操作を行わない該当するパラメータを(0  0)としてください．\n");
 }
@@ -655,7 +660,7 @@ void KI_non_uniform_2D(int tm, int insert_parameter_axis, int KI_non_uniform)
 void Calc_cp_insert_knot(int tm, int insert_parameter_axis)
 {
     int i;
-    int cp_n_after_OE = Control_point_n_before[tm][insert_parameter_axis] + (Control_point_n_before[tm][insert_parameter_axis] - Order_before[tm][insert_parameter_axis]);
+    int cp_n_after_OE = Control_point_n_before[tm][insert_parameter_axis] + OE_n[tm][insert_parameter_axis] * (Control_point_n_before[tm][insert_parameter_axis] - Order_before[tm][insert_parameter_axis]);
     vec_length1[tm][insert_parameter_axis] = KI_cp_n[tm][insert_parameter_axis] - cp_n_after_OE;
 
     for (i = 0; i < vec_length1[tm][insert_parameter_axis]; i++)
@@ -1642,6 +1647,17 @@ void Debug_printf(int tm, char *section)
 }
 
 
+void Fix_numerical_error(int tm)
+{
+    int i;
+    for (i = 0; i < Total_Control_Point[tm]; i++)
+    {
+        if (fabs(w[tm][i] - 1.0) < 1.0e-15)
+        w[tm][i] = 1.0;
+    }
+}
+
+
 void OutputData(int tm, char *filename)
 {
     int a = strlen(filename);
@@ -1701,7 +1717,7 @@ void OutputData(int tm, char *filename)
     }
     fprintf(fp, "\n\n");
 
-    fprintf(fp, "number of knot vector\n");
+    fprintf(fp, "number of Knot Vector\n");
     for (j = 0; j < Dimension[tm]; j++)
     {
         if (j == 0)
