@@ -1,27 +1,24 @@
-Make_Gauss_pointが使われている場所
-
-Make_K_Whole_Val
-Make_F_Vec_disp_const
-Check_coupled_Glo_Loc_element_for_Gauss
-Make_Strain
-Make_Stress
-Make_ReactionForce
-Gausspoint_coordinate
-Setting_Dist_Load
-
-
 ガウス点変更で変える関数等
-    ヘッダー
-        Ng
-        POW_Ng
-        MAX_N_POINT_OVER
-        GAUSS_1DIR
-        NO_GAUSS_PT
 
-    Make_K_EL
-    Make_coupled_K_EL       (G_Gxiの宣言をコメントアウトにしないように注意)
-    Make_Strain             (ガウス点のみ)
-    Make_ReactionForce
-    Gausspoint_coordinate   (ガウス点のみ)
-    Check_coupled_Glo_Loc_element_for_Gauss     (ガウス点のみ，変数名変える必要あるので注意)
-    Setting_Dist_Load_2D    (分布荷重の積分のときに使う，等分布荷重の場合はガウス点関係ないと思われる)
+変更点 順に書く
+make_gauss_array    中原さんと同じ
+Setting_Dist_Load_2D   変更なし3x3
+Make_K_EL           GP_2D
+Make_coupled_K_EL   G_Gxi[GP_2D][], Total_BDBJ_flag, GP_2D, 
+                    Total_BDBJ_flag++;
+			        Same_BDBJ_flag[i]++;
+Make_K_Whole_Val    多いから書かない
+Make_Strain         Make_gauss_array(0), GP_2D, 
+Make_Stress_2D      Make_gauss_array(0), GP_2D
+Make_ReactionForce  Make_gauss_array(0), GP_2D
+Gausspoint_coordinate   Make_gauss_array(0), GP_2D
+Make_F_Vec_disp_const   Make_gauss_array(0) ← 関数内にMake_K_ELがあるため
+Check_coupled_Glo_Loc_element_for_Gauss
+Make_Parameter_z
+
+コンパイル
+cygwin
+gcc -o s_IGA_for_debug_10x10_20211220_cyg_O1.x s_IGA_for_debug_10x10_20211220.c -O1 -lm -Wall -mcmodel=medium
+
+minGW(64bit)
+gcc -o s_IGA_for_debug_10x10_20211220_win_Og.x s_IGA_for_debug_10x10_20211220.c -Og -lm -Wall

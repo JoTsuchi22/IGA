@@ -1,12 +1,6 @@
 /**************************************
 s-IGA
 multipch
-9 gauss point
-memory fixed for cygwin
-(cygwinで実行すると
-"バイナリファイルが実行できない:Exec format error"と出てしまう
-bash on ubuntuだと異常なし
-cygwinでもコンパイルはできる)
 
 Newton_Raphson法
 (要素の重なり判定については2通りの判定方法
@@ -19,7 +13,7 @@ check_over_parameter=1:ガウス点
 
 NURBSviewerのための入力データ出力(input_for_NURBS.txt)
 s_NURBS_viewerのための入力データ出力(input_local.txt)
-ガウス積分の積分点数：3
+ガウス積分の積分点数：4(一部10)
 
 仮定条件
 	ローカルメッシュ同士は原則被りなしと仮定
@@ -81,13 +75,13 @@ mkdir checkAns
 // #define DISTRIBUTE_FORCE_Ng 3
 
 //for s-IGA
-#define GAUSS_1DIR	Ng	//重なり判定のための一方向ガウス点数
-#define NO_GAUSS_PT		GAUSS_1DIR * GAUSS_1DIR	//重なり判定のためのガウス点総数
+#define GAUSS_1DIR	Ng_extended						//重なり判定のための一方向ガウス点数
+#define NO_GAUSS_PT		GAUSS_1DIR * GAUSS_1DIR		//重なり判定のためのガウス点総数
 #define MAX_N_POINT_OVER	GAUSS_1DIR * GAUSS_1DIR	//要素重なり判定に用いるローカルメッシュ上1要素内の点数
-#define MAX_N_MESH  10	//重合IGAを行うモデルの総数（ローカルメッシュ+1）
-#define MAX_N_ELEMENT_OVER	1000	//グローバルメッシュ内の1要素に重なる最大要素数
-#define MAX_N_ELEMENT_OVER_POINT	5	//ローカル要素内の1点に重なるグローバル要素
-#define MAX_N_ELEMENT_OVER_ELEMENT	MAX_N_ELEMENT_OVER_POINT * MAX_N_POINT_OVER	//ローカルメッシュ内の1要素に重なる最大要素数
+#define MAX_N_MESH  10								//重合IGAを行うモデルの総数（ローカルメッシュ+1）
+#define MAX_N_ELEMENT_OVER	1000					//グローバルメッシュ内の1要素に重なる最大要素数
+#define MAX_N_ELEMENT_OVER_POINT	5				//ローカル要素内の1点に重なるグローバル要素
+#define MAX_N_ELEMENT_OVER_ELEMENT	MAX_N_ELEMENT_OVER_POINT * MAX_N_POINT_OVER		//ローカルメッシュ内の1要素に重なる最大要素数
 
 
 //重ね合わせの結果
@@ -100,16 +94,16 @@ mkdir checkAns
 /////変更後はmake cleanしてからmakeする/////////////////////////////////////////////////////
 ///////最大値////////////////////////////////////////////////////////////////////////////////
 #define MAX_PATCHES MAX_N_PATCH							//最大パッチ数
-// #define MAX_PATCHES 15									//最大パッチ数
+// #define MAX_PATCHES 15								//最大パッチ数
 #define MAX_ORDER MAX_N_ORDER							//最大次数(p)
-// #define MAX_ORDER 3										//最大次数(p)
+// #define MAX_ORDER 3									//最大次数(p)
 #define MAX_CNRL_P MAX_N_Controlpoint_in_Patch			//最大コントロールポイント数(n)
-// #define MAX_CNRL_P 2500									//最大コントロールポイント数(n)
+// #define MAX_CNRL_P 2500								//最大コントロールポイント数(n)
 ///////各パッチでの最大値/////////////////////////////////////////////////////////////////////
 #define MAX_KNOTS (MAX_CNRL_P + MAX_ORDER + 1)			//ノットベクトルの最大長さ(n+p+1)
 // #define MAX_KNOTS MAX_N_KNOT							//ノットベクトルの最大長さ(n+p+1)
 ///////各パッチ、各方向での最大値//////////////////////////////////////////////////////////////
-// #define MAX_ELEMENTS MAX_N_ELEMENT						//最大要素数
+// #define MAX_ELEMENTS MAX_N_ELEMENT					//最大要素数
 #define MAX_ELEMENTS 200								//最大要素数
 #define MAX_DIVISION 10									//一要素あたりの最大分割数
 #define MAX_POINTS (MAX_ELEMENTS * MAX_DIVISION + 1)	//最大点数
@@ -342,8 +336,8 @@ static void Calculation_overlay(int order_xi_loc, int order_eta_loc,
 //gauss array
 static int GP_1dir;						//1方向のガウス点数
 static int GP_2D;						//2次元のガウス点数
-static double Gxi[POW_Ng][DIMENSION];	//ガウス点
-static double w[POW_Ng];				//ガウス点での重み
+static double Gxi[POW_Ng_extended][DIMENSION];	//ガウス点
+static double w[POW_Ng_extended];				//ガウス点での重み
 // static double Gxi_eta[NO_GAUSS_PT][DIMENSION];
 
 //static int DIMENSION;
@@ -1530,7 +1524,13 @@ int main(int argc, char *argv[])
 	int patch_n_loc, patch_n_glo;	//パッチ番号
 
 	ReadFile ();
+
 	fp = fopen("view.dat", "w");
+	fprintf(fp, "%d\t%d\t%d\n",
+			fields_flag, division_ele_xi, division_ele_eta);
+	fclose(fp);
+	//machino
+	fp = fopen("view_r_theta.dat", "w");
 	fprintf(fp, "%d\t%d\t%d\n",
 			fields_flag, division_ele_xi, division_ele_eta);
 	fclose(fp);
@@ -1543,6 +1543,11 @@ int main(int argc, char *argv[])
 	fprintf(fp, "%d\t%d\t%d\n",
 				fields_flag, division_ele_xi, division_ele_eta);
 	fclose(fp);
+	//machino
+	fp = fopen("overlay_view_r_theta.dat", "w");
+	fprintf(fp, "%d\t%d\t%d\n",
+				fields_flag, division_ele_xi, division_ele_eta);
+	fclose(fp);
 
 	//グラフ作成のための出力
 	fp = fopen("disp_graph.txt", "w");
@@ -1550,6 +1555,10 @@ int main(int argc, char *argv[])
 	fclose(fp);
 
 	fp = fopen("stress_y_graph.txt", "w");
+	fprintf(fp, "patch_n\tx\ty\tstress_yy\n");
+	fclose(fp);
+
+	fp = fopen("stress_y_graph_0.txt", "w");
 	fprintf(fp, "patch_n\tx\ty\tstress_yy\n");
 	fclose(fp);
 
@@ -1569,12 +1578,28 @@ int main(int argc, char *argv[])
 	fprintf(fp, "x\ty\tstress_yy\n");
 	fclose(fp);
 
+	fp = fopen("over_stress_y_graph_0.txt", "w");
+	fprintf(fp, "x\ty\tstress_yy\n");
+	fclose(fp);
+
 	fp = fopen("over_stress_r_theta_graph.txt", "w");
 	fprintf(fp, "xi\teta\tx\ty\tstress_r\tstress_theta\n");
 	fclose(fp);
 
 	fp = fopen("over_stress_vm_graph.txt", "w");
 	fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
+	fclose(fp);
+
+	fp = fopen("at_GP_overlay_data.txt", "w");
+	fprintf(fp, "x\ty\tstress_xx\tstress_yy\tstress_r\tstress_theta\n");
+	fclose(fp);
+
+	fp = fopen("at_GP_overlay_for_errror_norm.txt", "w");
+	fprintf(fp, "x\ty\tstress_r-theory\tstress_theta-theory\tstress_r\tstress_theta\n");
+	fclose(fp);
+
+	fp = fopen("at_GP_overlay_for_errror_norm_surface_integral.txt", "w");
+	fprintf(fp, "(stress_r-theory)^2_surface_integral\t(stress_theta-thory)^2_surface_integral\tstress_r^2_surface_integral\tstress_theta^2_surface_integral");
 	fclose(fp);
 
 	for (i = 0; i < patch_n; i++) {
@@ -2643,7 +2668,29 @@ void Make_K_Whole_Val(int tm, double E, double nu, int Total_Element, int K_Whol
 		i = real_element[re];
 		// printf("El_No;i=%d\n", real_element[re]);
 
+		if(Element_mesh[i] == 0 && re == 0)/*2つめの条件は効率化のため*/
+		{
+			Make_gauss_array(0);
+		}
 
+		if(Element_mesh[i] > 0)
+		{
+			printf("NNLOVER[%d]:%d\tNNLOVER[%d]:%d\tElement_mesh[%d]:%d\n", i, NNLOVER[i], real_element[re - 1], NNLOVER[real_element[re - 1]], real_element[re - 1], Element_mesh[real_element[re - 1]]);
+			if(NNLOVER[i] == 1 && (NNLOVER[real_element[re - 1]] != 1 || Element_mesh[real_element[re - 1]] == 0))/*2つめ以降の条件は効率化のため*/
+			{
+				Make_gauss_array(0);
+			}
+			if(NNLOVER[i] >= 2 && (NNLOVER[real_element[re - 1]] == 1 || Element_mesh[real_element[re - 1]] == 0))/*2つめ以降の条件は効率化のため*/
+			{
+				Make_gauss_array(1);
+			}
+		}
+		//printf("i= %d\tGaussPt_3D=%d\n",i ,GaussPt_3D);
+
+		for (j = 0; j < GP_2D; j++)
+		{
+			Same_BDBJ_flag[j] = 0;
+		}
 
 		KIEL_SIZE = No_Control_point_ON_ELEMENT[Element_patch[i]] * DIMENSION;
 		double X[No_Control_point_ON_ELEMENT[Element_patch[i]]][DIMENSION], K_EL[KIEL_SIZE][KIEL_SIZE];
@@ -2719,6 +2766,25 @@ void Make_K_Whole_Val(int tm, double E, double nu, int Total_Element, int K_Whol
 									  XG,
 									  coupled_K_EL,
 									  E, nu, DM);
+					
+					Check_BDBJ_flag[i] += Total_BDBJ_flag;
+					if (j == NNLOVER[i] - 1)
+					{
+						for (j1 = 0; j1 < GP_2D; j1++)
+						{
+							//printf("Same_BDBJ_flag[%d]=%d\n",j1,Same_BDBJ_flag[j1]);
+							if (Same_BDBJ_flag[j1] != 1)
+							{
+								printf("ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR\n");
+							}
+						}
+						printf("-------------------------Check_BDBJ_flag[%d]=%d-------------------------\n",i ,Check_BDBJ_flag[i]);
+						if (Check_BDBJ_flag[i] != GP_2D)
+						{
+							printf("ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR\n");
+						}
+					}
+
 					//Valを求める
 					//for (j1 = 0; j1 < No_Control_point_ON_ELEMENT[Element_patch[El_No_on_mesh[tm][i]]]; j1++)
 					for (j1 = 0; j1 < No_Control_point_ON_ELEMENT[Element_patch[NELOVER[i][j]]]; j1++)
@@ -2818,6 +2884,8 @@ void Make_F_Vec_disp_const(int Mesh_No, int Total_Constraint,
 	int iee;
 
 	double K_EL[KIEL_SIZE][KIEL_SIZE];
+
+	Make_gauss_array(0);
 
 	// for (ie = 0; ie < real_Total_Element; ie++)
 	for (ie = 0; ie < real_Total_Element_to_mesh[Total_mesh]; ie++)
@@ -4661,7 +4729,8 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 	// 					(40.0 / 81.0), (64.0 / 81.0), (40.0 / 81.0),
 	// 					(25.0 / 81.0), (40.0 / 81.0), (25.0 / 81.0)};
 	// double Gxi[POW_Ng][DIMENSION] = {{-G, -G}, {0.0, -G}, {G, -G}, {-G, 0.0}, {0.0, 0.0}, {G, 0.0}, {-G, G}, {0.0, G}, {G, G}};
-	double G_Gxi[POW_Ng][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
+	// double G_Gxi[POW_Ng][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
+	double G_Gxi[GP_2D][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
 	// // double Gxi[][POW_Ng][DIMENSION];
 
 	Total_BDBJ_flag = 0;
@@ -4812,6 +4881,11 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 		}
 	}*/
 
+	// if (i == GP_2D - 1)
+	// {
+	// 	printf("-------------------Total_BDBJ_flag=%d-------------------\n", Total_BDBJ_flag);
+	// }
+
 	return 0;
 }
 
@@ -4827,10 +4901,13 @@ void Make_Strain(double E, double nu, int Total_Element, int El_No, int Total_Co
 
 	int N, e, i, j;
 	//printf("Strain\n");
+
+	Make_gauss_array(0);
+
 	for (e = 0; e < Total_Element; e++)
 	{
 		//printf("\nElementNo.:%d\n",e);
-		for (N = 0; N < POW_Ng; N++)
+		for (N = 0; N < GP_2D; N++)
 			for (i = 0; i < N_STRAIN; i++)
 				Strain[e][N][i] = 0.0;
 		//Bマトリックスと各要素の変位を取得
@@ -4844,7 +4921,7 @@ void Make_Strain(double E, double nu, int Total_Element, int El_No, int Total_Co
 			}
 		}
 		//歪
-		for (N = 0; N < POW_Ng; N++)
+		for (N = 0; N < GP_2D; N++)
 		{
 			//printf("N:%d\n",N);
 			Make_B_Matrix(e, B, Gxi[N], X, &J, Total_Control_Point);
@@ -4867,14 +4944,15 @@ void Make_Stress_2D(double E, double nu, int Total_Element, int DM)
 
 	static double D[D_MATRIX_SIZE][D_MATRIX_SIZE];
 	int e, i, j, k;
+	Make_gauss_array(0);
 	Make_D_Matrix_2D(D, E, nu, DM);
 
 	for (e = 0; e < Total_Element; e++)
 	{
-		for (k = 0; k < POW_Ng; k++)
+		for (k = 0; k < GP_2D; k++)
 			for (i = 0; i < N_STRESS; i++)
 				Stress[e][k][i] = 0.0;
-		for (k = 0; k < POW_Ng; k++)
+		for (k = 0; k < GP_2D; k++)
 			for (i = 0; i < D_MATRIX_SIZE; i++)
 				for (j = 0; j < D_MATRIX_SIZE; j++)
 					Stress[e][k][i] += D[i][j] * Strain[e][k][j];
@@ -4890,6 +4968,8 @@ void Make_ReactionForce(int Total_Element, int Total_Control_Point, int El_No)
 	// 					(25.0 / 81.0), (40.0 / 81.0), (25.0 / 81.0)};
 	// double G = pow(0.6, 0.5);
 	// double Gxi[POW_Ng][DIMENSION] = {{-G, -G}, {0.0, -G}, {G, -G}, {-G, 0.0}, {0.0, 0.0}, {G, 0.0}, {-G, G}, {0.0, G}, {G, G}};
+
+	Make_gauss_array(0);
 
 	for (i = 0; i < Total_Control_Point * DIMENSION; i++)
 		ReactionForce[i] = 0.0;
@@ -4908,7 +4988,7 @@ void Make_ReactionForce(int Total_Element, int Total_Control_Point, int El_No)
 				//printf("X[%d][%d]:%le\n",Controlpoint_of_Element[e][i],j,X[i][j] );
 			}
 		}
-		for (k = 0; k < POW_Ng; k++)
+		for (k = 0; k < GP_2D; k++)
 		{
 			Make_B_Matrix(e, B, Gxi[k], X, &J, Total_Control_Point);
 			for (j = 0; j < D_MATRIX_SIZE; j++)
@@ -4997,16 +5077,17 @@ void Force_Dis( int Total_DistributeForce, int DistributeForce[MAX_N_DISTRIBUTE_
 void Make_Parameter_z(int Total_Element, double E, double nu, int DM)
 {
 	int e, k;
+	Make_gauss_array(0);
 
 	if (DM == 0)
 	{
 		//Make_strain_z
 		for (e = 0; e < Total_Element; e++)
-			for (k = 0; k < POW_Ng; k++)
+			for (k = 0; k < GP_2D; k++)
 				Strain[e][k][3] = 0.0;
 
 		for (e = 0; e < Total_Element; e++)
-			for (k = 0; k < POW_Ng; k++)
+			for (k = 0; k < GP_2D; k++)
 				Strain[e][k][3] = -1.0 * nu / E * (Stress[e][k][0] + Stress[e][k][1]);
 	}
 
@@ -5014,11 +5095,11 @@ void Make_Parameter_z(int Total_Element, double E, double nu, int DM)
 	{
 		//Make_stree_z
 		for (e = 0; e < Total_Element; e++)
-			for (k = 0; k < POW_Ng; k++)
+			for (k = 0; k < GP_2D; k++)
 				Stress[e][k][3] = 0.0;
 
 		for (e = 0; e < Total_Element; e++)
-			for (k = 0; k < POW_Ng; k++)
+			for (k = 0; k < GP_2D; k++)
 				Stress[e][k][3] = E * nu / (1.0 + nu) / (1 - 2.0 * nu) * (Strain[e][k][0] + Strain[e][k][1]);
 	}
 }
@@ -5200,9 +5281,11 @@ void Gausspoint_coordinate(int Total_Element, int Total_Control_Point)
 	double R_shape_func;
 	// double temp99;
 
+	Make_gauss_array(0);
+
 	for (e = 0; e < Total_Element; e++)
 	{
-		for (k = 0; k < POW_Ng; k++)
+		for (k = 0; k < GP_2D; k++)
 		{
 			double data_result_shape[2] = {0.0};
 			for (i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[e]]; i++)
@@ -5674,143 +5757,200 @@ void Check_coupled_Glo_Loc_element_for_Gauss(double element_loc[DIMENSION],
 	// int patch_n, itr_n;
 	int patch_n = 0, itr_n = 0;
 
+	int Check_coupled_No[MAX_N_ELEMENT_OVER];
+	double Percent_Check_coupled_No;
+	int MAX_NNLOVER = 0;
+
 	//int gauss_1dir = 3;	//重なり判定のための一方向ガウス点数
 	//int no_gauss_pt = gauss_1dir * gauss_1dir;	//重なり判定のためのガウス点総数
 
-	//ローカルパッチ(mesh_n_over)各要素の頂点の物理座標算出
-	//from Func.:calculate_Controlpoint_using_NURBS
-	for (re = 0; re < real_Total_Element_on_mesh[mesh_n_over]; re++)
+	for (i = 0; i < MAX_N_ELEMENT_OVER; i++)
 	{
-		e = real_element[re + real_Total_Element_to_mesh[mesh_n_over]];
-		//printf("Element_No:%d\n",e );
-		// double G = pow(0.6, 0.5);
-		// double Gxi_eta[NO_GAUSS_PT][DIMENSION] = {{-G, -G}, {0.0, -G}, {G, -G}, {-G, 0.0}, {0.0, 0.0}, {G, 0.0}, {-G, G}, {0.0, G}, {G, G}};
+		Check_coupled_No[i] = 0;
+	}
 
-		int i_gg, i_ee;
-		int g_n;
-
-		double output_para[DIMENSION];
-		int Total_n_elements = 0;
-
-		double R_shape_func;
-		// double temp99;
-
-		k = 0;
-		ll = 0;
-
-		for (i_ee = 0; i_ee < GAUSS_1DIR; i_ee++)
+	for (m = 0; m < 2; m++) //最初Ng個のガウス点で重なりを求め，NNLOVER[e]>=2のeに対して，再度10個のガウス点で重なりを求める
+	{
+		Make_gauss_array(m);
+		
+		//ローカルパッチ(mesh_n_over)各要素の頂点の物理座標算出
+		//from Func.:calculate_Controlpoint_using_NURBS
+		for (re = 0; re < real_Total_Element_on_mesh[mesh_n_over]; re++)
 		{
-			for (i_gg = 0; i_gg < GAUSS_1DIR; i_gg++)
+			e = real_element[re + real_Total_Element_to_mesh[mesh_n_over]];
+			//printf("Element_No:%d\n",e );
+			// double G = pow(0.6, 0.5);
+			// double Gxi_eta[NO_GAUSS_PT][DIMENSION] = {{-G, -G}, {0.0, -G}, {G, -G}, {-G, 0.0}, {0.0, 0.0}, {G, 0.0}, {-G, G}, {0.0, G}, {G, G}};
+
+			int i_gg, i_ee;
+			int g_n;
+
+			double output_para[DIMENSION];
+			int Total_n_elements;
+
+			double R_shape_func;
+			// double temp99;
+
+			if (m == 0 || (m == 1 && NNLOVER[e] >= 2))
 			{
-				double data_result_shape[3] = {0.0};
-
-				g_n = i_ee * GAUSS_1DIR + i_gg;
-				element_loc[0] = Gxi_eta[g_n][0];
-				element_loc[1] = Gxi_eta[g_n][1];
-
-				//printf("Gxi:%le\n",Gxi_eta[g_n][0]);
-				//printf("Geta:%le\n",Gxi_eta[g_n][1]);
-
-                //printf("e=%d\n",e);
-                //printf("element_patch[e]=%d\n",Element_patch[e]);
-
-				for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
+				//printf("-----------------------------------------m:%d Element_No:%d-----------------------------------------\n",m,e );
+				if (m == 1)
 				{
-					// double R_shape_func = Shape_func(b,
-					// 						  Total_Control_Point_on_mesh[mesh_n_over],
-					// 						  element_loc, e);
-					R_shape_func = Shape_func(b,
-											  Total_Control_Point_on_mesh[mesh_n_over],
-											  element_loc, e);
-					for (j = 0; j < DIMENSION; j++)
+					NNLOVER[e] = 0;
+					for (i = 0; i < NNLOVER[e]; i++)
 					{
-						// double R_shape_func = Shape_func(b,
-						// 					  Total_Control_Point_on_mesh[mesh_n_over],
-						// 					  element_loc, e);
-						// printf("R = %.15e\n", R_shape_func);
-                        data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][b]][j];
-						//* Node_Coordinate[Controlpoint_of_Element[e][b]+Total_Control_Point_to_mesh[mesh_n_over+1]][j];
-						// if (j == 1) {
-						// 	if (temp99 - R_shape_func >= 1.0e-15) {
-						// 		printf("error 7\n");
-						// 	printf("%.15e\t%.15e\n", temp99, R_shape_func);
-						// 	}
-						// }
-						// temp99 = R_shape_func;
-                    }
+						NELOVER[e][i] = 0;
+					}
 				}
-                //printf("data_result_shape[0]=%le\n",data_result_shape[0]);
-                //printf("data_result_shape[1]=%le\n",data_result_shape[1]);
-				//算出したローカルパッチ各要素の頂点の物理座標のグローバルパッチでの(xi,eta)算出
-				//from NURBSviewer/NURBS_view/clickcalc.c/func.:calcXiEtaByNR
-				for (i = 0; i < Total_Patch_on_mesh[mesh_n_org]; i++)
-				{
-					int ii = Calc_xi_eta(data_result_shape[0], data_result_shape[1],
-	            				         Position_Knots[i][0], Position_Knots[i][1],
-	            				         Control_Coord[0], Control_Coord[1],
-	                			         No_Control_point[i][0], No_Control_point[i][1],
-	                			         Control_Weight, Order[i][0], Order[i][1],
-	                			         &output_para[0], &output_para[1]);
-    			    //printf("Newton_iteration;%d\n",ii);
-					//printf("patch: %d\n", i);
-					//printf("  x: % 1.8e\n", data_result_shape[0]);
-					//printf("  y: % 1.8e\n", data_result_shape[1]);
-    			    //printf(" xi: % 1.8e\n", output_para[0]);
-     	 	 	    //printf("eta: % 1.8e\n", output_para[1]);
-					patch_n = i;
-					itr_n = ii;
-				}
-				//Newton Laphsonによって出力されたxi,etaから重なる要素を求める
-				n_elements_over_point[k] = ele_check(patch_n,
-						 				   			 output_para,
-										   			 data_result_shape,
-						 							 mesh_n_org,
-						 							 e);
-				//printf("itr_n;%d\n",itr_n);
-			    if (itr_n == 0)	//data_result_shapeがグローバルメッシュ上にないとき
-				{
-					n_elements_over_point[k] = 0;
-				}
-				// printf("n_elements_over_point[%d];%d\n",
-				// 		k,n_elements_over_point[k]);
-				Total_n_elements += n_elements_over_point[k];
-				//printf("Total_n_elements;%d\n",Total_n_elements);
-				for (l = 0; l < n_elements_over_point[k]; l++)
-				{
-					element_n_point[ll] = temp_element_n[l];
-					//printf("element_n_point[%d]=%d\n",
-					//		ll,element_n_point[ll]);
-					ll++;
-				}
-				k++;
-                    //printf("(x,y)=(%le,%le) in element[%d] on patch[%d] on mesh[0]\n",
-                    //        data_result_shape[0],data_result_shape[1],
-                    //        temp_ad[0]+temp_ad[1]*line_No_Total_element[i][0],i);
-				//}
 
+				Total_n_elements = 0;
+				k = 0;
+				ll = 0;
+
+				for (i_ee = 0; i_ee < GP_1dir; i_ee++)
+				{
+					for (i_gg = 0; i_gg < GP_1dir; i_gg++)
+					{
+						double data_result_shape[3] = {0.0};
+
+						g_n = i_ee * GP_1dir + i_gg;
+						element_loc[0] = Gxi[g_n][0];
+						element_loc[1] = Gxi[g_n][1];
+						// element_loc[0] = Gxi_eta[g_n][0];
+						// element_loc[1] = Gxi_eta[g_n][1];
+
+						//printf("Gxi:%le\n",Gxi_eta[g_n][0]);
+						//printf("Geta:%le\n",Gxi_eta[g_n][1]);
+
+						//printf("e=%d\n",e);
+						//printf("element_patch[e]=%d\n",Element_patch[e]);
+
+						for (b = 0; b < No_Control_point_ON_ELEMENT[Element_patch[e]]; b++)
+						{
+							// double R_shape_func = Shape_func(b,
+							// 						  Total_Control_Point_on_mesh[mesh_n_over],
+							// 						  element_loc, e);
+							R_shape_func = Shape_func(b,
+													Total_Control_Point_on_mesh[mesh_n_over],
+													element_loc, e);
+							for (j = 0; j < DIMENSION; j++)
+							{
+								// double R_shape_func = Shape_func(b,
+								// 					  Total_Control_Point_on_mesh[mesh_n_over],
+								// 					  element_loc, e);
+								// printf("R = %.15e\n", R_shape_func);
+								data_result_shape[j] += R_shape_func * Node_Coordinate[Controlpoint_of_Element[e][b]][j];
+								//* Node_Coordinate[Controlpoint_of_Element[e][b]+Total_Control_Point_to_mesh[mesh_n_over+1]][j];
+								// if (j == 1) {
+								// 	if (temp99 - R_shape_func >= 1.0e-15) {
+								// 		printf("error 7\n");
+								// 	printf("%.15e\t%.15e\n", temp99, R_shape_func);
+								// 	}
+								// }
+								// temp99 = R_shape_func;
+							}
+						}
+						//printf("data_result_shape[0]=%le\n",data_result_shape[0]);
+						//printf("data_result_shape[1]=%le\n",data_result_shape[1]);
+						//算出したローカルパッチ各要素の頂点の物理座標のグローバルパッチでの(xi,eta)算出
+						//from NURBSviewer/NURBS_view/clickcalc.c/func.:calcXiEtaByNR
+						for (i = 0; i < Total_Patch_on_mesh[mesh_n_org]; i++)
+						{
+							int ii = Calc_xi_eta(data_result_shape[0], data_result_shape[1],
+												Position_Knots[i][0], Position_Knots[i][1],
+												Control_Coord[0], Control_Coord[1],
+												No_Control_point[i][0], No_Control_point[i][1],
+												Control_Weight, Order[i][0], Order[i][1],
+												&output_para[0], &output_para[1]);
+							//printf("Newton_iteration;%d\n",ii);
+							//printf("patch: %d\n", i);
+							//printf("  x: % 1.8e\n", data_result_shape[0]);
+							//printf("  y: % 1.8e\n", data_result_shape[1]);
+							//printf(" xi: % 1.8e\n", output_para[0]);
+							//printf("eta: % 1.8e\n", output_para[1]);
+							patch_n = i;
+							itr_n = ii;
+						}
+						//Newton Laphsonによって出力されたxi,etaから重なる要素を求める
+						n_elements_over_point[k] = ele_check(patch_n,
+															output_para,
+															data_result_shape,
+															mesh_n_org,
+															e);
+						//printf("itr_n;%d\n",itr_n);
+						if (itr_n == 0)	//data_result_shapeがグローバルメッシュ上にないとき
+						{
+							n_elements_over_point[k] = 0;
+						}
+						// printf("n_elements_over_point[%d];%d\n",
+						// 		k,n_elements_over_point[k]);
+						Total_n_elements += n_elements_over_point[k];
+						//printf("Total_n_elements;%d\n",Total_n_elements);
+						for (l = 0; l < n_elements_over_point[k]; l++)
+						{
+							element_n_point[ll] = temp_element_n[l];
+							//printf("element_n_point[%d]=%d\n",
+							//		ll,element_n_point[ll]);
+							ll++;
+						}
+						k++;
+							//printf("(x,y)=(%le,%le) in element[%d] on patch[%d] on mesh[0]\n",
+							//        data_result_shape[0],data_result_shape[1],
+							//        temp_ad[0]+temp_ad[1]*line_No_Total_element[i][0],i);
+						//}
+
+					}
+				}
+				// printf("Total_n_elements;%d\n",Total_n_elements);
+
+				//昇順ソート
+				sort(Total_n_elements);
+				//重複削除
+				NNLOVER[e] = duplicate_delete(Total_n_elements, e); //NNLOVER:要素eに重なる要素の総数
+
+				/*
+				for (i = 0; i < Total_n_elements; i++)
+				{
+					printf("element_n_point[%d]=%d\n",i,element_n_point[i]);
+				}
+				*/
+				// printf("NNLOVER[%d]=%d\n",e,NNLOVER[e]);
+
+				// for (i = 0; i < NNLOVER[e]; i++)
+				// {
+				// 	// printf("NELOVER[%d][%d]=%d\n",e,i,NELOVER[e][i]);
+				// }
 			}
-		}
-		printf("Total_n_elements;%d\n",Total_n_elements);
-
-		//昇順ソート
-		sort(Total_n_elements);
-		//重複削除
-		NNLOVER[e] = duplicate_delete(Total_n_elements,e);
-
-		/*
-		for (i = 0; i < Total_n_elements; i++)
-		{
-			printf("element_n_point[%d]=%d\n",i,element_n_point[i]);
-		}
-		*/
-		// printf("NNLOVER[%d]=%d\n",e,NNLOVER[e]);
-
-		for (i = 0; i < NNLOVER[e]; i++)
-		{
-			// printf("NELOVER[%d][%d]=%d\n",e,i,NELOVER[e][i]);
 		}
 	}
 
+	for (re = 0; re < real_Total_Element_on_mesh[mesh_n_over]; re++)
+	{
+		e = real_element[re + real_Total_Element_to_mesh[mesh_n_over]];
+		printf("-----------------------------------------Element_No:%d-----------------------------------------\n",e );
+
+		Check_coupled_No[NNLOVER[e]]++;
+
+		if (MAX_NNLOVER <  NNLOVER[e])
+		{
+			MAX_NNLOVER =  NNLOVER[e];
+		}
+
+		printf("NNLOVER[%d] = %d\n", e, NNLOVER[e]);
+
+		for (i = 0; i < NNLOVER[e]; i++)
+		{
+			printf("\tNELOVER[%d][%d] = %d\n", e, i, NELOVER[e][i]); //要素eに重なるi番目の要素番号
+		}
+	}
+
+	printf("MAX_NNLOVER = %d\n", MAX_NNLOVER);
+	for (i = 0; i <= MAX_NNLOVER; i++)
+	{
+		Percent_Check_coupled_No = (double)Check_coupled_No[i] * 100.0 / (double)real_Total_Element_on_mesh[mesh_n_over];
+		printf("Check_coupled_No[%d] = %d\t\t%3.1lf %%\n",i , Check_coupled_No[i], Percent_Check_coupled_No);
+	}
+	printf("---------------------------------------------------------------------------------------------------------------------------\n");
 }
 
 void Make_Loc_Glo()
@@ -6293,11 +6433,11 @@ void Setting_Dist_Load_2D(int mesh_n, int Total_Control_Point, int iPatch, int T
 
 				//き裂の分布荷重を与える時のために...
                 //printf("XiEtaCoordParen=%lf\n",XiEtaCoordParen);
-                //double sita;
-                //sita = XiEtaCoordParen*PI/2;
-				//sita = XiEtaCoordParen*2*PI/line_No_real_element[0][1];
-                //printf("sita=%lf\n",sita*180/PI);
-                //valDistLoad = cos(sita);
+                //double theta;
+                //theta = XiEtaCoordParen*PI/2;
+				//theta = XiEtaCoordParen*2*PI/line_No_real_element[0][1];
+                //printf("theta=%lf\n",theta*180/PI);
+                //valDistLoad = cos(theta);
                 //printf("valDistLoad=%2.10lf\n",valDistLoad);
 
 				dxyzdge[0] = 0.0;
@@ -6353,8 +6493,8 @@ void Setting_Dist_Load_2D(int mesh_n, int Total_Control_Point, int iPatch, int T
 						printf("Equivalent_Nodal_Force[%d][0]=%lf\nEquivalent_Nodal_Force[%d][1]=%lf\n",
 								iControlpoint[ic],Equivalent_Nodal_Force[iControlpoint[ic]][0],
 								iControlpoint[ic],Equivalent_Nodal_Force[iControlpoint[ic]][1]);
-						//printf("LoadDir[0]*(0.5-0.5*cos(2*sita))*sfc*detJ*Weight[%d]=%lf*%lf*%lf*%lf*%lf=%lf\n",ig,LoadDir[0],(0.5-0.5*cos(2*sita)),sfc,detJ,Weight[ig],LoadDir[0] * (0.5-0.5*cos(2*sita)) * sfc * detJ * Weight[ig]);
-						//printf("LoadDir[1]*(0.5-0.5*cos(2*sita))*sfc*detJ*Weight[%d]=%lf*%lf*%lf*%lf*%lf=%lf\n",ig,LoadDir[1],(0.5-0.5*cos(2*sita)),sfc,detJ,Weight[ig],LoadDir[1] * (0.5-0.5*cos(2*sita)) * sfc * detJ * Weight[ig]);
+						//printf("LoadDir[0]*(0.5-0.5*cos(2*theta))*sfc*detJ*Weight[%d]=%lf*%lf*%lf*%lf*%lf=%lf\n",ig,LoadDir[0],(0.5-0.5*cos(2*theta)),sfc,detJ,Weight[ig],LoadDir[0] * (0.5-0.5*cos(2*theta)) * sfc * detJ * Weight[ig]);
+						//printf("LoadDir[1]*(0.5-0.5*cos(2*theta))*sfc*detJ*Weight[%d]=%lf*%lf*%lf*%lf*%lf=%lf\n",ig,LoadDir[1],(0.5-0.5*cos(2*theta)),sfc,detJ,Weight[ig],LoadDir[1] * (0.5-0.5*cos(2*theta)) * sfc * detJ * Weight[ig]);
 					}
 				}
                 if ( type_load == 3 )
@@ -6371,8 +6511,8 @@ void Setting_Dist_Load_2D(int mesh_n, int Total_Control_Point, int iPatch, int T
                         Equivalent_Nodal_Force[iControlpoint[ic]][1] +=
                             LoadDir[1] * valDistLoad * sfc * detJ * Weight[ig];
 						//printf("Equivalent_Nodal_Force[%d][0]=%lf\nEquivalent_Nodal_Force[%d][1]=%lf\n",iControlpoint[ic],Equivalent_Nodal_Force[iControlpoint[ic]][0],iControlpoint[ic],Equivalent_Nodal_Force[iControlpoint[ic]][1]);
-						//printf("LoadDir[0]*sin(sita)*cos(sita)*sfc*detJ*Weight[%d]=%lf*%lf*%lf*%lf*%lf=%lf\n",ig,LoadDir[0],sin(sita)*cos(sita),sfc,detJ,Weight[ig],LoadDir[0] * sin(sita)*cos(sita) * sfc * detJ * Weight[ig]);
-						//printf("LoadDir[1]*sin(sita)*cos(sita)*sfc*detJ*Weight[%d]=%lf*%lf*%lf*%lf*%lf=%lf\n",ig,LoadDir[1],sin(sita)*cos(sita),sfc,detJ,Weight[ig],LoadDir[1] * sin(sita)*cos(sita) * sfc * detJ * Weight[ig]);
+						//printf("LoadDir[0]*sin(theta)*cos(theta)*sfc*detJ*Weight[%d]=%lf*%lf*%lf*%lf*%lf=%lf\n",ig,LoadDir[0],sin(theta)*cos(theta),sfc,detJ,Weight[ig],LoadDir[0] * sin(theta)*cos(theta) * sfc * detJ * Weight[ig]);
+						//printf("LoadDir[1]*sin(theta)*cos(theta)*sfc*detJ*Weight[%d]=%lf*%lf*%lf*%lf*%lf=%lf\n",ig,LoadDir[1],sin(theta)*cos(theta),sfc,detJ,Weight[ig],LoadDir[1] * sin(theta)*cos(theta) * sfc * detJ * Weight[ig]);
                     }
                 }
 			}
@@ -7691,7 +7831,53 @@ static void Calculation(int order_xi, int order_eta,
 		}
 	}
 	fclose(fp);
-
+	//machino
+	fp = fopen("view_r_theta.dat", "a");
+	if (fields_flag) {
+		fprintf(fp, "%d\t%d\t%d\t%d\n",
+				division_n_xi, division_n_eta,
+				element_n_xi, element_n_eta);
+		for (i = 0; i < division_n_xi; i++) {
+			for (j = 0; j < division_n_eta; j++) {
+				temp1 = disp_x[i][j];
+				temp2 = disp_y[i][j];
+				temp3 = sqrt(temp1 * temp1 + temp2 * temp2);
+				fprintf(fp, "% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\n",
+						coord_x[i][j], coord_y[i][j],
+						disp_x[i][j], disp_y[i][j], temp3);
+			}
+		}
+		for (i = 0; i < element_n_xi; i++) {
+			for (j = 0; j < element_n_eta; j++) {
+				for (k = 0; k < division_ele_xi + 1; k++) {
+					for (l = 0; l < division_ele_eta + 1; l++) {
+					double stress_rr, stress_theta;
+					double sum = stress_xx[i][j][k][l] + stress_yy[i][j][k][l];
+					double dif = stress_xx[i][j][k][l] - stress_yy[i][j][k][l];
+					double tau2 = stress_xy[i][j][k][l] * stress_xy[i][j][k][l];
+					stress_rr = sum * 0.5
+								+ sqrt(dif * dif + 4 * tau2) * 0.5;
+					stress_theta = sum * 0.5
+								  - sqrt(dif * dif + 4 * tau2) * 0.5;											
+						fprintf(fp, "% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t0.0\n",
+								strain_xx[i][j][k][l], strain_yy[i][j][k][l], strain_xy[i][j][k][l],
+								stress_rr,stress_theta);
+					}
+				}
+			}
+		}
+	} else {
+		fprintf(fp, "%d\t%d\t%d\t%d\n",
+				division_n_xi, division_n_eta,
+				element_n_xi, element_n_eta);
+		for (i = 0; i < division_n_xi; i++) {
+			for (j = 0; j < division_n_eta; j++) {
+				fprintf(fp, "% 1.4e\t% 1.4e\n",
+						coord_x[i][j], coord_y[i][j]);
+			}
+		}
+	}
+	fclose(fp);
 	//グラフ用ファイル書き込み
 	fp = fopen("disp_graph.txt", "a");
 	for (i = 0; i < division_n_xi; i++) {
@@ -7717,6 +7903,25 @@ static void Calculation(int order_xi, int order_eta,
 							coord_x[i * division_ele_xi + k][j * division_ele_eta + l],
 							coord_y[i * division_ele_xi + k][j * division_ele_eta + l],
 							stress_yy[i][j][k][l]);
+				}
+			}
+		}
+	}
+	fclose(fp);
+
+	fp = fopen("stress_y_graph_0.txt", "a");
+ 	for (i = 0; i < element_n_xi; i++) {
+		for (j = 0; j < element_n_eta; j++) {
+			for (k = 0; k < division_ele_xi + 1; k++) {
+				for (l = 0; l < division_ele_eta + 1; l++) {
+                    if(coord_y[i * division_ele_xi + k][j * division_ele_eta + l] == 0.000000000000000e+00)
+                    {
+				        fprintf(fp, "%d\t% 1.15e\t% 1.15e\t% 1.15e\n", 
+							graph_patch_n,
+							coord_x[i * division_ele_xi + k][j * division_ele_eta + l], 
+							coord_y[i * division_ele_xi + k][j * division_ele_eta + l], 
+							stress_yy[i][j][k][l]);
+                    }
 				}
 			}
 		}
@@ -8023,7 +8228,53 @@ static void Calculation_overlay(int order_xi_loc, int order_eta_loc,
 		}
 	}
 	fclose(fp);
-
+	//machino
+	fp = fopen("overlay_view_r_theta.dat", "a");
+	if (fields_flag) {
+		fprintf(fp, "%d\t%d\t%d\t%d\n",
+				division_n_xi, division_n_eta,
+				element_n_xi, element_n_eta);
+		for (i = 0; i < division_n_xi; i++) {
+			for (j = 0; j < division_n_eta; j++) {
+				temp1 = disp_x[i][j];
+				temp2 = disp_y[i][j];
+				temp3 = sqrt(temp1 * temp1 + temp2 * temp2);
+				fprintf(fp, "% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\n",
+						coord_x[i][j], coord_y[i][j],
+						disp_x[i][j], disp_y[i][j], temp3);
+			}
+		}
+		for (i = 0; i < element_n_xi; i++) {
+			for (j = 0; j < element_n_eta; j++) {
+				for (k = 0; k < division_ele_xi + 1; k++) {
+					for (l = 0; l < division_ele_eta + 1; l++) {
+					double stress_rr, stress_theta;
+					double sum = stress_xx[i][j][k][l] + stress_yy[i][j][k][l];
+					double dif = stress_xx[i][j][k][l] - stress_yy[i][j][k][l];
+					double tau2 = stress_xy[i][j][k][l] * stress_xy[i][j][k][l];
+					stress_rr = sum * 0.5
+								+ sqrt(dif * dif + 4 * tau2) * 0.5;
+					stress_theta = sum * 0.5
+								  - sqrt(dif * dif + 4 * tau2) * 0.5;	
+						fprintf(fp, "% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t0.0\n",
+								strain_xx[i][j][k][l], strain_yy[i][j][k][l], strain_xy[i][j][k][l],
+								stress_rr,stress_theta);
+					}
+				}
+			}
+		}
+	} else {
+		fprintf(fp, "%d\t%d\t%d\t%d\n",
+				division_n_xi, division_n_eta,
+				element_n_xi, element_n_eta);
+		for (i = 0; i < division_n_xi; i++) {
+			for (j = 0; j < division_n_eta; j++) {
+				fprintf(fp, "% 1.4e\t% 1.4e\n",
+						coord_x[i][j], coord_y[i][j]);
+			}
+		}
+	}
+	fclose(fp);
 	//グラフ用ファイル書き込み
 	fp = fopen("over_disp_graph.txt", "a");
 	for (i = 0; i < division_n_xi; i++) {
@@ -8069,25 +8320,396 @@ static void Calculation_overlay(int order_xi_loc, int order_eta_loc,
 	}
 	fclose(fp);
 
+	fp = fopen("over_stress_y_graph_0.txt", "a");
+ 	for (i = 0; i < element_n_xi; i++) {
+		for (j = 0; j < element_n_eta; j++) {
+			for (k = 0; k < division_ele_xi + 1; k++) {
+				for (l = 0; l < division_ele_eta + 1; l++) {
+                    if(coord_y[i * division_ele_xi + k][j * division_ele_eta + l] == 0.000000000000000e+00)
+                    {
+                        fprintf(fp, "% 1.15e\t% 1.15e\t% 1.15e\n", 
+							coord_x[i * division_ele_xi + k][j * division_ele_eta + l], 
+							coord_y[i * division_ele_xi + k][j * division_ele_eta + l], 
+							stress_yy[i][j][k][l]);
+                    }
+
+				}
+			}
+		}
+	}
+	fclose(fp);
+
 	fp = fopen("over_stress_r_theta_graph.txt", "a");
  	for (i = 0; i < element_n_xi; i++) {
 		for (j = 0; j < element_n_eta; j++) {
 			for (k = 0; k < division_ele_xi + 1; k++) {
 				for (l = 0; l < division_ele_eta + 1; l++) {
-					double stress_rr, stress_sita;
+					double stress_rr, stress_theta;
 					double sum = stress_xx[i][j][k][l] + stress_yy[i][j][k][l];
 					double dif = stress_xx[i][j][k][l] - stress_yy[i][j][k][l];
 					double tau2 = stress_xy[i][j][k][l] * stress_xy[i][j][k][l];
 					stress_rr = sum * 0.5
 								+ sqrt(dif * dif + 4 * tau2) * 0.5;
-					stress_sita = sum * 0.5
+					stress_theta = sum * 0.5
 								  - sqrt(dif * dif + 4 * tau2) * 0.5;
 					fprintf(fp, "% 1.10e\t% 1.10e\t% 1.10e\t% 1.10e\t% 1.10e\t% 1.10e\n",
 							calc_xi_loc[i * division_ele_xi + k],
 							calc_eta_loc[j * division_ele_eta + l],
 							coord_x[i * division_ele_xi + k][j * division_ele_eta + l],
 							coord_y[i * division_ele_xi + k][j * division_ele_eta + l],
-							stress_rr, stress_sita);
+							stress_rr, stress_theta);
+				}
+			}
+		}
+	}
+	fclose(fp);
+
+	fp = fopen("over_stress_vm_graph.txt", "a");
+ 	for (i = 0; i < element_n_xi; i++) {
+		for (j = 0; j < element_n_eta; j++) {
+			for (k = 0; k < division_ele_xi + 1; k++) {
+				for (l = 0; l < division_ele_eta + 1; l++) {
+					double stress_vm;
+					double sum = stress_xx[i][j][k][l] + stress_yy[i][j][k][l];
+					double dif = stress_xx[i][j][k][l] - stress_yy[i][j][k][l];
+					double tau2 = stress_xy[i][j][k][l] * stress_xy[i][j][k][l];
+					double temp1, temp2;
+					temp1 = 0.5 * sum;
+					temp2 = 0.5 * sqrt(dif * dif + 4 * tau2);
+					stress_vm = sqrt(temp1 * temp1 + 3 * temp2 * temp2);
+					fprintf(fp, "% 1.10e\t% 1.10e\t% 1.10e\t% 1.10e\t% 1.10e\n",
+							calc_xi_loc[i * division_ele_xi + k],
+							calc_eta_loc[j * division_ele_eta + l],
+							coord_x[i * division_ele_xi + k][j * division_ele_eta + l],
+							coord_y[i * division_ele_xi + k][j * division_ele_eta + l],
+							stress_vm);
+				}
+			}
+		}
+	}
+	fclose(fp);
+}
+
+static void Calculation_overlay_at_GP(int El_No_loc,
+									  double X[No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]][DIMENSION],
+									  int order_xi_loc, int order_eta_loc,
+									  int knot_n_xi_loc, int knot_n_eta_loc,
+									  int cntl_p_n_xi_loc, int cntl_p_n_eta_loc,
+									  double *knot_vec_xi_loc, double *knot_vec_eta_loc,
+									  double *cntl_px_loc, double *cntl_py_loc,
+									  double *disp_cntl_px_loc, double *disp_cntl_py_loc,
+									  double *weight_loc,
+									  int order_xi_glo, int order_eta_glo,
+									  int knot_n_xi_glo, int knot_n_eta_glo,
+									  int cntl_p_n_xi_glo, int cntl_p_n_eta_glo,
+									  double *knot_vec_xi_glo, double *knot_vec_eta_glo,
+									  double *cntl_px_glo, double *cntl_py_glo,
+									  double *disp_cntl_px_glo, double *disp_cntl_py_glo,
+									  double *weight_glo)
+{
+	int i, j, k, l;
+	double temp1, temp2, temp3;
+
+    // double output_xi, output_eta;
+	double disp_x_glo;
+	double disp_y_glo;
+    double strain_xx_glo = 0;
+    double strain_yy_glo = 0;
+    double strain_xy_glo = 0;
+	int ii, jj, kk, ll;
+
+	Make_gauss_array(1);
+
+	static double DD[D_MATRIX_SIZE][D_MATRIX_SIZE];
+	Make_D_Matrix_2D(DD, E, nu, DM);
+
+	double G_Gxi[GP_2D][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
+
+	Calculation_disp_on_loc();
+	//disp_x[i][j]	i,j:divisionとなっているので
+	//disp_x[element番号][ガウス点番号]として，calculationを参考に算出する
+
+	//ここまでで
+	//disp_x[element番号][ガウス点番号]
+	//disp_y[element番号][ガウス点番号]	が求まる
+
+	//メッシュ座標計算
+	for (i = 0; i < GP_2D; i++)	//ガウス点のループ(local)
+	{
+		double data_result_shape[2] = {0.0};
+		double output_xi, output_eta;
+		int patch_n = 0;
+
+		double R_shape_func;
+
+		for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
+		{
+			R_shape_func = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
+			for (jj = 0; jj < DIMENSION; jj++)
+			{
+				data_result_shape[jj] += R_shape_func * X[j][jj];
+			}
+		}
+
+		//ローカル要素ガウス点のグローバルパッチ上のパラメータ空間座標算出
+		for (j = 0; j < Total_Patch_on_mesh[0]; j++)	//グローバルメッシュ[0]上
+		{
+			Calc_xi_eta(data_result_shape[0], data_result_shape[1],
+	            	    Position_Knots[j][0], Position_Knots[j][1],
+	            		Control_Coord[0], Control_Coord[1],
+	                	No_Control_point[j][0], No_Control_point[j][1],
+	                	Control_Weight, Order[j][0], Order[j][1],
+	                	&output_xi, &output_eta);
+			patch_n = j;
+		}
+
+            int itr_n = CalcXiEtaByNR(coord_x[i][j], coord_y[i][j],
+                                      knot_vec_xi_glo, knot_vec_eta_glo,
+				                      cntl_px_glo, cntl_py_glo,
+			                          disp_cntl_px_glo, disp_cntl_py_glo,
+			                          cntl_p_n_xi_glo, cntl_p_n_eta_glo,
+			                          weight_glo, order_xi_glo, order_eta_glo,
+			                          &output_xi, &output_eta,
+									  &disp_x_glo, &disp_y_glo,
+                                      &strain_xx_glo, &strain_yy_glo, &strain_xy_glo);
+
+			//ローカル内の表示点上のグローバル変位
+			disp_x[i][j] += disp_x_glo;
+			disp_y[i][j] += disp_y_glo;
+
+			//ローカル内の表示点上のグローバルひずみ
+			strain_xx[ii][jj][kk][ll] += strain_xx_glo;
+			strain_yy[ii][jj][kk][ll] += strain_yy_glo;
+			strain_xy[ii][jj][kk][ll] += strain_xy_glo;
+
+			// printf("test[%d][%d][%d][%d]\n",ii,jj,kk,ll);
+			if (jj > 0 && ll == 0)
+			{
+				strain_xx[ii][jj-1][kk][division_ele_eta] += strain_xx_glo;
+				strain_yy[ii][jj-1][kk][division_ele_eta] += strain_yy_glo;
+				strain_xy[ii][jj-1][kk][division_ele_eta] += strain_xy_glo;
+				// printf("test[%d][%d][%d][%d]\n",ii,jj-1,kk,division_ele_eta);
+			}
+			if (ii > 0 && kk == 0)
+			{
+				strain_xx[ii-1][jj][division_ele_xi][ll] += strain_xx_glo;
+				strain_yy[ii-1][jj][division_ele_xi][ll] += strain_yy_glo;
+				strain_xy[ii-1][jj][division_ele_xi][ll] += strain_xy_glo;
+				// printf("test[%d][%d][%d][%d]\n",ii-1,jj,division_ele_xi,ll);
+			}
+			if (ii > 0 && jj > 0 && kk == 0 && ll == 0)
+			{
+				strain_xx[ii-1][jj-1][division_ele_xi][division_ele_eta] += strain_xx_glo;
+				strain_yy[ii-1][jj-1][division_ele_xi][division_ele_eta] += strain_yy_glo;
+				strain_xy[ii-1][jj-1][division_ele_xi][division_ele_eta] += strain_xy_glo;
+				// printf("test[%d][%d][%d][%d]\n",ii-1,jj-1,division_ele_xi,division_ele_eta);
+			}
+
+		}
+	}
+
+	//Dマトリクスの計算
+	double D_matrix[3][3] = {{0.0}};
+	if (DM == 0) { //平面応力状態
+		temp1 = E * (1.0 - nu * nu);
+		D_matrix[0][0] = temp1;
+		D_matrix[0][1] = nu * temp1;
+		D_matrix[1][0] = nu * temp1;
+		D_matrix[1][1] = temp1;
+		D_matrix[2][2] = (1.0 - nu) / 2.0 * temp1;
+	} else if (DM == 1) { //平面ひずみ状態(2Dの場合はこっち)
+		temp1 = E * (1.0 - nu) / (1.0 + nu) / (1.0 - 2.0 * nu);
+		D_matrix[0][0] = temp1;
+		D_matrix[0][1] = nu / (1.0 - nu) * temp1;
+		D_matrix[1][0] = nu / (1.0 - nu) * temp1;
+		D_matrix[1][1] = temp1;
+		D_matrix[2][2] = (1.0 - 2.0 * nu) / 2.0 / (1.0 - nu) * temp1;
+	}
+
+	for (i = 0; i < element_n_xi; i++) {
+		for (j = 0; j < element_n_eta; j++) {
+			for (k = 0; k < division_ele_xi + 1; k++) {
+				for (l = 0; l < division_ele_eta + 1; l++) {
+					stress_xx[i][j][k][l] = D_matrix[0][0] * strain_xx[i][j][k][l] + D_matrix[0][1] * strain_yy[i][j][k][l];
+					stress_yy[i][j][k][l] = D_matrix[1][0] * strain_xx[i][j][k][l] + D_matrix[1][1] * strain_yy[i][j][k][l];
+					stress_xy[i][j][k][l] = D_matrix[2][2] * strain_xy[i][j][k][l];
+					// printf("[%d][%d][%d][%d]\t% 1.4e\t% 1.4e\t% 1.4e\n", i, j, k, l,
+					// 	   stress_xx[i][j][k][l], stress_yy[i][j][k][l], stress_xy[i][j][k][l]);
+				}
+			}
+			// printf("\n");
+		}
+	}
+
+	//書き込み
+	fp = fopen("overlay_view.dat", "a");
+	if (fields_flag) {
+		fprintf(fp, "%d\t%d\t%d\t%d\n",
+				division_n_xi, division_n_eta,
+				element_n_xi, element_n_eta);
+		for (i = 0; i < division_n_xi; i++) {
+			for (j = 0; j < division_n_eta; j++) {
+				temp1 = disp_x[i][j];
+				temp2 = disp_y[i][j];
+				temp3 = sqrt(temp1 * temp1 + temp2 * temp2);
+				fprintf(fp, "% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\n",
+						coord_x[i][j], coord_y[i][j],
+						disp_x[i][j], disp_y[i][j], temp3);
+			}
+		}
+		for (i = 0; i < element_n_xi; i++) {
+			for (j = 0; j < element_n_eta; j++) {
+				for (k = 0; k < division_ele_xi + 1; k++) {
+					for (l = 0; l < division_ele_eta + 1; l++) {
+						fprintf(fp, "% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\n",
+								strain_xx[i][j][k][l], strain_yy[i][j][k][l], strain_xy[i][j][k][l],
+								stress_xx[i][j][k][l], stress_yy[i][j][k][l], stress_xy[i][j][k][l]);
+					}
+				}
+			}
+		}
+	} else {
+		fprintf(fp, "%d\t%d\t%d\t%d\n",
+				division_n_xi, division_n_eta,
+				element_n_xi, element_n_eta);
+		for (i = 0; i < division_n_xi; i++) {
+			for (j = 0; j < division_n_eta; j++) {
+				fprintf(fp, "% 1.4e\t% 1.4e\n",
+						coord_x[i][j], coord_y[i][j]);
+			}
+		}
+	}
+	fclose(fp);
+	//machino
+	fp = fopen("overlay_view_r_theta.dat", "a");
+	if (fields_flag) {
+		fprintf(fp, "%d\t%d\t%d\t%d\n",
+				division_n_xi, division_n_eta,
+				element_n_xi, element_n_eta);
+		for (i = 0; i < division_n_xi; i++) {
+			for (j = 0; j < division_n_eta; j++) {
+				temp1 = disp_x[i][j];
+				temp2 = disp_y[i][j];
+				temp3 = sqrt(temp1 * temp1 + temp2 * temp2);
+				fprintf(fp, "% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\n",
+						coord_x[i][j], coord_y[i][j],
+						disp_x[i][j], disp_y[i][j], temp3);
+			}
+		}
+		for (i = 0; i < element_n_xi; i++) {
+			for (j = 0; j < element_n_eta; j++) {
+				for (k = 0; k < division_ele_xi + 1; k++) {
+					for (l = 0; l < division_ele_eta + 1; l++) {
+					double stress_rr, stress_theta;
+					double sum = stress_xx[i][j][k][l] + stress_yy[i][j][k][l];
+					double dif = stress_xx[i][j][k][l] - stress_yy[i][j][k][l];
+					double tau2 = stress_xy[i][j][k][l] * stress_xy[i][j][k][l];
+					stress_rr = sum * 0.5
+								+ sqrt(dif * dif + 4 * tau2) * 0.5;
+					stress_theta = sum * 0.5
+								  - sqrt(dif * dif + 4 * tau2) * 0.5;	
+						fprintf(fp, "% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t% 1.4e\t0.0\n",
+								strain_xx[i][j][k][l], strain_yy[i][j][k][l], strain_xy[i][j][k][l],
+								stress_rr,stress_theta);
+					}
+				}
+			}
+		}
+	} else {
+		fprintf(fp, "%d\t%d\t%d\t%d\n",
+				division_n_xi, division_n_eta,
+				element_n_xi, element_n_eta);
+		for (i = 0; i < division_n_xi; i++) {
+			for (j = 0; j < division_n_eta; j++) {
+				fprintf(fp, "% 1.4e\t% 1.4e\n",
+						coord_x[i][j], coord_y[i][j]);
+			}
+		}
+	}
+	fclose(fp);
+	//グラフ用ファイル書き込み
+	fp = fopen("over_disp_graph.txt", "a");
+	for (i = 0; i < division_n_xi; i++) {
+		for (j = 0; j < division_n_eta; j++) {
+			temp1 = disp_x[i][j];
+			temp2 = disp_y[i][j];
+			//temp3 = sqrt(temp1 * temp1 + temp2 * temp2);
+			fprintf(fp, "%d\t% 1.15e\t% 1.15e\t% 1.15e\t% 1.15e\n",
+					graph_patch_n,
+					coord_x[i][j], coord_y[i][j],
+					disp_x[i][j], disp_y[i][j]);
+		}
+	}
+	fclose(fp);
+
+	fp = fopen("over_stress_x_graph.txt", "a");
+ 	for (i = 0; i < element_n_xi; i++) {
+		for (j = 0; j < element_n_eta; j++) {
+			for (k = 0; k < division_ele_xi + 1; k++) {
+				for (l = 0; l < division_ele_eta + 1; l++) {
+				fprintf(fp, "% 1.10e\t% 1.10e\t% 1.10e\n",
+							coord_x[i * division_ele_xi + k][j * division_ele_eta + l],
+							coord_y[i * division_ele_xi + k][j * division_ele_eta + l],
+							stress_xx[i][j][k][l]);
+				}
+			}
+		}
+	}
+	fclose(fp);
+
+	fp = fopen("over_stress_y_graph.txt", "a");
+ 	for (i = 0; i < element_n_xi; i++) {
+		for (j = 0; j < element_n_eta; j++) {
+			for (k = 0; k < division_ele_xi + 1; k++) {
+				for (l = 0; l < division_ele_eta + 1; l++) {
+				fprintf(fp, "% 1.15e\t% 1.15e\t% 1.15e\n",
+							coord_x[i * division_ele_xi + k][j * division_ele_eta + l],
+							coord_y[i * division_ele_xi + k][j * division_ele_eta + l],
+							stress_yy[i][j][k][l]);
+				}
+			}
+		}
+	}
+	fclose(fp);
+
+	fp = fopen("over_stress_y_graph_0.txt", "a");
+ 	for (i = 0; i < element_n_xi; i++) {
+		for (j = 0; j < element_n_eta; j++) {
+			for (k = 0; k < division_ele_xi + 1; k++) {
+				for (l = 0; l < division_ele_eta + 1; l++) {
+                    if(coord_y[i * division_ele_xi + k][j * division_ele_eta + l] == 0.000000000000000e+00)
+                    {
+                        fprintf(fp, "% 1.15e\t% 1.15e\t% 1.15e\n", 
+							coord_x[i * division_ele_xi + k][j * division_ele_eta + l], 
+							coord_y[i * division_ele_xi + k][j * division_ele_eta + l], 
+							stress_yy[i][j][k][l]);
+                    }
+
+				}
+			}
+		}
+	}
+	fclose(fp);
+
+	fp = fopen("over_stress_r_theta_graph.txt", "a");
+ 	for (i = 0; i < element_n_xi; i++) {
+		for (j = 0; j < element_n_eta; j++) {
+			for (k = 0; k < division_ele_xi + 1; k++) {
+				for (l = 0; l < division_ele_eta + 1; l++) {
+					double stress_rr, stress_theta;
+					double sum = stress_xx[i][j][k][l] + stress_yy[i][j][k][l];
+					double dif = stress_xx[i][j][k][l] - stress_yy[i][j][k][l];
+					double tau2 = stress_xy[i][j][k][l] * stress_xy[i][j][k][l];
+					stress_rr = sum * 0.5
+								+ sqrt(dif * dif + 4 * tau2) * 0.5;
+					stress_theta = sum * 0.5
+								  - sqrt(dif * dif + 4 * tau2) * 0.5;
+					fprintf(fp, "% 1.10e\t% 1.10e\t% 1.10e\t% 1.10e\t% 1.10e\t% 1.10e\n",
+							calc_xi_loc[i * division_ele_xi + k],
+							calc_eta_loc[j * division_ele_eta + l],
+							coord_x[i * division_ele_xi + k][j * division_ele_eta + l],
+							coord_y[i * division_ele_xi + k][j * division_ele_eta + l],
+							stress_rr, stress_theta);
 				}
 			}
 		}
@@ -8138,10 +8760,10 @@ void Make_gauss_array(int select_GP)
 	if (GP_1dir == 3)
 	{
 		double G1 = pow((3.0 / 5.0), 0.5);
-		double G_vec[GP_1dir] = {-G1, 0.0, G1};
+		double G_vec[3] = {-G1, 0.0, G1};
 		double w1 = 8.0 / 9.0;
 		double w2 = 5.0 / 9.0;
-		double w_vec[GP_1dir] = {w2, w1, w2};
+		double w_vec[3] = {w2, w1, w2};
 
 		for (i = 0; i < GP_1dir; i++)
 		{
@@ -8158,11 +8780,11 @@ void Make_gauss_array(int select_GP)
 		double A = pow((6.0 / 5.0), 0.5);
 		double G1 = pow(((3.0 - 2.0 * A) / 7.0), 0.5);
 		double G2 = pow(((3.0 + 2.0 * A) / 7.0), 0.5);
-		double G_vec[GP_1dir] = {-G2, -G1, G1, G2};
+		double G_vec[4] = {-G2, -G1, G1, G2};
 		double B = pow(30.0, 0.5);
 		double w1 = (18.0 + B) / 36.0;
 		double w2 = (18.0 - B) / 36.0;
-		double w_vec[GP_1dir] = {w2, w1, w1, w2};
+		double w_vec[4] = {w2, w1, w1, w2};
 
 		for (i = 0; i < GP_1dir; i++)
 		{
@@ -8179,12 +8801,12 @@ void Make_gauss_array(int select_GP)
 		double A = pow((10.0 / 7.0), 0.5);
 		double G1 = pow((5.0 - 2.0 * A), 0.5) / 3.0;
 		double G2 = pow((5.0 + 2.0 * A), 0.5) / 3.0;
-		double G_vec[GP_1dir] = {-G2, -G1, 0.0, G1, G2};
+		double G_vec[5] = {-G2, -G1, 0.0, G1, G2};
 		double B = pow(70.0, 0.5);
 		double w1 = 128.0 / 225.0;
 		double w2 = (322.0 + 13.0 * B) / 900.0;
 		double w3 = (322.0 - 13.0 * B) / 900.0;
-		double w_vec[GP_1dir] = {w3, w2, w1, w2, w3};
+		double w_vec[5] = {w3, w2, w1, w2, w3};
 
 		for (i = 0; i < GP_1dir; i++)
 		{
@@ -8198,8 +8820,8 @@ void Make_gauss_array(int select_GP)
 	}
 	else if (GP_1dir == 10)
 	{
-		double G_vec[GP_1dir];
-		double w_vec[GP_1dir];
+		double G_vec[10];
+		double w_vec[10];
 
 		G_vec[0]  = -0.9739065285171717;
 		G_vec[1]  = -0.8650633666889845;
