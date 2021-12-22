@@ -22,3 +22,8 @@ gcc -o s_IGA_for_debug_10x10_20211220_cyg_O1.x s_IGA_for_debug_10x10_20211220.c 
 
 minGW(64bit)
 gcc -o s_IGA_for_debug_10x10_20211220_win_Og.x s_IGA_for_debug_10x10_20211220.c -Og -lm -Wall
+
+コンパイル_new
+
+minGW(64bit)
+gcc -o s_IGA_for_debug_10x10_20211222_win_Og.x s_IGA_for_debug_10x10_20211222.c -Og -lm -Wall
