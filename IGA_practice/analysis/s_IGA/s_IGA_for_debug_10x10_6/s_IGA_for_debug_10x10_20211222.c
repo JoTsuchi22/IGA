@@ -8390,7 +8390,7 @@ static void Calculation_overlay(int order_xi_loc, int order_eta_loc,
 	fclose(fp);
 }
 
-static void Calculation_overlay_at_GP(int El_No_loc,
+static void Calculation_overlay_at_GP(
 									  double X[No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]][DIMENSION],
 									  int order_xi_loc, int order_eta_loc,
 									  int knot_n_xi_loc, int knot_n_eta_loc,
@@ -8407,104 +8407,87 @@ static void Calculation_overlay_at_GP(int El_No_loc,
 									  double *disp_cntl_px_glo, double *disp_cntl_py_glo,
 									  double *weight_glo)
 {
-	int i, j, k, l;
+	int i, j, k, e;
 	double temp1, temp2, temp3;
 
     // double output_xi, output_eta;
-	double disp_x_glo;
-	double disp_y_glo;
-    double strain_xx_glo = 0;
-    double strain_yy_glo = 0;
-    double strain_xy_glo = 0;
-	int ii, jj, kk, ll;
+	double disp_glo[DIMENSION];
+	double disp_loc[DIMENSION];
+    double strain_glo[DIMENSION];
+	double strain_loc[DIMENSION];
 
 	Make_gauss_array(1);
 
-	static double DD[D_MATRIX_SIZE][D_MATRIX_SIZE];
-	Make_D_Matrix_2D(DD, E, nu, DM);
-
-	double G_Gxi[GP_2D][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
-
-	Calculation_disp_on_loc();
-	//disp_x[i][j]	i,j:divisionとなっているので
-	//disp_x[element番号][ガウス点番号]として，calculationを参考に算出する
-
-	//ここまでで
-	//disp_x[element番号][ガウス点番号]
-	//disp_y[element番号][ガウス点番号]	が求まる
+	double G_GP_knot[GP_2D][DIMENSION];
+	double L_GP_knot[GP_2D][DIMENSION];
 
 	//メッシュ座標計算
-	for (i = 0; i < GP_2D; i++)	//ガウス点のループ(local)
+	int ele_glo_n = real_Total_Element_on_mesh[0];// グローバルメッシュの要素数
+	int ele_loc_n = real_Total_Element_to_mesh[Total_mesh] - real_Total_Element_on_mesh[0];// ローカルメッシュの要素数
+
+	double coordinate_overlay[ele_loc_n][GP_2D][DIMENSION];
+	double disp_overlay[ele_loc_n][GP_2D][DIMENSION];
+	double strain_overlay[ele_loc_n][GP_2D][3];
+	double stress_overlay[ele_loc_n][GP_2D][3];
+	double stress_r_theta_overlay[ele_loc_n][GP_2D][3];
+
+	for (e = 0; e < ele_loc_n; e++)
 	{
-		double data_result_shape[2] = {0.0};
-		double output_xi, output_eta;
-		int patch_n = 0;
-
-		double R_shape_func;
-
-		for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
+		for (i = 0; i < GP_2D; i++)	//ガウス点のループ(local)
 		{
-			R_shape_func = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
-			for (jj = 0; jj < DIMENSION; jj++)
+			double El_No_loc = ele_glo_n + e;
+			double data_result_shape[2] = {0.0};
+			// int patch_n = 0;
+
+			double R_shape_func;
+
+			for (j = 0; j < No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]]; j++)
 			{
-				data_result_shape[jj] += R_shape_func * X[j][jj];
-			}
-		}
-
-		//ローカル要素ガウス点のグローバルパッチ上のパラメータ空間座標算出
-		for (j = 0; j < Total_Patch_on_mesh[0]; j++)	//グローバルメッシュ[0]上
-		{
-			Calc_xi_eta(data_result_shape[0], data_result_shape[1],
-	            	    Position_Knots[j][0], Position_Knots[j][1],
-	            		Control_Coord[0], Control_Coord[1],
-	                	No_Control_point[j][0], No_Control_point[j][1],
-	                	Control_Weight, Order[j][0], Order[j][1],
-	                	&output_xi, &output_eta);
-			patch_n = j;
-		}
-
-            int itr_n = CalcXiEtaByNR(coord_x[i][j], coord_y[i][j],
-                                      knot_vec_xi_glo, knot_vec_eta_glo,
-				                      cntl_px_glo, cntl_py_glo,
-			                          disp_cntl_px_glo, disp_cntl_py_glo,
-			                          cntl_p_n_xi_glo, cntl_p_n_eta_glo,
-			                          weight_glo, order_xi_glo, order_eta_glo,
-			                          &output_xi, &output_eta,
-									  &disp_x_glo, &disp_y_glo,
-                                      &strain_xx_glo, &strain_yy_glo, &strain_xy_glo);
-
-			//ローカル内の表示点上のグローバル変位
-			disp_x[i][j] += disp_x_glo;
-			disp_y[i][j] += disp_y_glo;
-
-			//ローカル内の表示点上のグローバルひずみ
-			strain_xx[ii][jj][kk][ll] += strain_xx_glo;
-			strain_yy[ii][jj][kk][ll] += strain_yy_glo;
-			strain_xy[ii][jj][kk][ll] += strain_xy_glo;
-
-			// printf("test[%d][%d][%d][%d]\n",ii,jj,kk,ll);
-			if (jj > 0 && ll == 0)
-			{
-				strain_xx[ii][jj-1][kk][division_ele_eta] += strain_xx_glo;
-				strain_yy[ii][jj-1][kk][division_ele_eta] += strain_yy_glo;
-				strain_xy[ii][jj-1][kk][division_ele_eta] += strain_xy_glo;
-				// printf("test[%d][%d][%d][%d]\n",ii,jj-1,kk,division_ele_eta);
-			}
-			if (ii > 0 && kk == 0)
-			{
-				strain_xx[ii-1][jj][division_ele_xi][ll] += strain_xx_glo;
-				strain_yy[ii-1][jj][division_ele_xi][ll] += strain_yy_glo;
-				strain_xy[ii-1][jj][division_ele_xi][ll] += strain_xy_glo;
-				// printf("test[%d][%d][%d][%d]\n",ii-1,jj,division_ele_xi,ll);
-			}
-			if (ii > 0 && jj > 0 && kk == 0 && ll == 0)
-			{
-				strain_xx[ii-1][jj-1][division_ele_xi][division_ele_eta] += strain_xx_glo;
-				strain_yy[ii-1][jj-1][division_ele_xi][division_ele_eta] += strain_yy_glo;
-				strain_xy[ii-1][jj-1][division_ele_xi][division_ele_eta] += strain_xy_glo;
-				// printf("test[%d][%d][%d][%d]\n",ii-1,jj-1,division_ele_xi,division_ele_eta);
+				R_shape_func = Shape_func(j, Total_Control_Point_to_mesh[Total_mesh], Gxi[i], El_No_loc);
+				for (k = 0; k < DIMENSION; k++)
+				{
+					data_result_shape[k] += R_shape_func * X[j][k];
+				}
 			}
 
+			int temp_itr_glo = CalcXiEtaByNR(data_result_shape[0], data_result_shape[1],
+											knot_vec_xi_glo, knot_vec_eta_glo,
+											cntl_px_glo, cntl_py_glo,
+											disp_cntl_px_glo, disp_cntl_py_glo,
+											cntl_p_n_xi_glo, cntl_p_n_eta_glo,
+											weight_glo, order_xi_glo, order_eta_glo,
+											&G_GP_knot[i][0], &G_GP_knot[i][1],
+											&disp_glo[0], &disp_glo[1],
+											&strain_glo[0], &strain_glo[1], &strain_glo[2]);
+
+			int temp_itr_loc = CalcXiEtaByNR(data_result_shape[0], data_result_shape[1],
+											knot_vec_xi_loc, knot_vec_eta_loc,
+											cntl_px_loc, cntl_py_loc,
+											disp_cntl_px_loc, disp_cntl_py_loc,
+											cntl_p_n_xi_loc, cntl_p_n_eta_loc,
+											weight_loc, order_xi_loc, order_eta_loc,
+											&L_GP_knot[i][0], &L_GP_knot[i][1],
+											&disp_loc[0], &disp_loc[1],
+											&strain_loc[0], &strain_loc[1], &strain_loc[2]);
+
+			//物理座標[要素番号(ローカル内で0から始まる)][ガウス点番号][DIMENSION]
+			for (j = 0; j < DIMENSION; j++)
+			{
+				coordinate_overlay[e][i][j] = data_result_shape[j];
+			}
+			//重ね合わせ
+			for (j = 0; j < DIMENSION; j++)
+			{
+				disp_overlay[e][i][j] = disp_loc[j] + disp_glo[j];
+			}
+			for (j = 0; j < DIMENSION; j++)
+			{
+				disp_overlay[e][i][j] = disp_loc[j] + disp_glo[j];
+			}
+			for (j = 0; j < 3; j++) //xx, yy, xyを重ね合わせる
+			{
+				strain_overlay[e][i][j] = strain_loc[j] + strain_glo[j];
+			}
 		}
 	}
 
@@ -8526,22 +8509,40 @@ static void Calculation_overlay_at_GP(int El_No_loc,
 		D_matrix[2][2] = (1.0 - 2.0 * nu) / 2.0 / (1.0 - nu) * temp1;
 	}
 
-	for (i = 0; i < element_n_xi; i++) {
-		for (j = 0; j < element_n_eta; j++) {
-			for (k = 0; k < division_ele_xi + 1; k++) {
-				for (l = 0; l < division_ele_eta + 1; l++) {
-					stress_xx[i][j][k][l] = D_matrix[0][0] * strain_xx[i][j][k][l] + D_matrix[0][1] * strain_yy[i][j][k][l];
-					stress_yy[i][j][k][l] = D_matrix[1][0] * strain_xx[i][j][k][l] + D_matrix[1][1] * strain_yy[i][j][k][l];
-					stress_xy[i][j][k][l] = D_matrix[2][2] * strain_xy[i][j][k][l];
-					// printf("[%d][%d][%d][%d]\t% 1.4e\t% 1.4e\t% 1.4e\n", i, j, k, l,
-					// 	   stress_xx[i][j][k][l], stress_yy[i][j][k][l], stress_xy[i][j][k][l]);
-				}
-			}
-			// printf("\n");
+	for (e = 0; e < ele_loc_n; e++)
+	{
+		for (i = 0; i < GP_2D; i++)
+		{
+			stress_overlay[e][i][0] = D_matrix[0][0] * strain_overlay[e][i][0] + D_matrix[0][1] * strain_overlay[e][i][1];
+			stress_overlay[e][i][1] = D_matrix[1][0] * strain_overlay[e][i][0] + D_matrix[1][1] * strain_overlay[e][i][1];
+			stress_overlay[e][i][2] = D_matrix[2][2] * strain_overlay[e][i][2];
+		}
+	}
+
+	for (e = 0; e < ele_loc_n; e++)
+	{
+		for (i = 0; i < GP_2D; i++)
+		{
+			stress_r_theta_overlay[e][i][0] = ;
+			stress_r_theta_overlay[e][i][1] = D_matrix[1][0] * strain_overlay[e][i][0] + D_matrix[1][1] * strain_overlay[e][i][1];
+			stress_r_theta_overlay[e][i][2] = D_matrix[2][2] * strain_overlay[e][i][2];
 		}
 	}
 
 	//書き込み
+	fp = fopen("at_GP_overlay_data.txt", "w");
+	fprintf(fp, "x\ty\tstress_xx\tstress_yy\tstress_r\tstress_theta\n");
+	fclose(fp);
+
+	fp = fopen("at_GP_overlay_for_errror_norm.txt", "w");
+	fprintf(fp, "x\ty\tstress_r-theory\tstress_theta-theory\tstress_r\tstress_theta\n");
+	fclose(fp);
+
+	fp = fopen("at_GP_overlay_for_errror_norm_surface_integral.txt", "w");
+	fprintf(fp, "(stress_r-theory)^2_surface_integral\t(stress_theta-thory)^2_surface_integral\tstress_r^2_surface_integral\tstress_theta^2_surface_integral");
+	fclose(fp);
+
+
 	fp = fopen("overlay_view.dat", "a");
 	if (fields_flag) {
 		fprintf(fp, "%d\t%d\t%d\t%d\n",
