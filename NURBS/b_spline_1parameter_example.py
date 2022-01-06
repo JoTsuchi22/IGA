@@ -73,7 +73,7 @@ new_knot_position = np.array([])  # ノットを挿入するコントロール�
 CP, l, m, knot = fn.knot_insertion_A(CP, n, l, knot, new_knot_position)
 
 # knot insertion B
-insert_knot = np.array([])  # 挿入するノットの値(0.0 < insert_knot < 1.0)
+insert_knot = np.array([0.25, 0.5, 0.75])  # 挿入するノットの値(0.0 < insert_knot < 1.0)
 CP, l, m, knot = fn.knot_insertion_B(CP, n, l, knot, insert_knot)
 
 # knot insertion C
