@@ -1,0 +1,7 @@
+s_IGA_make_connection
+
+
+test_malloc
+
+gcc -o test_malloc.x test_malloc.c -Og -lm -Wall
+./test_malloc.x
