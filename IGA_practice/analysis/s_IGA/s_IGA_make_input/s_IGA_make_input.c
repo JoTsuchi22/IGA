@@ -100,7 +100,7 @@ int  main(int argc, char *argv[])
     {
         //ファイル読み込み
 	    Get_InputData(tm, argv[tm+1]);
-        if(error_check == 1)
+        if (error_check == 1)
         {
             Print_error();
             break;
@@ -163,10 +163,10 @@ void Get_InputData(int tm, char *filename)
 
 	fp = fopen(filename, "r");
 
-    //DEMENSION
+    //DIMENSION
     fscanf(fp, "%d", &temp_dim);
 	fgets(s, 256, fp);
-    printf("DEMENSION:%d\n", temp_dim);
+    printf("DIMENSION:%d\n", temp_dim);
     Dimension[tm] = temp_dim;
     if (Dimension[tm] != 2)
     {
@@ -334,6 +334,8 @@ void Get_InputData(int tm, char *filename)
     {
         error_check = 0;
     }
+
+    fclose(fp);
 }
 
 
@@ -454,11 +456,11 @@ void KI_calc_T_1D(int tm, int insert_parameter_axis)
 
     double T[n + 1][l + vec_length1[tm][insert_parameter_axis]][l];
 
-    for(int i = 0; i < n + 1; i++)
+    for (int i = 0; i < n + 1; i++)
     {
-        for(int j = 0; j < l + vec_length1[tm][insert_parameter_axis]; j++)
+        for (int j = 0; j < l + vec_length1[tm][insert_parameter_axis]; j++)
         {
-            for(int k = 0; k < l; k++)
+            for (int k = 0; k < l; k++)
             {
                 T[i][j][k] = 0.0;
             }
@@ -1697,79 +1699,79 @@ void OutputData(int tm, char *filename)
 
     fp = fopen(str, "w");
 
-    fprintf(fp, "input file name:\t");
-    fprintf(fp, "%s\n\n", filename);
+    // fprintf(fp, "input file name: ");
+    // fprintf(fp, "%s\n\n", filename);
 
-    fprintf(fp, "Total Control Point\n");
+    // fprintf(fp, "Total Control Point\n");
     fprintf(fp, "%d\n\n", Total_Control_Point[tm]);
 
-    fprintf(fp, "Order\n");
+    // fprintf(fp, "Order\n");
     for (j = 0; j < Dimension[tm]; j++)
     {
-        if (j == 0)
+        if (j == Dimension[tm] - 1)
         {
             fprintf(fp, "%d", Order[tm][j]);
         }
         else
         {
-            fprintf(fp, "\t%d", Order[tm][j]);
+            fprintf(fp, "%-5d", Order[tm][j]);
         }
     }
     fprintf(fp, "\n\n");
 
-    fprintf(fp, "number of Knot Vector\n");
+    // fprintf(fp, "number of Knot Vector\n");
     for (j = 0; j < Dimension[tm]; j++)
     {
-        if (j == 0)
+        if (j == Dimension[tm] - 1)
         {
             fprintf(fp, "%d", knot_n[tm][j]);
         }
         else
         {
-            fprintf(fp, "\t%d", knot_n[tm][j]);
+            fprintf(fp, "%-5d", knot_n[tm][j]);
         }
     }
     fprintf(fp, "\n\n");
 
-    fprintf(fp, "number of Control Point\n");
+    // fprintf(fp, "number of Control Point\n");
     for (j = 0; j < Dimension[tm]; j++)
     {
-        if (j == 0)
+        if (j == Dimension[tm] - 1)
         {
             fprintf(fp, "%d", Control_point_n[tm][j]);
         }
         else
         {
-            fprintf(fp, "\t%d", Control_point_n[tm][j]);
+            fprintf(fp, "%-5d", Control_point_n[tm][j]);
         }
     }
     fprintf(fp, "\n\n");
 
-    fprintf(fp, "knot vector\n");
+    // fprintf(fp, "knot vector\n");
     for (j = 0; j < Dimension[tm]; j++)
     {
         for (i = 0; i < knot_n[tm][j]; i++)
         {
-            if (i == 0)
+            if (i == knot_n[tm][j] - 1)
             {
                 fprintf(fp, "%.16e", knot[tm][j][i]);
             }
             else
             {
-                fprintf(fp, "\t%.16e", knot[tm][j][i]);
+                fprintf(fp, "%.16e  ", knot[tm][j][i]);
             }
         }
         fprintf(fp, "\n");
     }
     fprintf(fp, "\n");
 
-    fprintf(fp, "coordinate of Control Point\n");
+    // fprintf(fp, "coordinate of Control Point\n");
     for (i = 0; i < Total_Control_Point[tm]; i++)
     {
-        fprintf(fp, "%d\t", i);
-        fprintf(fp, "%.16e\t", x[tm][i]);
-        fprintf(fp, "%.16e\t", y[tm][i]);
-        fprintf(fp, "%.16e\n", w[tm][i]);
+        fprintf(fp, "%-5d", i);
+        fprintf(fp, "  %.16e", x[tm][i]);
+        fprintf(fp, "  %.16e", y[tm][i]);
+        fprintf(fp, "  %.16e\n", w[tm][i]);
     }
 
     fclose(fp);
