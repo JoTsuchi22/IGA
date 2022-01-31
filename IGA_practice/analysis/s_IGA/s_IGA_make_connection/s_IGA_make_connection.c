@@ -2,6 +2,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #define DIMENSION 2                 // 2次元
 #define MERGE_DISTANCE 1.0e-13      // コントロールポイントが同じ点と判定する距離
@@ -26,11 +27,22 @@ void Get_inputdata_patch_0(char *filename, int *temp_Order, int *temp_KV_info, i
 void Get_inputdata_patch_1(char *filename, double *temp_KV, double *temp_CP, int *temp_A, double *temp_B, int *temp_KV_info, int *temp_CP_info, int num);
 void Check_B(int num_own, int num_opponent, double *temp_B, int *temp_Edge_info, int *temp_Opponent_patch_num);
 void Make_connectivity(int num, int *temp_CP_info, int *temp_Edge_info, int *temp_Opponent_patch_num, int *temp_Connectivity, int *temp_A, double *temp_CP, double *temp_CP_result);
-void Sort_and_Merge(int n, int *temp_A, int *temp_Boundary, int *temp_Boundary_result, int *length_before, int *length_after);
-void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int *temp_Connectivity, double *temp_KV, double *temp_CP_result);
-// void Output_by_Gnuplot();
+void Sort(int n, int *temp_CP_info, int *temp_A, int *temp_Boundary, int *temp_Boundary_result, int *temp_length_before, int *temp_length_after);
+void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int *temp_Connectivity, double *temp_KV, double *temp_CP_result,
+                      int *temp_Boundary_result, int *temp_length_before, int *temp_length_after, int total_disp_constraint_n);
+void Output_by_Gnuplot(double *temp_CP_result);
+void swap(int *a, int *b);
+int getLeft(int parent);
+int getRight(int parent);
+int getParent(int child);
+void addHeap(int *a, int size);
+void removeHeap(int *a, int size);
+void makeHeap(int *a, int num);
+void heapSort(int *a, int num);
+void Dedupe(int *a, int *num, int *a_new, int *num_new, int n);
 
 FILE *fp;
+FILE *gp;
 
 int main(int argc, char *argv[])
 {
@@ -143,6 +155,9 @@ int main(int argc, char *argv[])
         temp5 += disp_constraint_n[i];
     }
 
+    // printf("temp5 = %d\n", temp5);
+    // printf("temp4 = %d\n", temp4);
+
     int *length_before = (int *)malloc(sizeof(int) * temp5);    // 各変位量でのマージ前の長さ
     int *length_after = (int *)malloc(sizeof(int) * temp5);     // 各変位量でのマージ後の長さ
     int *Boundary = (int *)malloc(sizeof(int) * temp4);         // 境界条件のコネクティビティ
@@ -155,13 +170,13 @@ int main(int argc, char *argv[])
     }
 
     // 強制変位・変位固定の境界条件を作成
-    // Sort_and_Merge(temp5, A, Boundary, Boundary_result, length_before, length_after);
+    Sort(temp5, CP_info, A, Boundary, Boundary_result, length_before, length_after);
 
     printf("state: output\n");
-    Output_inputdata(Order, KV_info, CP_info, Connectivity, KV, CP_result);
+    Output_inputdata(Order, KV_info, CP_info, Connectivity, KV, CP_result, Boundary_result, length_before, length_after, temp5);
 
     // 図の出力
-    // Output_by_Gnuplot();
+    Output_by_Gnuplot(CP_result);
 
     // メモリ解放
     free(Order), free(KV_info), free(CP_info);
@@ -365,7 +380,7 @@ void Get_inputdata_patch_1(char *filename, double *temp_KV, double *temp_CP, int
         {
             fscanf(fp, "%lf", &temp_d);
             temp_KV[KV_to_here + j] = temp_d;
-            printf("%le", temp_KV[KV_to_here + j]);
+            printf("%le ", temp_KV[KV_to_here + j]);
         }
         KV_to_here += temp_KV_info[num * DIMENSION + i];
         printf("\n");
@@ -393,7 +408,7 @@ void Get_inputdata_patch_1(char *filename, double *temp_KV, double *temp_CP, int
     printf("B_to_here = %d\n", B_to_here);
 
     printf("temp_CP_to_here = %d\n", temp_CP_to_here);
-    printf("temp_CP_to_here = %le\n", temp_CP[temp_CP_to_here]);
+    // printf("temp_CP[temp_CP_to_here] = %le\n", temp_CP[temp_CP_to_here]);
 
     fclose(fp);
     
@@ -571,21 +586,18 @@ void Make_connectivity(int num, int *temp_CP_info, int *temp_Edge_info, int *tem
     // 重なっている辺の A 配列を作成
     for (i = 0; i < 4; i++)
     {
-        if (i == 0)
-        {
-            continue;
-        }
-        else if (i == 1)
+        // i == 0 ではなにもしない
+        if (i == 1)
         {
             A_to_own += temp_CP_info[num * DIMENSION];
         }
         else if (i == 2)
         {
-            A_to_own += temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1];
+            A_to_own += temp_CP_info[num * DIMENSION + 1];
         }
         else if (i == 3)
         {
-            A_to_own += 2 * temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1];
+            A_to_own += temp_CP_info[num * DIMENSION];
         }
 
         for (j = 0; j < 8; j++)
@@ -600,37 +612,46 @@ void Make_connectivity(int num, int *temp_CP_info, int *temp_Edge_info, int *tem
 
                 printf("Patch num = %d\n", num);
                 printf("Edge num = %d\n", j);
-                printf("Opponent_patch_num = %d\n", temp_Opponent_patch_num[num * 4 + i]);
+                printf("Opponent patch num = %d\n", temp_Opponent_patch_num[num * 4 + i]);
 
                 Edge[i] = 1;
 
                 p = j / 2;
                 q = j % 2;
+                printf("p = %d\n", p);
+                printf("q = %d\n", q);
+
                 if (p == 0)
                 {
-                    temp_CP_n = temp_CP_info[num * DIMENSION];
+                    temp_CP_n = temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION];
                 }
                 else if (p == 1)
                 {
-                    temp_CP_n = temp_CP_info[num * DIMENSION + 1];
+                    temp_CP_n = temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION + 1];
                     A_to_opponent += temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION];
                 }
                 else if (p == 2)
                 {
-                    temp_CP_n = temp_CP_info[num * DIMENSION];
+                    temp_CP_n = temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION];
                     A_to_opponent += temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION] + temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION + 1];
                 }
                 else if (p == 3)
                 {
-                    temp_CP_n = temp_CP_info[num * DIMENSION + 1];
+                    temp_CP_n = temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION + 1];
                     A_to_opponent += 2 * temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION] + temp_CP_info[temp_Opponent_patch_num[num * 4 + i] * DIMENSION + 1];
                 }
+
+                // printf("A to own = %d\n", A_to_own);
+                // printf("temp_CP_n = %d\n", temp_CP_n);
+                // printf("A to opponent = %d\n", A_to_opponent);
+                // printf("temp_A[A_to_opponent] = %d\n", temp_A[A_to_opponent]);
 
                 if (q == 0)
                 {
                     for (k = 0; k < temp_CP_n; k++)
                     {
                         temp_A[A_to_own + k] = temp_A[A_to_opponent + k];
+                        // printf("temp_A[A_to_own + k] = %d\n", temp_A[A_to_own + k]);
                     }
                     break;
                 }
@@ -638,18 +659,28 @@ void Make_connectivity(int num, int *temp_CP_info, int *temp_Edge_info, int *tem
                 {
                     for (k = 0; k < temp_CP_n; k++)
                     {
-                        temp_A[A_to_own + k] = temp_A[A_to_own + (temp_CP_n - 1) - k];
+                        temp_A[A_to_own + k] = temp_A[A_to_opponent + (temp_CP_n - 1) - k];
                     }
                     break;
                 }
             }
         }
-        // Edge_to_here += 8;
     }
-    
+
+    printf("patch %d array A before make connectivity\n", num);
+    A_to_own = 0;
+    for (i = 0; i < num; i++)
+    {
+        A_to_own += 2 * (temp_CP_info[i * DIMENSION] + temp_CP_info[i * DIMENSION + 1]);
+    }
+    for (i = 0; i < 2 * (temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1]); i++)
+    {
+        printf("%d\t", temp_A[A_to_own + i]);
+    }
+    printf("\n");
+
     // コネクティビティを作成
     int xi, eta;
-    // int loc_num = 0;
 
     A_to_own = 0;
     for (i = 0; i < num; i++)
@@ -686,8 +717,14 @@ void Make_connectivity(int num, int *temp_CP_info, int *temp_Edge_info, int *tem
                 counter++;
                 CP_result_to_here += (DIMENSION + 1);
             }
+        }
+    }
 
-            // A 配列の作ってない分を作成
+    // A 配列の作ってない分を作成
+    for (eta = 0; eta < temp_CP_info[num * DIMENSION + 1]; eta++)
+    {
+        for (xi = 0; xi < temp_CP_info[num * DIMENSION]; xi++)
+        {
             if (eta == 0 && Edge[0] == 0)
             {
                 temp_A[A_to_own + xi] = temp_Connectivity[CP_to_here + eta * temp_CP_info[num * DIMENSION] + xi];
@@ -707,89 +744,162 @@ void Make_connectivity(int num, int *temp_CP_info, int *temp_Edge_info, int *tem
         }
     }
     CP_to_here += temp_CP_info[num * DIMENSION] * temp_CP_info[num * DIMENSION + 1];
+
+    printf("patch %d array A after make connectivity\n", num);
+    A_to_own = 0;
+    for (i = 0; i < num; i++)
+    {
+        A_to_own += 2 * (temp_CP_info[i * DIMENSION] + temp_CP_info[i * DIMENSION + 1]);
+    }
+    for (i = 0; i < 2 * (temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1]); i++)
+    {
+        printf("%d\t", temp_A[A_to_own + i]);
+    }
+    printf("\n");
+
+    printf("\n");
 }
 
 
-// void Sort_and_Merge(int n, int *temp_A, int *temp_Boundary, int *temp_Boundary_result, int *length_before, int *length_after)
-// {
-//     int i, j, k, l, m, n;
-//     int temp = 0;
+void Sort(int n, int *temp_CP_info, int *temp_A, int *temp_Boundary, int *temp_Boundary_result, int *temp_length_before, int *temp_length_after)
+{
+    int i, j, k, l;
+    int temp = 0;
 
-//     for (i = 0; i < DIMENSION; i++)
-//     {
-//         for (j = 0; j < disp_constraint_n[i]; j++)
-//         {
-//             for (k = 0; k < disp_constraint_edge_n[i][j]; k++)
-//             {
-//                 if (disp_constraint[i][j][k][1] == 0)
-//                 {
-//                     length_before[temp] += CP_info[disp_constraint[i][j][k][0] * DIMENSION + 1];
-//                 }
-//                 else if (disp_constraint[i][j][k][1] == 1)
-//                 {
-//                     length_before[temp] += CP_info[disp_constraint[i][j][k][0] * DIMENSION];
-//                 }
-//             }
-//             temp++;
-//         }
-//     }
+    for (i = 0; i < DIMENSION; i++)
+    {
+        for (j = 0; j < disp_constraint_n[i]; j++)
+        {
+            for (k = 0; k < disp_constraint_edge_n[i][j]; k++)
+            {
+                if (disp_constraint[i][j][k][1] == 0)
+                {
+                    temp_length_before[temp] += temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION + 1];
+                }
+                else if (disp_constraint[i][j][k][1] == 1)
+                {
+                    temp_length_before[temp] += temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION];
+                }
+            }
+            temp++;
+        }
+    }
 
-//     temp = 0;
+    temp = 0;
 
-//     for (i = 0; i < DIMENSION; i++)
-//     {
-//         for (j = 0; j < disp_constraint_n[i]; j++)
-//         {
-//             for (k = 0; k < disp_constraint_edge_n[i][j]; k++)
-//             {
-//                 int A_to_here = 0;
-//                 for (l = 0; l < disp_constraint[i][j][k][0]; l++)
-//                 {
-//                     A_to_here += 2 * (CP_info[l * DIMENSION] + CP_info[l * DIMENSION + 1]);
-//                 }
+    for (i = 0; i < DIMENSION; i++)
+    {
+        for (j = 0; j < disp_constraint_n[i]; j++)
+        {
+            for (k = 0; k < disp_constraint_edge_n[i][j]; k++)
+            {
+                int A_to_here = 0;
+                for (l = 0; l < disp_constraint[i][j][k][0]; l++)
+                {
+                    A_to_here += 2 * (temp_CP_info[l * DIMENSION] + temp_CP_info[l * DIMENSION + 1]);
+                }
 
-//                 if (disp_constraint[i][j][k][1] == 1 || disp_constraint[i][j][k][2] == 0)
-//                 {
-//                     continue;
-//                 }
-//                 else if (disp_constraint[i][j][k][1] == 0 || disp_constraint[i][j][k][2] == 1)
-//                 {
-//                     A_to_here += CP_info[disp_constraint[i][j][k][0] * DIMENSION];
-//                 }
-//                 else if (disp_constraint[i][j][k][1] == 1 || disp_constraint[i][j][k][2] == 1)
-//                 {
-//                     A_to_here += CP_info[disp_constraint[i][j][k][0] * DIMENSION] + CP_info[disp_constraint[i][j][k][0] * DIMENSION + 1];
-//                 }
-//                 else if (disp_constraint[i][j][k][1] == 0 || disp_constraint[i][j][k][2] == 0)
-//                 {
-//                     A_to_here += 2 * CP_info[disp_constraint[i][j][k][0] * DIMENSION] + CP_info[disp_constraint[i][j][k][0] * DIMENSION + 1];
-//                 }
+                // if (disp_constraint[i][j][k][1] == 1 && disp_constraint[i][j][k][2] == 0) は何もしない
+                if (disp_constraint[i][j][k][1] == 0 && disp_constraint[i][j][k][2] == 1)
+                {
+                    A_to_here += temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION];
+                }
+                else if (disp_constraint[i][j][k][1] == 1 && disp_constraint[i][j][k][2] == 1)
+                {
+                    A_to_here += temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION] + temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION + 1];
+                }
+                else if (disp_constraint[i][j][k][1] == 0 && disp_constraint[i][j][k][2] == 0)
+                {
+                    A_to_here += 2 * temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION] + temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION + 1];
+                }
                 
-//                 if (disp_constraint[i][j][k][1] == 0)
-//                 {
-//                     for (l = 0; l < CP_info[disp_constraint[i][j][k][0] * DIMENSION] + 1; l++)
-//                     {
-//                         temp_Boundary[temp] = temp_A[A_to_here + l];
-//                         temp++;
-//                     }
-//                 }
-//                 else if (disp_constraint[i][j][k][1] == 1)
-//                 {
-//                     for (l = 0; l < CP_info[disp_constraint[i][j][k][0] * DIMENSION]; l++)
-//                     {
-//                         temp_Boundary[temp] = temp_A[A_to_here + l];
-//                         temp++;
-//                     }
-//                 }
-//             }
-//         }
-//     }
+                if (disp_constraint[i][j][k][1] == 0)
+                {
+                    for (l = 0; l < temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION + 1]; l++)
+                    {
+                        temp_Boundary[temp] = temp_A[A_to_here + l];
+                        temp++;
+
+                        // printf("patch num %d\n", disp_constraint[i][j][k][0]);
+                        // printf("xi or eta %d\n", disp_constraint[i][j][k][1]);
+                        // printf("start or end %d\n", disp_constraint[i][j][k][2]);
+                        // printf("temp = %d\n", temp);
+                        // printf("A_to_here + l = %d\n", A_to_here + l);
+                        // printf("temp_A[A_to_here + l] = %d\n", temp_A[A_to_here + l]);
+                    }
+                }
+                else if (disp_constraint[i][j][k][1] == 1)
+                {
+                    for (l = 0; l < temp_CP_info[disp_constraint[i][j][k][0] * DIMENSION]; l++)
+                    {
+                        temp_Boundary[temp] = temp_A[A_to_here + l];
+                        temp++;
+
+                        // printf("patch num %d\n", disp_constraint[i][j][k][0]);
+                        // printf("xi or eta %d\n", disp_constraint[i][j][k][1]);
+                        // printf("start or end %d\n", disp_constraint[i][j][k][2]);
+                        // printf("temp = %d\n", temp);
+                        // printf("A_to_here + l = %d\n", A_to_here + l);
+                        // printf("temp_A[A_to_here + l] = %d\n", temp_A[A_to_here + l]);
+                    }
+                }
+            }
+        }
+    }
+
+    temp = 0;
+    for (i = 0; i < n; i++)
+    {
+        printf("length_before[%d] = %d\n", i, temp_length_before[i]);
+        for (j = 0; j < temp_length_before[i]; j++)
+        {
+            printf("%d\t", temp_Boundary[temp]);
+            temp++;
+        }
+        printf("\n");
+    }
+
+    temp = 0;
+    for (i = 0; i < n; i++)
+    {
+        int *temp_array = (int *)malloc(sizeof(int) * temp_length_before[i]);
+        if (temp_array == NULL)
+        {
+            printf("Memory cannot be allocated\n");
+            exit(1);
+        }
+
+        for (j = 0; j < temp_length_before[i]; j++)
+        {
+            temp_array[j] = temp_Boundary[temp + j];
+            // printf("%d\t", temp_array[j]);
+        }
+        printf("\n");
+
+        heapSort(temp_array, temp_length_before[i]);
+        Dedupe(temp_array, temp_length_before, temp_Boundary_result, temp_length_after, i);
+
+        free(temp_array);
+        temp += temp_length_before[i];
+    }
+
+    temp = 0;
+    for (i = 0; i < n; i++)
+    {
+        printf("length_after[%d] = %d\n", i, temp_length_after[i]);
+        for (j = 0; j < temp_length_after[i]; j++)
+        {
+            printf("%d\t", temp_Boundary_result[i * temp + j]);
+        }
+        printf("\n");
+        temp += temp_length_before[i];
+    }
+    printf("\n");
+}
 
 
-// }
-
-
-void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int *temp_Connectivity, double *temp_KV, double *temp_CP_result)
+void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int *temp_Connectivity, double *temp_KV, double *temp_CP_result,
+                      int *temp_Boundary_result, int *temp_length_before, int *temp_length_after, int total_disp_constraint_n)
 {
     int i, j, k;
     char str[256] = "input.txt";
@@ -797,7 +907,7 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
     fp = fopen(str, "w");
 
     // ヤング率
-    fprintf(fp, "%d\t", (int)E_and_nu[0]);
+    fprintf(fp, "%d  ", (int)E_and_nu[0]);
 
     // ポアソン比
     fprintf(fp, "%le\n\n", E_and_nu[1]);
@@ -807,19 +917,26 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
 
     // コントロールポイント数
     fprintf(fp, "%d\n\n", (CP_result_to_here + 1) / 3);
+    int temp_num = (CP_result_to_here + 1) / 3, temp_counter = 0;
+    while (temp_num != 0)
+    {
+        temp_num = temp_num / 10;
+        temp_counter++;
+    }
+    temp_num = - (temp_counter + 2);
 
     // 各パッチ内での各方向の次数
     for (i = 0; i < Total_patch; i++)
     {
         for (j = 0; j < DIMENSION; j++)
         {
-            if (j == 0)
+            if (j == DIMENSION - 1)
             {
                 fprintf(fp, "%d", temp_Order[i * DIMENSION + j]);
             }
             else
             {
-                fprintf(fp, "\t%d", temp_Order[i * DIMENSION + j]);
+                fprintf(fp, "%*d", -6, temp_Order[i * DIMENSION + j]);
             }
         }
         fprintf(fp, "\n");
@@ -831,13 +948,13 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
     {
         for (j = 0; j < DIMENSION; j++)
         {
-            if (j == 0)
+            if (j == DIMENSION - 1)
             {
                 fprintf(fp, "%d", temp_KV_info[i * DIMENSION + j]);
             }
             else
             {
-                fprintf(fp, "\t%d", temp_KV_info[i * DIMENSION + j]);
+                fprintf(fp, "%*d", -6, temp_KV_info[i * DIMENSION + j]);
             }
         }
         fprintf(fp, "\n");
@@ -849,13 +966,13 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
     {
         for (j = 0; j < DIMENSION; j++)
         {
-            if (j == 0)
+            if (j == DIMENSION - 1)
             {
                 fprintf(fp, "%d", temp_CP_info[i * DIMENSION + j]);
             }
             else
             {
-                fprintf(fp, "\t%d", temp_CP_info[i * DIMENSION + j]);
+                fprintf(fp, "%*d", -6, temp_CP_info[i * DIMENSION + j]);
             }
         }
         fprintf(fp, "\n");
@@ -868,13 +985,13 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
     {
         for (j = 0; j < temp_CP_info[i * DIMENSION] * temp_CP_info[i * DIMENSION + 1]; j++)
         {
-            if (j == 0)
+            if (j == temp_CP_info[i * DIMENSION] * temp_CP_info[i * DIMENSION + 1] - 1)
             {
                 fprintf(fp, "%d", temp_Connectivity[CP_to_here + j]);
             }
             else
             {
-                fprintf(fp, "\t%d", temp_Connectivity[CP_to_here + j]);
+                fprintf(fp, "%*d", temp_num, temp_Connectivity[CP_to_here + j]);
             }
         }
         CP_to_here += temp_CP_info[i * DIMENSION] * temp_CP_info[i * DIMENSION + 1];
@@ -883,14 +1000,18 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
     fprintf(fp, "\n");
 
     // 変位拘束するコントロールポイントの数
-    // fprintf(fp, "%d", XX);
-    //
+    int temp = 0;
+    for (i = 0; i < total_disp_constraint_n; i++)
+    {
+        temp += temp_length_after[i];
+    }
+    fprintf(fp, "%*d", -6, temp);
 
     // 荷重条件を与えるコントロールポイントの数
-    fprintf(fp, "\t%d", 0);
+    fprintf(fp, "%*d", -6, 0);
 
     // 分布荷重の数
-    fprintf(fp, "\t%d\n\n", distributed_load_n);
+    fprintf(fp, "%d\n\n", distributed_load_n);
 
     // 各パッチでの各方向のノットベクトル
     KV_to_here = 0;
@@ -900,13 +1021,13 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
         {
             for (k = 0; k < temp_KV_info[i * DIMENSION + j]; k++)
             {
-                if (k == 0)
+                if (k == temp_KV_info[i * DIMENSION + j] - 1)
                 {
                     fprintf(fp, "%.16e", temp_KV[KV_to_here + k]);
                 }
                 else
                 {
-                    fprintf(fp, "\t%.16e", temp_KV[KV_to_here + k]);
+                    fprintf(fp, "%.16e  ", temp_KV[KV_to_here + k]);
                 }
             }
             KV_to_here += temp_KV_info[i * DIMENSION + j];
@@ -918,27 +1039,31 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
     // コントロールポイント
     for (i = 0; i < (CP_result_to_here + 1) / 3; i++)
     {
-        fprintf(fp, "%d", i);
-        fprintf(fp, "\t%.16e", temp_CP_result[i * 3]);
-        fprintf(fp, "\t%.16e", temp_CP_result[i * 3 + 1]);
-        fprintf(fp, "\t%.16e\n", temp_CP_result[i * 3 + 2]);
+        fprintf(fp, "%*d", temp_num, i);
+        fprintf(fp, "%.16e  ", temp_CP_result[i * 3]);
+        fprintf(fp, "%.16e  ", temp_CP_result[i * 3 + 1]);
+        fprintf(fp, "%.16e\n", temp_CP_result[i * 3 + 2]);
     }
     fprintf(fp, "\n");
 
     // 拘束するコントロールポイント
-    // for (i = 0; i < DIMENSION; i++)
-    // {
-    //     for (j = 0; j < disp_constraint_n[i])
-    //     {
-    //         for (k = 0; k < length_before[]; k++)
-    //         {
-    //             fprintf(fp, "%d", temp_Boundary[boundary_to_here + ]);
-    //             fprintf(fp, "\t%d", i);
-    //             fprintf(fp, "\t%.16e\n", disp_constraint_amount[i][j]);
-    //         }
-    //         boundary_to_here += length[i][j];
-    //     }
-    // }
+    temp_counter = 0;
+    temp = 0;
+    for (i = 0; i < DIMENSION; i++)
+    {
+        for (j = 0; j < disp_constraint_n[i]; j++)
+        {
+            for (k = 0; k < temp_length_after[temp_counter]; k++)
+            {
+                fprintf(fp, "%*d", temp_num, temp_Boundary_result[temp + k]);
+                fprintf(fp, "%*d", temp_num, i);
+                fprintf(fp, "%le\n", disp_constraint_amount[i][j]);
+            }
+            temp += temp_length_before[j];
+            temp_counter++;
+        }
+    }
+    fprintf(fp, "\n");
 
     // 分布荷重
     for (i = 0; i < distributed_load_n; i++)
@@ -947,22 +1072,279 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
         {
             fprintf(fp, "\n");
         }
-        fprintf(fp, "%d", (int)distributed_load_info[i][0]);
-        fprintf(fp, "\t%d", (int)distributed_load_info[i][1]);
-        fprintf(fp, "\t%d", (int)distributed_load_info[i][2]);
-        fprintf(fp, "\t%le", distributed_load_info[i][3]);
-        fprintf(fp, "\t%le", distributed_load_info[i][4]);
-        fprintf(fp, "\t%le", distributed_load_info[i][5]);
-        fprintf(fp, "\t%le", distributed_load_info[i][6]);
-        fprintf(fp, "\t%le", distributed_load_info[i][7]);
-        fprintf(fp, "\t%le", distributed_load_info[i][8]);
+        fprintf(fp, "%*d", temp_num, (int)distributed_load_info[i][0]);
+        fprintf(fp, "%*d", temp_num, (int)distributed_load_info[i][1]);
+        fprintf(fp, "%*d", temp_num, (int)distributed_load_info[i][2]);
+        fprintf(fp, "%le  ", distributed_load_info[i][3]);
+        fprintf(fp, "%le  ", distributed_load_info[i][4]);
+        fprintf(fp, "%le  ", distributed_load_info[i][5]);
+        fprintf(fp, "%le  ", distributed_load_info[i][6]);
+        fprintf(fp, "%le  ", distributed_load_info[i][7]);
+        fprintf(fp, "%le", distributed_load_info[i][8]);
     }
 
     fclose(fp);
 }
 
 
-// void Output_by_Gnuplot()
-// {
+void Output_by_Gnuplot(double *temp_CP_result)
+{
+    int i;
 
-// }
+    int x_min = 0, x_max = 1;
+    int y_min = 0, y_max = 1;
+
+    double position_x, position_y;
+
+    for (i = 0; i < (CP_result_to_here + 1) / 3; i++)
+    {
+        if (i == 0)
+        {
+            x_min = temp_CP_result[i * 3];
+            x_max = temp_CP_result[i * 3];
+            y_min = temp_CP_result[i * 3 + 1];
+            y_max = temp_CP_result[i * 3 + 1];
+        }
+        else
+        {
+            if (x_min > temp_CP_result[i * 3])
+            {
+                x_min = temp_CP_result[i * 3];
+            }
+            else if (x_max < temp_CP_result[i * 3])
+            {
+                x_max = temp_CP_result[i * 3];
+            }
+
+            if (y_min > temp_CP_result[i * 3 + 1])
+            {
+                y_min = temp_CP_result[i * 3 + 1];
+            }
+            else if (y_max < temp_CP_result[i * 3 + 1])
+            {
+                y_max = temp_CP_result[i * 3 + 1];
+            }
+        }
+    }
+
+    gp = popen("gnuplot -persist", "w");
+
+    for (i = 0; i < (CP_result_to_here + 1) / 3; i++)
+    {
+        position_x = (temp_CP_result[i * 3] - x_min) / (x_max - x_min) + 0.01;
+        position_y = (temp_CP_result[i * 3 + 1] - y_min) / (y_max - y_min) + 0.005;
+        fprintf(gp, "set label %d at graph %le, %le '%d' textcolor lt 3 font 'Times, 4'\n", i + 1, position_x, position_y, i);
+    }
+
+    fprintf(gp, "plot '-' u 1:2 t '' with linespoints linewidth 0.5 pointsize 0.5 pointtype 1\n");
+    for (i = 0; i < (CP_result_to_here + 1) / 3; i++)
+    {
+        fprintf(gp,"%le %le\n", temp_CP_result[i * 3], temp_CP_result[i * 3 + 1]);
+    }
+    fprintf(gp, "e\n");
+    fflush(gp);
+    pclose(gp);
+}
+
+
+/* データを入れ替える関数 */
+void swap(int *a, int *b)
+{
+    int temp;
+    temp = *b;
+    *b = *a;
+    *a = temp;
+}
+
+
+/* 左の子ノードの位置を取得 */
+int getLeft(int parent)
+{
+    return parent * 2 + 1;
+}
+
+
+/* 右の子ノードの位置を取得 */
+int getRight(int parent)
+{
+    return parent * 2 + 2;
+}
+
+
+/* 親ノードの位置を取得 */
+int getParent(int child)
+{
+    return (child - 1) / 2;
+}
+
+
+/* a[size]を二分ヒープに追加し、二分ヒープを再構成する */
+void addHeap(int *a, int size)
+{
+    int add; /* 追加ノードの位置 */
+    int parent; /* 追加ノードの親の位置 */
+
+    /* まだ二分ヒープに追加していないデータの先頭を二分ヒープに追加 */
+    add = size;
+    if (add == 0)
+    {
+        /* 追加したノードが根ノードなら二分ヒープへの追加完了 */
+        return;
+    }
+
+    /* 二分ヒープを満たすまで、追加したノードを根の方向に移動する */
+    while (1)
+    {
+        /* 親ノードの位置を取得 */
+        parent = getParent(add);
+        
+        if (a[parent] < a[add])
+        {
+            /* 親と子で大小関係が逆ならデータを交換する */
+            swap(&a[parent], &a[add]);
+
+            /* 追加ノードは親ノードの位置に移動する */
+            add = parent;
+            if (add == 0)
+            {
+                /* 追加ノードが根ノードまで移動したら二分ヒープへの追加完了 */
+                break;
+            }
+        }
+        else
+        {
+            /* 大小関係が満たされているなら二分ヒープへの追加完了 */
+            break;
+        }
+    }
+}
+
+
+/* 根ノードを二分ヒープから取り出し、二分ヒープを再構成する */
+void removeHeap(int *a, int size)
+{
+    int left; /* 左の子ノードの位置 */
+    int right; /* 右の子ノードの位置 */ 
+    int large; /* データが大きい方の子ノードの位置 */
+    int parent; /* 親ノードの位置 */
+
+    /* 根ノードをヒープ外に追い出す */
+    /* 一時的に木の末端のノードを根ノードに設定する */
+    swap(&a[0], &a[size - 1]);
+    
+    /* 二分ヒープのサイズを1減らす
+        これにより元々の根ノードが「ソート済みのデータ」の先頭に移動することになる */
+    size--;
+
+    /* 根ノードから子ノードとの大小関係を確認していく */
+    parent = 0;
+
+    /* 二分ヒープを満たすまで、根ノードを葉の方向に移動する */
+    while (1)
+    {
+        /* 子ノードの位置を取得 */
+        left = getLeft(parent);
+        right = getRight(parent);
+
+        /* 子ノードの大きい値を持つ方の位置を取得 */
+        if (left < size && right < size)
+        {
+            /* 左右両方の子ノードが存在する場合は比較して確認 */
+            if (a[left] < a[right])
+            {
+                large = right;
+            }
+            else
+            {
+                large = left;
+            }
+        }
+        else if (left < size)
+        {
+            /* 左の子ノードしか存在しない場合は左の子ノードを大きい値を持つとみなす */
+            large = left;
+        } else
+        {
+            /* 両ノードがヒープ内に存在しない場合は終了 */
+            /* (右の子ノードしか存在しない場合はあり得ない) */
+            break;
+        }
+
+        if (a[large] <= a[parent])
+        {
+            /* すでに親子の大小関係が満たされているので交換不要 */
+            break;
+        }
+
+        /* 親と子で大小関係が逆ならデータを交換する */
+        swap(&a[large], &a[parent]);
+
+        /* 根ノードはデータを交換した子ノードの位置に移動する */
+        parent = large;
+    }
+}
+
+
+/* 二分ヒープを作成する関数 */
+void makeHeap(int *a, int num)
+{
+    int size; /* 二分ヒープに追加済みのデータの個数 */
+
+    /* 二分ヒープのデータ個数を0にする */
+    size = 0;
+
+    /* sizeがソートするデータの個数になるまで二分ヒープにデータ追加 */
+    while (size < num)
+    {
+        /* a[size]を二分ヒープに追加 */
+        addHeap(a, size);
+
+        /* 二分ヒープのデータ数が増えたのでsizeも1増やす */
+        size++;
+    }
+}
+
+
+/* ヒープソートを行う関数 */
+void heapSort(int *a, int num)
+{
+    int size; /* 二分ヒープのノード個数 */
+
+    /* サイズnumの二分ヒープを作成 */
+    makeHeap(a, num);
+    
+
+    /* 二分ヒープの根ノードを１つずつ取り出す */
+    for (size = num; size > 0; size--)
+    {
+        /* サイズsizeの二分ヒープからデータを１つ取り出す */
+        removeHeap(a, size);
+    }
+}
+
+
+void Dedupe(int *a, int *num, int *a_new, int *num_new, int n)
+{
+    int i;
+    int temp_to_here = 0;
+    int temp_length = 0;
+
+    for (i = 0; i < n; i++)
+    {
+        temp_to_here += num[n];
+    }
+
+    for (i = 0; i < num[n] - 1; i++)
+    {
+        if (a[i] < a[i + 1])
+        {
+            a_new[temp_to_here] = a[i];
+            temp_to_here++;
+            temp_length++;
+        }
+    }
+    a_new[temp_to_here] = a[num[n] - 1];
+    temp_length++;
+
+    num_new[n] = temp_length;
+}

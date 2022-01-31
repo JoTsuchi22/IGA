@@ -1515,7 +1515,7 @@ int main(int argc, char *argv[])
 	if (Total_mesh == 1)
 	{
 		printf("start GP calc\n");
-		Calculation_at_GP(E, nu);
+		// Calculation_at_GP(E, nu);
 		printf("end GP calc\n");
 	}
 
@@ -1618,15 +1618,15 @@ int main(int argc, char *argv[])
 	{
 		printf("start GP calc\n");
 
-		patch_n_glo = 0;
-		Calculation_overlay_at_GP(E, nu,
-								  order_xi[patch_n_glo],order_eta[patch_n_glo],
-								  knot_n_xi[patch_n_glo], knot_n_eta[patch_n_glo],
-								  cntl_p_n_xi[patch_n_glo], cntl_p_n_eta[patch_n_glo],
-								  knot_vec_xi[patch_n_glo], knot_vec_eta[patch_n_glo],
-								  cntl_px[patch_n_glo], cntl_py[patch_n_glo],
-								  disp_cntl_px[patch_n_glo], disp_cntl_py[patch_n_glo],
-								  weight[patch_n_glo]);
+		// patch_n_glo = 0;
+		// Calculation_overlay_at_GP(E, nu,
+		// 						  order_xi[patch_n_glo],order_eta[patch_n_glo],
+		// 						  knot_n_xi[patch_n_glo], knot_n_eta[patch_n_glo],
+		// 						  cntl_p_n_xi[patch_n_glo], cntl_p_n_eta[patch_n_glo],
+		// 						  knot_vec_xi[patch_n_glo], knot_vec_eta[patch_n_glo],
+		// 						  cntl_px[patch_n_glo], cntl_py[patch_n_glo],
+		// 						  disp_cntl_px[patch_n_glo], disp_cntl_py[patch_n_glo],
+		// 						  weight[patch_n_glo]);
 
 		printf("end GP calc\n");
 	}
