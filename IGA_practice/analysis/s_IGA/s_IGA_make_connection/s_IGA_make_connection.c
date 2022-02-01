@@ -1219,7 +1219,12 @@ void Output_SVG(double *temp_B, double *temp_CP_result)
     }
 
     double space = 3.0;
+
+    
     double scale = 2000.0 / (x_max - x_min + 2.0 * space);
+    // widthが2000になるよう拡大，縮小する
+    // 数字や文字が小さくてつぶれる場合はこの値を大きくするとイイ！！
+    // それか line 1287 の font-size を小さくするとか
 
     double width = (x_max - x_min + 2.0 * space) * scale;
     double height = (y_max - x_min + 2.0 * space) * scale;
