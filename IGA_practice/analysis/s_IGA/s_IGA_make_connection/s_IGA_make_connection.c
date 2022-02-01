@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <string.h>
+// #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-#include <unistd.h>
+// #include <unistd.h>
 
 #define DIMENSION 2                 // 2次元
 #define MERGE_DISTANCE 1.0e-13      // コントロールポイントが同じ点と判定する距離
@@ -31,10 +31,11 @@ void Sort(int n, int *temp_CP_info, int *temp_A, int *temp_Boundary, int *temp_B
 void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int *temp_Connectivity, double *temp_KV, double *temp_CP_result,
                       int *temp_Boundary_result, int *temp_length_before, int *temp_length_after, int total_disp_constraint_n);
 void Output_by_Gnuplot(double *temp_CP_result);
+void Output_SVG(double *temp_B, double *temp_CP_result);
 void swap(int *a, int *b);
-int getLeft(int parent);
-int getRight(int parent);
-int getParent(int child);
+int  getLeft(int parent);
+int  getRight(int parent);
+int  getParent(int child);
 void addHeap(int *a, int size);
 void removeHeap(int *a, int size);
 void makeHeap(int *a, int num);
@@ -42,7 +43,6 @@ void heapSort(int *a, int num);
 void Dedupe(int *a, int *num, int *a_new, int *num_new, int n);
 
 FILE *fp;
-FILE *gp;
 
 int main(int argc, char *argv[])
 {
@@ -176,7 +176,9 @@ int main(int argc, char *argv[])
     Output_inputdata(Order, KV_info, CP_info, Connectivity, KV, CP_result, Boundary_result, length_before, length_after, temp5);
 
     // 図の出力
-    Output_by_Gnuplot(CP_result);
+    // Output_by_Gnuplot(CP_result); // Gnuplot
+    Output_SVG(B, CP_result); // SVG出力
+
 
     // メモリ解放
     free(Order), free(KV_info), free(CP_info);
@@ -1089,10 +1091,12 @@ void Output_inputdata(int *temp_Order, int *temp_KV_info, int *temp_CP_info, int
 
 void Output_by_Gnuplot(double *temp_CP_result)
 {
+    FILE *gp;
+
     int i;
 
-    int x_min = 0, x_max = 1;
-    int y_min = 0, y_max = 1;
+    double x_min = 0, x_max = 1;
+    double y_min = 0, y_max = 1;
 
     double position_x, position_y;
 
@@ -1144,6 +1148,144 @@ void Output_by_Gnuplot(double *temp_CP_result)
     fprintf(gp, "e\n");
     fflush(gp);
     pclose(gp);
+}
+
+
+void Output_SVG(double *temp_B, double *temp_CP_result)
+{
+    int i;
+
+    // char color_vec[11][10] = {"#a9a9a9", "#00bfff", "#00fa9a", "#bdb76b", "#ffff00", "#ff8c00", "#cd5c5c", "#ff7f50", "#dc143c", "#ee82ee", "#8a2be2"};
+    // //  0   darkgray
+    // //  1   deepskyblue
+    // //  2   mediumspringgreen
+    // //  3   darkkhaki
+    // //  4   yellow
+    // //  5   darkorange
+    // //  6   indianred
+    // //  7   coral
+    // //  8   crimson
+    // //  9   violet
+    // //  10  blueviolet
+    // //  https://www.colordic.org/
+
+    char color_vec[10][10] = {"#a9a9a9", "#00bfff", "#00fa9a", "#ffff00", "#ff8c00", "#cd5c5c", "#ff7f50", "#dc143c", "#ee82ee", "#8a2be2"};
+    //  0   darkgray
+    //  1   deepskyblue
+    //  2   mediumspringgreen
+    //  3   yellow
+    //  4   darkorange
+    //  5   indianred
+    //  6   coral
+    //  7   crimson
+    //  8   violet
+    //  9   blueviolet
+    //  https://www.colordic.org/
+
+    double x_min = 0, x_max = 1;
+    double y_min = 0, y_max = 1;
+
+    double position_x, position_y;
+
+    for (i = 0; i < (CP_result_to_here + 1) / 3; i++)
+    {
+        if (i == 0)
+        {
+            x_min = temp_CP_result[i * 3];
+            x_max = temp_CP_result[i * 3];
+            y_min = temp_CP_result[i * 3 + 1];
+            y_max = temp_CP_result[i * 3 + 1];
+        }
+        else
+        {
+            if (x_min > temp_CP_result[i * 3])
+            {
+                x_min = temp_CP_result[i * 3];
+            }
+            else if (x_max < temp_CP_result[i * 3])
+            {
+                x_max = temp_CP_result[i * 3];
+            }
+
+            if (y_min > temp_CP_result[i * 3 + 1])
+            {
+                y_min = temp_CP_result[i * 3 + 1];
+            }
+            else if (y_max < temp_CP_result[i * 3 + 1])
+            {
+                y_max = temp_CP_result[i * 3 + 1];
+            }
+        }
+    }
+
+    double space = 3.0;
+    double scale = 2000.0 / (x_max - x_min + 2.0 * space);
+
+    double width = (x_max - x_min + 2.0 * space) * scale;
+    double height = (y_max - x_min + 2.0 * space) * scale;
+
+    printf("width = %le\n", width);
+    printf("height = %le\n", height);
+
+    char str[256] = "input.svg";
+    
+    fp = fopen(str, "w");
+
+    fprintf(fp, "<?xml version='1.0'?>\n");
+    // fprintf(fp, "<svg width='%lept' height='%lept' viewBox='0 0 %le %le' style = 'background: #eee' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n", width, height, width, height);
+    fprintf(fp, "<svg width='%le' height='%le' version='1.1' style='background: #eee' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n", width, height);
+    
+    // パッチ境界を描画
+    int temp_color_num = 0;
+    B_to_here = 0;
+    for (i = 0; i < Total_patch; i++)
+    {
+        position_x = (temp_B[B_to_here] + space) * scale;
+        position_y = height - ((temp_B[B_to_here + 1] + space) * scale);
+        fprintf(fp, "<path d='M %le %le ", position_x, position_y);
+        B_to_here += 4 * (DIMENSION + 1);
+
+        position_x = (temp_B[B_to_here] + space) * scale;
+        position_y = height - ((temp_B[B_to_here + 1] + space) * scale);
+        fprintf(fp, "L %le %le ", position_x, position_y);
+        B_to_here += 2 * (DIMENSION + 1);
+
+        position_x = (temp_B[B_to_here] + space) * scale;
+        position_y = height - ((temp_B[B_to_here + 1] + space) * scale);
+        fprintf(fp, "L %le %le ", position_x, position_y);
+        B_to_here += 2 * (DIMENSION + 1);
+
+        position_x = (temp_B[B_to_here] + space) * scale;
+        position_y = height - ((temp_B[B_to_here + 1] + space) * scale);
+        fprintf(fp, "L %le %le ", position_x, position_y);
+        B_to_here += 4 * (DIMENSION + 1);
+
+        fprintf(fp, "Z' fill='%s'/>\n", color_vec[temp_color_num % 10]);
+        B_to_here += 4 * (DIMENSION + 1);
+
+        if (temp_color_num % 10 == 5)
+        {
+            temp_color_num += 2;
+        }
+        else
+        {
+            temp_color_num++;
+        }
+    }
+
+    // 点と番号を描画
+    for (i = 0; i < (CP_result_to_here + 1) / 3; i++)
+    {
+        position_x = (temp_CP_result[i * 3] + space) * scale;
+        position_y = height - ((temp_CP_result[i * 3 + 1] + space) * scale);
+        fprintf(fp, "<circle cx='%le' cy='%le' r='2' fill='%s'/>\n", position_x, position_y, color_vec[7]);
+        fprintf(fp, "<text x='%le' y='%le' font-family='Verdana' font-size='6' fill='%s' font-weight='700'>\n", position_x + 2, position_y, color_vec[7]);
+        fprintf(fp, "%d\n", i);
+        fprintf(fp, "</text>\n");
+    }
+
+    fprintf(fp, "</svg>");
+    fclose(fp);
 }
 
 
