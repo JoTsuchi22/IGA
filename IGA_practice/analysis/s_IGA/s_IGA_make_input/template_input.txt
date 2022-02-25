@@ -31,7 +31,7 @@
     knot insertionの各手法は同時に行えないので，
     いずれかを行うとき他方は0,0としないとエラーを返す
 
-    knot insertionとorder elebationは順番によって連続性が変化するので，
+    knot insertionとorder elevationは順番によって連続性が変化するので，
     o.e.→k.i.の順で行う
 
     コンパイル
