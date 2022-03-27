@@ -1,0 +1,23 @@
+20220225
+    グローバルパッチとローカルパッチで次数が異なる場合の
+    KIEL_SIZEを適宜計算し
+    Make_K_Whole_Valにて
+    Make_coupled_K_ELの前に更新し
+    for(i = 0; i < KIEL_SIZE; i++)
+    みたいなやつをちゃんと回るようにした
+    
+PCG
+    前処理付き共役勾配法の実装
+    printf減らした
+
+PCGv2
+    nvccのため，試しにc++でコンパイルエラー出た点を修正
+    関数のプロトタイプ宣言との2次元配列の大きさが間違ってた
+    KIEL_SIZE (static int) -> MAX_KIEL_SIZE (#define)
+    No_Control_point_ON_ELEMENT[Element_patch[El_No_loc]] -> MAX_NO_CCpoint_ON_ELEMENT (#define)
+    関数内でのループ等では正しい長さで計算していたので引数の場所のみ変更
+
+    gloとlocで次数が違う場合でテストしてないので，
+    できなくなってたら20220225 か PCG(ソルバー違うので注意)を使うこと
+
+    gccでは警告もなかったし特に意味ない変更なので消してもよし
