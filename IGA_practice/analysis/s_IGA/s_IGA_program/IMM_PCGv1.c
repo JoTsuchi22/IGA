@@ -1493,171 +1493,172 @@ int main(int argc, char *argv[])
 
 
 	// 重ね合わせをスキップしてJ積分を行う
-	if (SKIP_S_IGA == 1)
-		goto front_J;
-
-
-	//重ね合わせの結果
-	division_ele_xi  = DIVISION_ELE_XI;
-	division_ele_eta = DIVISION_ELE_ETA;
-
-	if (division_ele_xi > MAX_DIVISION) {
-		printf("Error!!\n");
-		printf("Too many Divsion at xi!\n"
-			"Maximum of division is %d (Now %d)\n"
-			"\n", MAX_DIVISION, division_ele_xi);
-		exit(1);
-	}
-	if (division_ele_eta > MAX_DIVISION) {
-		printf("Error!!\n");
-		printf("Too many Divsion at eta!\n"
-			"Maximum of division is %d (Now %d)\n"
-			"\n", MAX_DIVISION, division_ele_eta);
-		exit(1);
-	}
-
-	//ローカルメッシュの情報取得
-	GetLocData();
-
-	int patch_n_loc = 0, patch_n_glo = 0;	//パッチ番号
-
-	ReadFile();
-	fp = fopen("view.dat", "w");
-	fprintf(fp, "%d\t%d\t%d\n",
-			fields_flag, division_ele_xi, division_ele_eta);
-	fclose(fp);
-	//machino
-	fp = fopen("view_r_theta.dat", "w");
-	fprintf(fp, "%d\t%d\t%d\n",
-			fields_flag, division_ele_xi, division_ele_eta);
-	fclose(fp);
-
-	n_patch_glo = patch_n - n_patch_loc;
-
-	//for s-IGA
-	//重ね合わせ結果出力のためのoverlay_view.dat作成
-	fp = fopen("overlay_view.dat", "w");
-	fprintf(fp, "%d\t%d\t%d\n",
-				fields_flag, division_ele_xi, division_ele_eta);
-	fclose(fp);
-	//machino
-	fp = fopen("overlay_view_r_theta.dat", "w");
-	fprintf(fp, "%d\t%d\t%d\n",
-				fields_flag, division_ele_xi, division_ele_eta);
-	fclose(fp);
-
-	//グラフ作成のための出力
-	fp = fopen("disp_graph.txt", "w");
-	fprintf(fp, "patch_n\tx\ty\tdisp_x\tdisp_y\n");
-	fclose(fp);
-
-	fp = fopen("stress_y_graph.txt", "w");
-	fprintf(fp, "patch_n\tx\ty\tstress_yy\n");
-	fclose(fp);
-
-	fp = fopen("stress_y_graph_0.txt", "w");
-	fprintf(fp, "patch_n\tx\ty\tstress_yy\n");
-	fclose(fp);
-
-	fp = fopen("stress_vm_graph.txt", "w");
-	fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
-	fclose(fp);
-
-	fp = fopen("over_disp_graph.txt", "w");
-	fprintf(fp, "patch_n\tx\ty\tdisp_x\tdisp_y\n");
-	fclose(fp);
-
-	fp = fopen("over_stress_x_graph.txt", "w");
-	fprintf(fp, "x\ty\tstress_xx\n");
-	fclose(fp);
-
-	fp = fopen("over_stress_y_graph.txt", "w");
-	fprintf(fp, "x\ty\tstress_yy\n");
-	fclose(fp);
-
-	fp = fopen("over_stress_y_graph_0.txt", "w");
-	fprintf(fp, "x\ty\tstress_yy\n");
-	fclose(fp);
-
-	fp = fopen("over_stress_r_theta_graph.txt", "w");
-	fprintf(fp, "xi\teta\tx\ty\tstress_r\tstress_theta\n");
-	fclose(fp);
-
-	fp = fopen("over_stress_vm_graph.txt", "w");
-	fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
-	fclose(fp);
-
-	// S-IGAでローカル上のガウス点で重ね合わせた値をデータ整理する場合に使う
-	if (Total_mesh >= 2)
+	if (SKIP_S_IGA != 1)
 	{
-		printf("start GP calc\n");
+		//重ね合わせの結果
+		division_ele_xi  = DIVISION_ELE_XI;
+		division_ele_eta = DIVISION_ELE_ETA;
 
-		// patch_n_glo = 0;
-		// Calculation_overlay_at_GP(E, nu,
-		// 						  order_xi[patch_n_glo],order_eta[patch_n_glo],
-		// 						  knot_n_xi[patch_n_glo], knot_n_eta[patch_n_glo],
-		// 						  cntl_p_n_xi[patch_n_glo], cntl_p_n_eta[patch_n_glo],
-		// 						  knot_vec_xi[patch_n_glo], knot_vec_eta[patch_n_glo],
-		// 						  cntl_px[patch_n_glo], cntl_py[patch_n_glo],
-		// 						  disp_cntl_px[patch_n_glo], disp_cntl_py[patch_n_glo],
-		// 						  weight[patch_n_glo]);
+		if (division_ele_xi > MAX_DIVISION) {
+			printf("Error!!\n");
+			printf("Too many Divsion at xi!\n"
+				"Maximum of division is %d (Now %d)\n"
+				"\n", MAX_DIVISION, division_ele_xi);
+			exit(1);
+		}
+		if (division_ele_eta > MAX_DIVISION) {
+			printf("Error!!\n");
+			printf("Too many Divsion at eta!\n"
+				"Maximum of division is %d (Now %d)\n"
+				"\n", MAX_DIVISION, division_ele_eta);
+			exit(1);
+		}
 
-		printf("end GP calc\n");
-	}
+		//ローカルメッシュの情報取得
+		GetLocData();
 
-	// 重ね合わせ
-	for (i = 0; i < patch_n; i++) {
+		int patch_n_loc = 0, patch_n_glo = 0;	//パッチ番号
 
-		fp = fopen("stress_vm_graph.txt", "a");
-		fprintf(fp, "\npatch_n;%d\n\n",i);
+		ReadFile();
+		fp = fopen("view.dat", "w");
+		fprintf(fp, "%d\t%d\t%d\n",
+				fields_flag, division_ele_xi, division_ele_eta);
+		fclose(fp);
+		//machino
+		fp = fopen("view_r_theta.dat", "w");
+		fprintf(fp, "%d\t%d\t%d\n",
+				fields_flag, division_ele_xi, division_ele_eta);
 		fclose(fp);
 
-		graph_patch_n = i;
+		n_patch_glo = patch_n - n_patch_loc;
 
-		printf("----------Start calculation at patch %d----------\n\n", i);
-		Calculation(order_xi[i], order_eta[i],
-					knot_n_xi[i], knot_n_eta[i],
-					cntl_p_n_xi[i], cntl_p_n_eta[i],
-					knot_vec_xi[i], knot_vec_eta[i],
-					cntl_px[i], cntl_py[i],
-					disp_cntl_px[i], disp_cntl_py[i],
-					weight[i]);
-		printf("-----------End calculation at patch %d-----------\n\n", i);
+		//for s-IGA
+		//重ね合わせ結果出力のためのoverlay_view.dat作成
+		fp = fopen("overlay_view.dat", "w");
+		fprintf(fp, "%d\t%d\t%d\n",
+					fields_flag, division_ele_xi, division_ele_eta);
+		fclose(fp);
+		//machino
+		fp = fopen("overlay_view_r_theta.dat", "w");
+		fprintf(fp, "%d\t%d\t%d\n",
+					fields_flag, division_ele_xi, division_ele_eta);
+		fclose(fp);
 
-		if (i >= n_patch_glo)	//ローカル上のパッチに対しては重合計算行う
+		//グラフ作成のための出力
+		fp = fopen("disp_graph.txt", "w");
+		fprintf(fp, "patch_n\tx\ty\tdisp_x\tdisp_y\n");
+		fclose(fp);
+
+		fp = fopen("stress_y_graph.txt", "w");
+		fprintf(fp, "patch_n\tx\ty\tstress_yy\n");
+		fclose(fp);
+
+		fp = fopen("stress_y_graph_0.txt", "w");
+		fprintf(fp, "patch_n\tx\ty\tstress_yy\n");
+		fclose(fp);
+
+		fp = fopen("stress_vm_graph.txt", "w");
+		fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
+		fclose(fp);
+
+		fp = fopen("over_disp_graph.txt", "w");
+		fprintf(fp, "patch_n\tx\ty\tdisp_x\tdisp_y\n");
+		fclose(fp);
+
+		fp = fopen("over_stress_x_graph.txt", "w");
+		fprintf(fp, "x\ty\tstress_xx\n");
+		fclose(fp);
+
+		fp = fopen("over_stress_y_graph.txt", "w");
+		fprintf(fp, "x\ty\tstress_yy\n");
+		fclose(fp);
+
+		fp = fopen("over_stress_y_graph_0.txt", "w");
+		fprintf(fp, "x\ty\tstress_yy\n");
+		fclose(fp);
+
+		fp = fopen("over_stress_r_theta_graph.txt", "w");
+		fprintf(fp, "xi\teta\tx\ty\tstress_r\tstress_theta\n");
+		fclose(fp);
+
+		fp = fopen("over_stress_vm_graph.txt", "w");
+		fprintf(fp, "xi\teta\tx\ty\tstress_vm\n");
+		fclose(fp);
+
+		// S-IGAでローカル上のガウス点で重ね合わせた値をデータ整理する場合に使う
+		if (Total_mesh >= 2)
 		{
-			patch_n_loc = i;
-			printf("----------Start overlay calculation at patch %d in LOCAL patch----------\n\n", i);
-			for (j = 0; j < n_patch_glo; j++)
-			{
-				patch_n_glo = j;
-				//printf("patch_n_loc: %d \tpatch_n_glo: %d\n",
-				//		  patch_n_loc, patch_n_glo);
-				Calculation_overlay(order_xi[patch_n_loc],order_eta[patch_n_loc],
-									knot_n_xi[patch_n_loc], knot_n_eta[patch_n_loc],
-									cntl_p_n_xi[patch_n_loc], cntl_p_n_eta[patch_n_loc],
-									knot_vec_xi[patch_n_loc], knot_vec_eta[patch_n_loc],
-									cntl_px[patch_n_loc], cntl_py[patch_n_loc],
-									weight[patch_n_loc],
-									order_xi[patch_n_glo],order_eta[patch_n_glo],
-									cntl_p_n_xi[patch_n_glo], cntl_p_n_eta[patch_n_glo],
-									knot_vec_xi[patch_n_glo], knot_vec_eta[patch_n_glo],
-									cntl_px[patch_n_glo], cntl_py[patch_n_glo],
-									disp_cntl_px[patch_n_glo], disp_cntl_py[patch_n_glo],
-									weight[patch_n_glo]);
+			printf("start GP calc\n");
 
+			// patch_n_glo = 0;
+			// Calculation_overlay_at_GP(E, nu,
+			// 						  order_xi[patch_n_glo],order_eta[patch_n_glo],
+			// 						  knot_n_xi[patch_n_glo], knot_n_eta[patch_n_glo],
+			// 						  cntl_p_n_xi[patch_n_glo], cntl_p_n_eta[patch_n_glo],
+			// 						  knot_vec_xi[patch_n_glo], knot_vec_eta[patch_n_glo],
+			// 						  cntl_px[patch_n_glo], cntl_py[patch_n_glo],
+			// 						  disp_cntl_px[patch_n_glo], disp_cntl_py[patch_n_glo],
+			// 						  weight[patch_n_glo]);
+
+			printf("end GP calc\n");
+		}
+
+		// 重ね合わせ
+		for (i = 0; i < patch_n; i++) {
+
+			fp = fopen("stress_vm_graph.txt", "a");
+			fprintf(fp, "\npatch_n;%d\n\n",i);
+			fclose(fp);
+
+			graph_patch_n = i;
+
+			printf("----------Start calculation at patch %d----------\n\n", i);
+			Calculation(order_xi[i], order_eta[i],
+						knot_n_xi[i], knot_n_eta[i],
+						cntl_p_n_xi[i], cntl_p_n_eta[i],
+						knot_vec_xi[i], knot_vec_eta[i],
+						cntl_px[i], cntl_py[i],
+						disp_cntl_px[i], disp_cntl_py[i],
+						weight[i]);
+			printf("-----------End calculation at patch %d-----------\n\n", i);
+
+			if (i >= n_patch_glo)	//ローカル上のパッチに対しては重合計算行う
+			{
+				patch_n_loc = i;
+				printf("----------Start overlay calculation at patch %d in LOCAL patch----------\n\n", i);
+				for (j = 0; j < n_patch_glo; j++)
+				{
+					patch_n_glo = j;
+					//printf("patch_n_loc: %d \tpatch_n_glo: %d\n",
+					//		  patch_n_loc, patch_n_glo);
+					Calculation_overlay(order_xi[patch_n_loc],order_eta[patch_n_loc],
+										knot_n_xi[patch_n_loc], knot_n_eta[patch_n_loc],
+										cntl_p_n_xi[patch_n_loc], cntl_p_n_eta[patch_n_loc],
+										knot_vec_xi[patch_n_loc], knot_vec_eta[patch_n_loc],
+										cntl_px[patch_n_loc], cntl_py[patch_n_loc],
+										weight[patch_n_loc],
+										order_xi[patch_n_glo],order_eta[patch_n_glo],
+										cntl_p_n_xi[patch_n_glo], cntl_p_n_eta[patch_n_glo],
+										knot_vec_xi[patch_n_glo], knot_vec_eta[patch_n_glo],
+										cntl_px[patch_n_glo], cntl_py[patch_n_glo],
+										disp_cntl_px[patch_n_glo], disp_cntl_py[patch_n_glo],
+										weight[patch_n_glo]);
+				}
 			}
 		}
+		printf("End S-IGA\n\n");
+	}
+	else if (SKIP_S_IGA == 1)
+	{
+		printf("SKIP_S_IGA = 1, skip S-IGA\n");
 	}
 
-	printf("End S-IGA\n\n");
 	if (SKIP_S_IGA == 2) {
 		printf("SKIP_S_IGA = 2, exit before J integration\n");
 		exit(0);
 	}
 
 	// 重ね合わせをスキップした場合ここから
-	front_J:
 	printf("Start J Integration Mixed Mode\n\n");
 
 	Make_Displacement_grad(El_No);
