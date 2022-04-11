@@ -40,7 +40,7 @@ mkdir checkAns
 #include <assert.h>
 #include <time.h>
 
-#define SKIP_S_IGA 2 // 重ね合わせとJ積分を行う 0, 重ね合わせをスキップしてJ積分を行う 1, J積分を行わない 2
+#define SKIP_S_IGA 0 // 重ね合わせとJ積分を行う 0, 重ね合わせをスキップしてJ積分を行う 1, J積分を行わない 2
 
 #define ERROR -999
 #define PI  3.14159265359
@@ -67,7 +67,7 @@ mkdir checkAns
 #define MAX_N_CONSTRAINT 100000
 #define MAX_K_WHOLE_SIZE MAX_N_NODE * DIMENSION
 #define MAX_NON_ZERO 10000000
-#define MAX_N_PATCH 10
+#define MAX_N_PATCH 100
 #define MAX_N_Controlpoint_in_Patch 12000
 #define MAX_N_ORDER	5
 
@@ -237,7 +237,7 @@ static void Calculation_overlay(int order_xi_loc, int order_eta_loc,
 void K_output_svg(int ndof);
 
 //要素合成マトリックス
-int Make_B_Matrix(int El_No, double B[D_MATRIX_SIZE][MAX_KIEL_SIZE], double Local_coord[DIMENSION], double X[MAX_NO_CCpoint_ON_ELEMENT][DIMENSION], double *J);
+// int Make_B_Matrix(int El_No, double B[D_MATRIX_SIZE][MAX_KIEL_SIZE], double Local_coord[DIMENSION], double X[MAX_NO_CCpoint_ON_ELEMENT][DIMENSION], double *J);
 int Make_b_grad_Matrix(int El_No, double b_grad[DIMENSION * DIMENSION][2 * MAX_NO_CCpoint_ON_ELEMENT], double Local_coord[DIMENSION], double X[MAX_NO_CCpoint_ON_ELEMENT][DIMENSION], double *J);
 int Make_D_Matrix_2D(double D[D_MATRIX_SIZE][D_MATRIX_SIZE], double E, double nu, int DM);
 
@@ -5642,7 +5642,7 @@ int Make_b_grad_Matrix(int El_No, double b_grad[DIMENSION * DIMENSION][2 * MAX_N
 			}
 		}
 
-		Jacobian( El_No, a, Local_coord, X);
+		Jacobian(El_No, a, Local_coord, X);
 
 		*J = InverseMatrix_2D( a );
 		
@@ -5852,7 +5852,7 @@ int Make_coupled_K_EL(int El_No_loc, int El_No_glo,
 	double D[D_MATRIX_SIZE][D_MATRIX_SIZE];
 	double J = 0.0;
 	double J_test = 0.0;
-	double G_Gxi[GP_2D][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
+	double G_Gxi[POW_Ng_extended][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
 
 	Total_BDBJ_flag = 0;
 
@@ -6103,17 +6103,20 @@ void Make_Displacement_grad(int El_No)
 void Make_StrainEnergyDensity_2D()
 {
 	int re,e, k;
+
+	Make_gauss_array(0);
+
 	//Make_D_Matrix_2D( D, E, nu ,DM);
 	for( re = 0; re < real_Total_Element_to_mesh[Total_mesh]; re++ ){
 		e=real_element[re];	
-		for( k = 0; k < POW_Ng; k++){
+		for( k = 0; k < GP_2D; k++){
 			StrainEnergyDensity[e][k] = 0.0;
 		}
 	}
 
 	for( re = 0; re < real_Total_Element_to_mesh[Total_mesh]; re++ ){
 		e=real_element[re];
-		for( k = 0; k < POW_Ng; k++){
+		for( k = 0; k < GP_2D; k++){
 			StrainEnergyDensity[e][k] = ( Stress[e][k][0] * Strain[e][k][0] + Stress[e][k][1] * Strain[e][k][1] + Stress[e][k][2] * Strain[e][k][2]) / 2.0;
 		}
 	}
@@ -6161,16 +6164,19 @@ void Make_StrainEnergyDensity_2D()
 void Make_StrainEnergyDensity_2D_overlay()
 {
 	int re, e, k;
+
+	Make_gauss_array(0);
+
 	for(re = 0; re < real_Total_Element_to_mesh[Total_mesh]; re++){
 		e = real_element[re];	
-		for(k = 0; k < POW_Ng; k++){
+		for(k = 0; k < GP_2D; k++){
 			StrainEnergyDensity_overlay[e][k] = 0.0;
 		}
 	}
 
 	for(re = 0; re < real_Total_Element_to_mesh[Total_mesh]; re++){
 		e = real_element[re];
-		for(k = 0; k < POW_Ng; k++){
+		for(k = 0; k < GP_2D; k++){
 			StrainEnergyDensity_overlay[e][k] = (Stress_overlay[e][k][0] * Strain_overlay[e][k][0] + Stress_overlay[e][k][1] * Strain_overlay[e][k][1] + Stress_overlay[e][k][2] * Strain_overlay[e][k][2]) / 2.0;
 		}
 	}
@@ -6326,15 +6332,17 @@ void Make_Parameter_z_overlay(int Total_Element, double E, double nu, int DM)
 {
 	int e, k;
 
+	Make_gauss_array(0);
+
 	if (DM == 0)
 	{
 		//Make_strain_z
 		for (e = 0; e < Total_Element; e++)
-			for (k = 0; k < POW_Ng; k++)
+			for (k = 0; k < GP_2D; k++)
 				Strain_overlay[e][k][3] = 0.0;
 
 		for (e = 0; e < Total_Element; e++)
-			for (k = 0; k < POW_Ng; k++)
+			for (k = 0; k < GP_2D; k++)
 				Strain_overlay[e][k][3] = -1.0 * nu / E * (Stress_overlay[e][k][0] + Stress_overlay[e][k][1]);
 	}
 
@@ -6342,11 +6350,11 @@ void Make_Parameter_z_overlay(int Total_Element, double E, double nu, int DM)
 	{
 		//Make_stree_z
 		for (e = 0; e < Total_Element; e++)
-			for (k = 0; k < POW_Ng; k++)
+			for (k = 0; k < GP_2D; k++)
 				Stress_overlay[e][k][3] = 0.0;
 
 		for (e = 0; e < Total_Element; e++)
-			for (k = 0; k < POW_Ng; k++)
+			for (k = 0; k < GP_2D; k++)
 				Stress_overlay[e][k][3] = E * nu / (1.0 + nu) / (1 - 2.0 * nu) * (Strain_overlay[e][k][0] + Strain_overlay[e][k][1]);
 	}
 }
@@ -10179,7 +10187,7 @@ int Make_Displacement_grad_glo(int El_No_loc, int El_No_glo,
 
 	Make_gauss_array(0);
 
-	double G_Gxi[GP_2D][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
+	double G_Gxi[POW_Ng_extended][DIMENSION];	//グローバルパッチ上での親要素内座標xi_bar,eta_bar
 
 	for(i = 0; i < No_Control_point_ON_ELEMENT[Element_patch[El_No_glo]]; i++){
 		for(j = 0; j < DIMENSION; j++){
