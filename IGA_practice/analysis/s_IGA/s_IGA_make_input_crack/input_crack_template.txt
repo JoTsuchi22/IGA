@@ -1,0 +1,5 @@
+2   // DIMENSION
+
+0   // Select analysis model. 1/4 model -> 0, full model -> 1
+
+206000  0.3 // ヤング率, ポアソン比
