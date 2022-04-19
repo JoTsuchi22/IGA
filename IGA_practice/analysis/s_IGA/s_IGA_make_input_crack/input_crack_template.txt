@@ -1,0 +1,36 @@
+2               // DIMENSION
+
+206000  0.3     // Young's modulus, Poisson's ratio
+
+0               // Select analysis model mode. 1/4 model -> 0, full model -> 1
+
+2               // Select singular patch mode. 1 element -> 1, 2 element -> 2
+
+10.0    0.0     // tip crack coordinate [mm] (x > 0, y = 0), (crack origin = (0.0, 0.0))
+
+2.5             // singular width [mm]
+
+5.0 5.0 5.0     // length from tip crack [mm] (outer side, inner side, upper side), (if auto making mode == 1, inner side must match tip crack coordinate x)
+
+4   4   4       // local patch control point after Order Elevation and Knot Insertion (outer side, inner side, upper side)
+
+0.0 0.0 45.0    // affine transformation (offset_x[mm], offset_y[mm], angle[dgree] <- double);
+
+/*****************************************************************************
+ * グローバルパッチは，
+ * s_IGA_make_input.x と s_IGA_make_connection.x を用いて，
+ * 本プログラムとは別に作成してください．
+ * 
+ * 
+ * フルモデルの場合は1/4モデルからx軸とy軸対象に特異パッチを作成し，
+ * その後にアフィン変換を行います．
+ * 
+ * 
+ * ローカルパッチは2次の基底関数で固定です．
+ * 変更したい場合はプログラムを修正してください．
+ * 
+ * 
+ * アフィン変換は回転 -> 平行移動の順で行います．
+ * 1/4モデルではアフィン変換は利用できません(0固定)．
+ * 
+ *****************************************************************************/
