@@ -3745,9 +3745,10 @@ void Check_B(int num_own, int num_opponent, double *temp_B, int *temp_Edge_info,
             {
                 // 辺の両端が重なっている場合はスキップ
             }
-            else if ((num_own == 4 && i == 0) || (num_own == 15 && i == 2) || (num_own == 22 && i == 2) || (num_own == 39 && i == 2))
+            else if ((num_own == 22 && i == 2) || (num_own == 39 && i == 2))
             {
-                // full モデルでパッチ番号 (4, 3), (15, 8), (22, 21), (39, 28) のコネクティビティを切断
+                // full モデルでパッチ番号 (22, 21), (39, 28) のコネクティビティを切断
+                // (4, 3), (15, 8)では特殊なコネクティビティを作成する
             }
             else if (sqrt(pow(x_diff[0], 2) + pow(y_diff[0], 2) + pow(w_diff[0], 2)) <= MERGE_DISTANCE && sqrt(pow(x_diff[1], 2) + pow(y_diff[1], 2) + pow(w_diff[1], 2)) <= MERGE_DISTANCE)
             {
@@ -3887,34 +3888,89 @@ void Make_connectivity(int num, int *temp_CP_info, int *temp_Edge_info, int *tem
         A_to_own += 2 * (temp_CP_info[i * DIMENSION] + temp_CP_info[i * DIMENSION + 1]);
     }
 
-    for (eta = 0; eta < temp_CP_info[num * DIMENSION + 1]; eta++)
+    // パッチ番号 (4, 3), (15, 8)では特殊なコネクティビティを作成する
+    if ((num == 4) || (num == 15))
     {
-        for (xi = 0; xi < temp_CP_info[num * DIMENSION]; xi++)
+        if (num == 4)
         {
-            if (eta == 0 && Edge[0] == 1)
+            for (eta = 0; eta < temp_CP_info[num * DIMENSION + 1]; eta++)
             {
-                temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + xi];
+                for (xi = 0; xi < temp_CP_info[num * DIMENSION]; xi++)
+                {
+                    if (xi == 0 && eta == 0)
+                    {
+                        temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + xi];
+                    }
+                    else
+                    {
+                        temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = counter;
+                        temp_CP_result[CP_result_to_here] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1)];
+                        temp_CP_result[CP_result_to_here + 1] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1) + 1];
+                        temp_CP_result[CP_result_to_here + 2] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1) + 2];
+                        counter++;
+                        CP_result_to_here += (DIMENSION + 1);
+                    }
+                }
             }
-            else if (eta == temp_CP_info[num * DIMENSION + 1] - 1 && Edge[2] == 1)
+        }
+        else if (num == 15)
+        {
+            for (eta = 0; eta < temp_CP_info[num * DIMENSION + 1]; eta++)
             {
-                temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1] + xi];
+                for (xi = 0; xi < temp_CP_info[num * DIMENSION]; xi++)
+                {
+                    if (eta == 0 && Edge[0] == 1)
+                    {
+                        temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + xi];
+                    }
+                    else if (xi == 0 && eta == temp_CP_info[num * DIMENSION + 1] - 1)
+                    {
+                        temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1] + xi];
+                    }
+                    else
+                    {
+                        temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = counter;
+                        temp_CP_result[CP_result_to_here] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1)];
+                        temp_CP_result[CP_result_to_here + 1] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1) + 1];
+                        temp_CP_result[CP_result_to_here + 2] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1) + 2];
+                        counter++;
+                        CP_result_to_here += (DIMENSION + 1);
+                    }
+                }
             }
-            else if (xi == 0 && Edge[3] == 1)
+        }
+    }
+    else
+    {
+        for (eta = 0; eta < temp_CP_info[num * DIMENSION + 1]; eta++)
+        {
+            for (xi = 0; xi < temp_CP_info[num * DIMENSION]; xi++)
             {
-                temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + 2 * temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1] + eta];
-            }
-            else if (xi == temp_CP_info[num * DIMENSION] - 1 && Edge[1] == 1)
-            {
-                temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + temp_CP_info[num * DIMENSION] + eta];
-            }
-            else
-            {
-                temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = counter;
-                temp_CP_result[CP_result_to_here] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1)];
-                temp_CP_result[CP_result_to_here + 1] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1) + 1];
-                temp_CP_result[CP_result_to_here + 2] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1) + 2];
-                counter++;
-                CP_result_to_here += (DIMENSION + 1);
+                if (eta == 0 && Edge[0] == 1)
+                {
+                    temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + xi];
+                }
+                else if (eta == temp_CP_info[num * DIMENSION + 1] - 1 && Edge[2] == 1)
+                {
+                    temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1] + xi];
+                }
+                else if (xi == 0 && Edge[3] == 1)
+                {
+                    temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + 2 * temp_CP_info[num * DIMENSION] + temp_CP_info[num * DIMENSION + 1] + eta];
+                }
+                else if (xi == temp_CP_info[num * DIMENSION] - 1 && Edge[1] == 1)
+                {
+                    temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = temp_A[A_to_own + temp_CP_info[num * DIMENSION] + eta];
+                }
+                else
+                {
+                    temp_Connectivity[CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi] = counter;
+                    temp_CP_result[CP_result_to_here] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1)];
+                    temp_CP_result[CP_result_to_here + 1] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1) + 1];
+                    temp_CP_result[CP_result_to_here + 2] = temp_CP[(CP_to_here_counter + eta * temp_CP_info[num * DIMENSION] + xi) * (DIMENSION + 1) + 2];
+                    counter++;
+                    CP_result_to_here += (DIMENSION + 1);
+                }
             }
         }
     }
