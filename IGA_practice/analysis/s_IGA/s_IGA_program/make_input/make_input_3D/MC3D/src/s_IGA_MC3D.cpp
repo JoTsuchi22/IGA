@@ -14,33 +14,27 @@ int main(int argc, char **argv)
     // ファイル読み込み(1回目)
     Get_inputdata_boundary_0(argv[1], &info); // boundaryのインプットデータ処理
 
-    // 動的メモリ確保
-    int *disp_constraint_n = (int *)malloc(sizeof(int) * info.DIMENSION);                                         // disp_constraint_n[DIMENSION]
-    int *disp_constraint_face_edge_n = (int *)malloc(sizeof(int) * info.DIMENSION * info.MAX_DISP_CONSTRAINT);     // disp_constraint_face_edge_n[DIMENSION][MAX_DISP_CONSTRAINT]
-    double *disp_constraint_amount = (double *)malloc(sizeof(double) * info.DIMENSION * info.MAX_DISP_CONSTRAINT);  // disp_constraint_amount[DIMENSION][MAX_DISP_CONSTRAINT]
-    int *disp_constraint = (int *)malloc(sizeof(int) * info.DIMENSION * info.MAX_DISP_CONSTRAINT * info.MAX_DISP_CONSTRAINT_FACE_EDGE * 3);     // disp_constraint[DIMENSION][MAX_DISP_CONSTRAINT][MAX_DISP_CONSTRAINT_FACE_EDGE][3]
-    double *distributed_load_info = (double *)malloc(sizeof(double) * info.distributed_load_n * 9);                     // distributed_load_info[MAX_DISTRIBUTED_LOAD][9]
-    info_ptr->disp_constraint_n = disp_constraint_n;
-    info_ptr->disp_constraint_face_edge_n = disp_constraint_face_edge_n;
-    info_ptr->disp_constraint_amount = disp_constraint_amount;
-    info_ptr->disp_constraint = disp_constraint;
-    info_ptr->distributed_load_info = distributed_load_info;
+    // memory allocation
+    info_ptr->disp_constraint_n = (int *)malloc(sizeof(int) * info.DIMENSION);                                          // disp_constraint_n[DIMENSION]
+    info_ptr->disp_constraint_face_edge_n = (int *)malloc(sizeof(int) * info.DIMENSION * info.MAX_DISP_CONSTRAINT);     // disp_constraint_face_edge_n[DIMENSION][MAX_DISP_CONSTRAINT]
+    info_ptr->disp_constraint_amount = (double *)malloc(sizeof(double) * info.DIMENSION * info.MAX_DISP_CONSTRAINT);    // disp_constraint_amount[DIMENSION][MAX_DISP_CONSTRAINT]
+    info_ptr->disp_constraint = (int *)malloc(sizeof(int) * info.DIMENSION * info.MAX_DISP_CONSTRAINT * info.MAX_DISP_CONSTRAINT_FACE_EDGE * 3);     // disp_constraint[DIMENSION][MAX_DISP_CONSTRAINT][MAX_DISP_CONSTRAINT_FACE_EDGE][3]
+    info_ptr->distributed_load_info = (double *)malloc(sizeof(double) * info.distributed_load_n * 9);                   // distributed_load_info[MAX_DISTRIBUTED_LOAD][9]
+    if (info.disp_constraint_n == NULL || info.disp_constraint_face_edge_n == NULL || info.disp_constraint_amount == NULL || info.disp_constraint == NULL || info.distributed_load_info == NULL)
+    {
+        printf("Cannot allocate memory\n"); exit(1);
+    }
 
     // ファイル読み込み(2回目)
     Get_inputdata_boundary_1(argv[1], &info); // boundaryのインプットデータ処理
 
-    // 動的メモリ確保
-    int *Order = (int *)malloc(sizeof(int) * info.Total_patch * info.DIMENSION);   // int Order[パッチ番号][DIMENSION]
-    int *KV_info = (int *)malloc(sizeof(int) * info.Total_patch * info.DIMENSION); // int KV_info[パッチ番号][DIMENSION]
-    int *CP_info = (int *)malloc(sizeof(int) * info.Total_patch * info.DIMENSION); // int CP_info[パッチ番号][DIMENSION]
-    info_ptr->Order = Order;
-    info_ptr->KV_info = KV_info;
-    info_ptr->CP_info = CP_info;
-
-    if (Order == NULL || KV_info == NULL || CP_info == NULL)
+    // memory allocation
+    info_ptr->Order = (int *)malloc(sizeof(int) * info.Total_patch * info.DIMENSION);   // int Order[パッチ番号][DIMENSION]
+    info_ptr->KV_info = (int *)malloc(sizeof(int) * info.Total_patch * info.DIMENSION); // int KV_info[パッチ番号][DIMENSION]
+    info_ptr->CP_info = (int *)malloc(sizeof(int) * info.Total_patch * info.DIMENSION); // int CP_info[パッチ番号][DIMENSION]
+    if (info.Order == NULL || info.KV_info == NULL || info.CP_info == NULL)
     {
-        printf("Memory cannot be allocated\n");
-        exit(1);
+        printf("Cannot allocate memory\n"); exit(1);
     }
 
     // patchのインプットデータ処理(1回目)
@@ -73,80 +67,64 @@ int main(int argc, char **argv)
         }
         for (j = 0; j < info.DIMENSION; j++)
         {
-            temp3 += KV_info[i * info.DIMENSION + j];
+            temp3 += info.KV_info[i * info.DIMENSION + j];
         }
     }
     printf("Total Control Point = %d\n", temp1);
 
-    // 動的メモリ確保
-    double *CP = (double *)malloc(sizeof(double) * temp1 * (info.DIMENSION + 1));           // double CP[CP番号][DIMENSION + 1]
-    double *CP_result = (double *)malloc(sizeof(double) * temp1 * (info.DIMENSION + 1));    // double CP_result[通しのコントロールポイント番号(連番)][DIMENSION + 1]
-    int *A = (int *)malloc(sizeof(int) * temp2);                                            // int    A[パッチ番号][面番号(0~5) or 辺番号(0~3)][辺内のコネクティビティ]
-    double *B = 0;
+    // memory allocation
+    info_ptr->CP = (double *)malloc(sizeof(double) * temp1 * (info.DIMENSION + 1));             // CP[CP番号][DIMENSION + 1]
+    info_ptr->CP_result = (double *)malloc(sizeof(double) * temp1 * (info.DIMENSION + 1));      // CP_result[通しのコントロールポイント番号(連番)][DIMENSION + 1]
+    info_ptr->A = (int *)malloc(sizeof(int) * temp2);                                           // A[パッチ番号][面番号(0~5) or 辺番号(0~3)][辺内のコネクティビティ]
     if (info.DIMENSION == 2)
     {
-        B = (double *)malloc(sizeof(double) * info.Total_patch * 16 * (info.DIMENSION + 1)); // double B[パッチ番号][辺番号(0~4)][正負方向 2][各辺の端の2頂点][座標xyw  -> 3]
+        info_ptr->B = (double *)malloc(sizeof(double) * info.Total_patch * 16 * (info.DIMENSION + 1)); // B[パッチ番号][辺番号(0~4)][正負方向 2][各辺の端の2頂点][座標xyw  -> 3]
     }
     else if (info.DIMENSION == 3)
     {
-        B = (double *)malloc(sizeof(double) * info.Total_patch * 24 * (info.DIMENSION + 1)); // double B[パッチ番号][面番号(0~5)][各面の端の4頂点][座標xyzw -> 4]
+        info_ptr->B = (double *)malloc(sizeof(double) * info.Total_patch * 24 * (info.DIMENSION + 1)); // B[パッチ番号][面番号(0~5)][各面の端の4頂点][座標xyzw -> 4]
     }
-    int *Connectivity = (int *)malloc(sizeof(int) * temp1);                                 // int    Connectivity[パッチ番号][パッチ内CP番号]
-    double *KV = (double *)malloc(sizeof(double) * temp3);                                  // double KV[パッチ番号][DIMENSION][ノットベクトル番号]
-    info_ptr->CP = CP;
-    info_ptr->CP_result = CP_result;
-    info_ptr->A = A;
-    info_ptr->B = B;
-    info_ptr->Connectivity = Connectivity;
-    info_ptr->KV = KV;
+    info_ptr->Connectivity = (int *)malloc(sizeof(int) * temp1);                                // Connectivity[パッチ番号][パッチ内CP番号]
+    info_ptr->KV = (double *)malloc(sizeof(double) * temp3);                                    // KV[パッチ番号][DIMENSION][ノットベクトル番号]
 
-    if (CP == NULL || CP_result == NULL || A == NULL || B == NULL || Connectivity == NULL || KV == NULL)
+    if (info.CP == NULL || info.CP_result == NULL || info.A == NULL || info.B == NULL || info.Connectivity == NULL || info.KV == NULL)
     {
-        printf("Memory cannot be allocated\n");
-        exit(1);
+        printf("Cannot allocate memory\n"); exit(1);
     }
 
-    // patchのインプットデータ処理(2回目)
-    counter = 0;
-    KV_to_here = 0, CP_to_here = 0, B_to_here = 0;
+    // patch のインプットデータ処理(2回目)
+    counter = 0, KV_to_here = 0, CP_to_here = 0, B_to_here = 0;
     for (i = 1; i < Total_input; i++)
     {
         Get_inputdata_patch_1(argv[i + 1], &info, counter);
         counter++;
     }
-
     printf("Done get input\n");
 
-    // 動的メモリ確保
-    int *Face_Edge_info = 0;
-    int *Opponent_patch_num = 0;
+    // memory allocation
     if (info.DIMENSION == 2)
     {
-        Face_Edge_info = (int *)calloc(info.Total_patch * 32, sizeof(int));         // int Face_Edge_info[パッチ番号][own 辺番号(正固定0~3)][opp 辺番号(0~7)]
-        Opponent_patch_num = (int *)malloc(sizeof(int) * info.Total_patch * 4);     // int Opponent_patch_num[パッチ番号][own 辺番号(正固定0~3]
+        info_ptr->Face_Edge_info = (int *)calloc(info.Total_patch * 32, sizeof(int));       // Face_Edge_info[パッチ番号][own 辺番号(正固定0~3)][opp 辺番号(0~7)]
+        info_ptr->Opponent_patch_num = (int *)malloc(sizeof(int) * info.Total_patch * 4);   // Opponent_patch_num[パッチ番号][own 辺番号(正固定0~3]
     }
     else if (info.DIMENSION == 3)
     {
-        Face_Edge_info = (int *)malloc(info.Total_patch * 36 * sizeof(int));         // int Face_Edge_info[パッチ番号][own 面番号(0~5)][opp 面番号(0~5)]
-        Opponent_patch_num = (int *)malloc(sizeof(int) * info.Total_patch * 6);     // int Opponent_patch_num[パッチ番号][own 辺番号(正固定0~5]
+        info_ptr->Face_Edge_info = (int *)malloc(info.Total_patch * 36 * sizeof(int));      // Face_Edge_info[パッチ番号][own 面番号(0~5)][opp 面番号(0~5)]
+        info_ptr->Opponent_patch_num = (int *)malloc(sizeof(int) * info.Total_patch * 6);   // Opponent_patch_num[パッチ番号][own 辺番号(正固定0~5]
         for (i = 0; i < info.Total_patch * 36; i++)
         {
-            Face_Edge_info[i] = -1;
+            info.Face_Edge_info[i] = -1;
         }
     }
-    info_ptr->Face_Edge_info = Face_Edge_info;
-    info_ptr->Opponent_patch_num = Opponent_patch_num;
 
-    if (Face_Edge_info == NULL || Opponent_patch_num == NULL)
+    if (info.Face_Edge_info == NULL || info.Opponent_patch_num == NULL)
     {
-        printf("Memory cannot be allocated\n");
-        exit(1);
+        printf("Cannot allocate memory\n"); exit(1);
     }
 
     // パッチコネクティビティの作成
     printf("state: patch connectivity\n");
-    counter = 0;
-    CP_to_here = 0, CP_result_to_here = 0, B_to_here = 0;
+    counter = 0, CP_to_here = 0, CP_result_to_here = 0, B_to_here = 0;
     for (i = 0; i < info.Total_patch; i++)
     {
         for (j = 0; j < i; j++)
@@ -170,7 +148,7 @@ int main(int argc, char **argv)
         }
     }
 
-    // 動的メモリ確保
+    // memory allocation
     int temp4 = 0, temp5 = 0;
     int a = info.MAX_DISP_CONSTRAINT * info.MAX_DISP_CONSTRAINT_FACE_EDGE * 3;
     int b = info.MAX_DISP_CONSTRAINT_FACE_EDGE * 3;
@@ -224,19 +202,13 @@ int main(int argc, char **argv)
         }
     }
 
-    int *length_before = (int *)calloc(temp5, sizeof(int));   // 各変位量でのマージ前の長さ
-    int *length_after = (int *)malloc(sizeof(int) * temp5);    // 各変位量でのマージ後の長さ
-    int *Boundary = (int *)malloc(sizeof(int) * temp4);        // 境界条件のコネクティビティ
-    int *Boundary_result = (int *)malloc(sizeof(int) * temp4); // ソート・マージ後境界条件のコネクティビティ
-    info_ptr->length_before = length_before;
-    info_ptr->length_after = length_after;
-    info_ptr->Boundary = Boundary;
-    info_ptr->Boundary_result = Boundary_result;
-
-    if (length_before == NULL || length_after == NULL || Boundary == NULL || Boundary_result == NULL)
+    info_ptr->length_before = (int *)calloc(temp5, sizeof(int));    // 各変位量でのマージ前の長さ
+    info_ptr->length_after = (int *)malloc(sizeof(int) * temp5);    // 各変位量でのマージ後の長さ
+    info_ptr->Boundary = (int *)malloc(sizeof(int) * temp4);        // 境界条件のコネクティビティ
+    info_ptr->Boundary_result = (int *)malloc(sizeof(int) * temp4); // ソート・マージ後境界条件のコネクティビティ
+    if (info.length_before == NULL || info.length_after == NULL || info.Boundary == NULL || info.Boundary_result == NULL)
     {
-        printf("Memory cannot be allocated\n");
-        exit(1);
+        printf("Cannot allocate memory\n"); exit(1);
     }
 
     // 強制変位・変位固定の境界条件を作成
@@ -251,11 +223,12 @@ int main(int argc, char **argv)
         Output_SVG(&info);   // SVG出力
     }
 
-    // メモリ解放
-    free(Order), free(KV_info), free(CP_info);
-    free(CP), free(CP_result), free(A), free(B), free(Connectivity), free(KV);
-    free(Face_Edge_info), free(Opponent_patch_num);
-    free(length_before), free(length_after), free(Boundary), free(Boundary_result);
+    // memory free
+    free(info.disp_constraint_n), free(info.disp_constraint_face_edge_n), free(info.disp_constraint_amount), free(info.disp_constraint), free(info.distributed_load_info);
+    free(info.Order), free(info.KV_info), free(info.CP_info);
+    free(info.CP), free(info.CP_result), free(info.A), free(info.B), free(info.Connectivity), free(info.KV);
+    free(info.Face_Edge_info), free(info.Opponent_patch_num);
+    free(info.length_before), free(info.length_after), free(info.Boundary), free(info.Boundary_result);
 
     return 0;
 }
@@ -1548,9 +1521,9 @@ void Output_inputdata(int total_disp_constraint_n, const information *info)
         for (i = 0; i < (CP_result_to_here + 1) / (info->DIMENSION + 1); i++)
         {
             fprintf(fp, "%*d", temp_num, i);
-            fprintf(fp, "%.16e  ", info->CP_result[i * (info->DIMENSION + 1)]);
-            fprintf(fp, "%.16e  ", info->CP_result[i * (info->DIMENSION + 1) + 1]);
-            fprintf(fp, "%.16e\n", info->CP_result[i * (info->DIMENSION + 1) + 2]);
+            fprintf(fp, "% .16e ", info->CP_result[i * (info->DIMENSION + 1)]);
+            fprintf(fp, "% .16e ", info->CP_result[i * (info->DIMENSION + 1) + 1]);
+            fprintf(fp, "% .16e\n", info->CP_result[i * (info->DIMENSION + 1) + 2]);
         }
     }
     else if (info->DIMENSION == 3)
@@ -1558,10 +1531,10 @@ void Output_inputdata(int total_disp_constraint_n, const information *info)
         for (i = 0; i < (CP_result_to_here + 1) / (info->DIMENSION + 1); i++)
         {
             fprintf(fp, "%*d", temp_num, i);
-            fprintf(fp, "%.16e  ", info->CP_result[i * (info->DIMENSION + 1)]);
-            fprintf(fp, "%.16e  ", info->CP_result[i * (info->DIMENSION + 1) + 1]);
-            fprintf(fp, "%.16e  ", info->CP_result[i * (info->DIMENSION + 1) + 2]);
-            fprintf(fp, "%.16e\n", info->CP_result[i * (info->DIMENSION + 1) + 3]);
+            fprintf(fp, "% .16e ", info->CP_result[i * (info->DIMENSION + 1)]);
+            fprintf(fp, "% .16e ", info->CP_result[i * (info->DIMENSION + 1) + 1]);
+            fprintf(fp, "% .16e ", info->CP_result[i * (info->DIMENSION + 1) + 2]);
+            fprintf(fp, "% .16e\n", info->CP_result[i * (info->DIMENSION + 1) + 3]);
         }
     }
     fprintf(fp, "\n");
@@ -1610,6 +1583,13 @@ void Output_inputdata(int total_disp_constraint_n, const information *info)
 void Output_SVG(const information *info)
 {
     int i;
+
+    // 点サイズ, デフォルト: 2pt
+    int point_size = 2;
+    // 文字サイズ, 5 ~ 20 程度が適切, デフォルト: 6pt
+    int font_size = 6;
+    // 画像サイズ, 500 ~ 3000 程度が適切 scale 大 ⇒ 文字 小
+    double size = 1000.0;
 
     char color_vec[10][10] = {"#a9a9a9", "#00bfff", "#00fa9a", "#ffff00", "#ff8c00", "#cd5c5c", "#ff7f50", "#dc143c", "#ee82ee", "#8a2be2"};
     //  0   darkgray
@@ -1660,25 +1640,26 @@ void Output_SVG(const information *info)
         }
     }
 
-    double space = 3.0;
+    double x_gap = - x_min;
+    double y_gap = - y_min;
 
-    double scale = 2000.0 / (x_max - x_min + 2.0 * space);
-    // widthが2000になるよう拡大，縮小する
-    // 数字や文字が小さくてつぶれる場合はこの値を大きくするとイイ！！
-    // それか line 1287 の font-size を小さくするとか
+    double origin_width = (x_max - x_min) * (22.0 / 20.0);
+    double origin_height = (y_max - y_min) * (22.0 / 20.0);
 
-    double width = (x_max - x_min + 2.0 * space) * scale;
-    double height = (y_max - x_min + 2.0 * space) * scale;
+    // 横幅固定，アスペクト比維持
+    double width = size, height = size * (origin_height / origin_width);
 
-    printf("width = %le\n", width);
-    printf("height = %le\n", height);
+    double x_scale = width / origin_width;
+    double y_scale = x_scale * (origin_height / origin_width);
+
+    double origin_space_x = origin_width * (1.0 / 20.0);
+    double origin_space_y = origin_height * (1.0 / 20.0);
 
     char str[256] = "input.svg";
 
     fp = fopen(str, "w");
 
     fprintf(fp, "<?xml version='1.0'?>\n");
-    // fprintf(fp, "<svg width='%lept' height='%lept' viewBox='0 0 %le %le' style = 'background: #eee' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n", width, height, width, height);
     fprintf(fp, "<svg width='%le' height='%le' version='1.1' style='background: #eee' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n", width, height);
 
     // パッチ境界を描画
@@ -1686,23 +1667,23 @@ void Output_SVG(const information *info)
     B_to_here = 0;
     for (i = 0; i < info->Total_patch; i++)
     {
-        position_x = (info->B[B_to_here] + space) * scale;
-        position_y = height - ((info->B[B_to_here + 1] + space) * scale);
+        position_x = (x_gap + info->B[B_to_here] + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + info->B[B_to_here + 1] + origin_space_y) * y_scale);
         fprintf(fp, "<path d='M %le %le ", position_x, position_y);
         B_to_here += 4 * (info->DIMENSION + 1);
 
-        position_x = (info->B[B_to_here] + space) * scale;
-        position_y = height - ((info->B[B_to_here + 1] + space) * scale);
+        position_x = (x_gap + info->B[B_to_here] + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + info->B[B_to_here + 1] + origin_space_y) * y_scale);
         fprintf(fp, "L %le %le ", position_x, position_y);
         B_to_here += 2 * (info->DIMENSION + 1);
 
-        position_x = (info->B[B_to_here] + space) * scale;
-        position_y = height - ((info->B[B_to_here + 1] + space) * scale);
+        position_x = (x_gap + info->B[B_to_here] + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + info->B[B_to_here + 1] + origin_space_y) * y_scale);
         fprintf(fp, "L %le %le ", position_x, position_y);
         B_to_here += 2 * (info->DIMENSION + 1);
 
-        position_x = (info->B[B_to_here] + space) * scale;
-        position_y = height - ((info->B[B_to_here + 1] + space) * scale);
+        position_x = (x_gap + info->B[B_to_here] + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + info->B[B_to_here + 1] + origin_space_y) * y_scale);
         fprintf(fp, "L %le %le ", position_x, position_y);
         B_to_here += 4 * (info->DIMENSION + 1);
 
@@ -1722,10 +1703,10 @@ void Output_SVG(const information *info)
     // 点と番号を描画
     for (i = 0; i < (CP_result_to_here + 1) / (info->DIMENSION + 1); i++)
     {
-        position_x = (info->CP_result[i * 3] + space) * scale;
-        position_y = height - ((info->CP_result[i * 3 + 1] + space) * scale);
-        fprintf(fp, "<circle cx='%le' cy='%le' r='2' fill='%s'/>\n", position_x, position_y, color_vec[7]);
-        fprintf(fp, "<text x='%le' y='%le' font-family='Verdana' font-size='6' fill='%s' font-weight='700'>\n", position_x + 2, position_y, color_vec[7]);
+        position_x = (x_gap + info->CP_result[i * 3] + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + info->CP_result[i * 3 + 1] + origin_space_y) * y_scale);
+        fprintf(fp, "<circle cx='%le' cy='%le' r='%d' fill='%s'/>\n", position_x, position_y, point_size, color_vec[7]);
+        fprintf(fp, "<text x='%le' y='%le' font-family='Verdana' font-size='%d' fill='%s' font-weight='700'>\n", position_x + 2, position_y, font_size, color_vec[7]);
         fprintf(fp, "%d\n", i);
         fprintf(fp, "</text>\n");
     }
@@ -1935,7 +1916,7 @@ void Sort(int n, information *info)
         int *Array = (int *)malloc(sizeof(int) * info->length_before[i]);
         if (Array == NULL)
         {
-            printf("Memory cannot be allocated\n");
+            printf("Cannot allocate memory\n");
             exit(1);
         }
 
