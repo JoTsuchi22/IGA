@@ -3682,17 +3682,16 @@ void Output_SVG(double *temp_B, double *temp_CP_result)
 {
     int i;
 
-    char color_vec[10][10] = {"#696969", "#a9a9a9", "#00bfff", "#00fa9a", "#ffff00", "#ff8c00", "#cd5c5c", "#ff7f50", "#ee82ee", "#8a2be2"};
-    //  0   darkgray
-    //  1   deepskyblue
-    //  2   mediumspringgreen
-    //  3   yellow
-    //  4   darkorange
-    //  5   indianred
-    //  6   coral
-    //  7   violet
-    //  8   blueviolet
+    // 点サイズ, デフォルト: 2pt
+    int point_size = 1;
+    // 文字サイズ, 5 ~ 20 程度が適切, デフォルト: 6pt
+    int font_size = 4;
+    // 画像サイズ, 500 ~ 3000 程度が適切 scale 大 ⇒ 文字 小
+    double size = 1000.0;
+
     //  https://www.colordic.org/
+    int color_vec_size = 16;
+    char color_vec[16][10] = {"#696969", "#a9a9a9", "#00bfff", "#00fa9a", "#ffff00", "#ff8c00", "#cd5c5c", "#ff7f50", "#ee82ee", "#8a2be2", "#deb887", "#3cb371", "#6495ed", "#191970", "#b0c4de", "#ffe4e1"};
 
     char num_color[10] = "#dc143c";
 
@@ -3700,56 +3699,65 @@ void Output_SVG(double *temp_B, double *temp_CP_result)
     double y_min = 0, y_max = 1;
 
     double position_x, position_y;
+    double temp_x, temp_y;
 
     for (i = 0; i < (CP_result_to_here + 1) / 3; i++)
     {
+        temp_x = temp_CP_result[i * 3];
+        temp_y = temp_CP_result[i * 3 + 1];
+
         if (i == 0)
         {
-            x_min = temp_CP_result[i * 3];
-            x_max = temp_CP_result[i * 3];
-            y_min = temp_CP_result[i * 3 + 1];
-            y_max = temp_CP_result[i * 3 + 1];
+            x_min = temp_x;
+            x_max = temp_x;
+            y_min = temp_y;
+            y_max = temp_y;
         }
         else
         {
-            if (x_min > temp_CP_result[i * 3])
+            if (x_min > temp_x)
             {
-                x_min = temp_CP_result[i * 3];
+                x_min = temp_x;
             }
-            else if (x_max < temp_CP_result[i * 3])
+            else if (x_max < temp_x)
             {
-                x_max = temp_CP_result[i * 3];
+                x_max = temp_x;
             }
 
-            if (y_min > temp_CP_result[i * 3 + 1])
+            if (y_min > temp_y)
             {
-                y_min = temp_CP_result[i * 3 + 1];
+                y_min = temp_y;
             }
-            else if (y_max < temp_CP_result[i * 3 + 1])
+            else if (y_max < temp_y)
             {
-                y_max = temp_CP_result[i * 3 + 1];
+                y_max = temp_y;
             }
         }
     }
 
-    printf("x y : %le %le\n", x_max, y_max);
-    printf("x y : %le %le\n", x_min, y_min);
+    printf("x_min = %le\n", x_min);
+    printf("y_min = %le\n", y_min);
 
-    double space = 3.0;
-    double scale = 1000.0 / (x_max - x_min + 2.0 * space);
+    double x_gap = - x_min;
+    double y_gap = - y_min;
 
-    double width = 1.5 * (x_max - x_min + 2.0 * space) * scale;
-    double height = (y_max - x_min + 2.0 * space) * scale;
+    double origin_width = (x_max - x_min) * (22.0 / 20.0);
+    double origin_height = (y_max - y_min) * (22.0 / 20.0);
 
-    printf("width = %le\n", width);
-    printf("height = %le\n", height);
+    // 横幅固定，アスペクト比維持
+    double width = size, height = size * (origin_height / origin_width);
+
+    double x_scale = width / origin_width;
+    double y_scale = x_scale * (origin_height / origin_width);
+
+    double origin_space_x = origin_width * (1.0 / 20.0);
+    double origin_space_y = origin_height * (1.0 / 20.0);
 
     char str[256] = "input.svg";
 
     fp = fopen(str, "w");
 
     fprintf(fp, "<?xml version='1.0'?>\n");
-    // fprintf(fp, "<svg width='%lept' height='%lept' viewBox='0 0 %le %le' style = 'background: #eee' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n", width, height, width, height);
     fprintf(fp, "<svg width='%le' height='%le' version='1.1' style='background: #eee' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>\n", width, height);
 
     // パッチ境界を描画
@@ -3769,39 +3777,38 @@ void Output_SVG(double *temp_B, double *temp_CP_result)
     double PI = 3.14159265358979323846264338327950288;
     double theta = affine[2] * PI / 180.0;
     double rot[4] = {cos(theta), -sin(theta), sin(theta), cos(theta)};
-    double temp_x, temp_y;
 
     for (i = 0; i < Total_patch; i++)
     {
         temp_x = rot[0] * temp_B[B_to_here] + rot[1] * temp_B[B_to_here + 1];
         temp_y = rot[2] * temp_B[B_to_here] + rot[3] * temp_B[B_to_here + 1];
-        position_x = ((temp_x + space) * scale) + width * (1.0 / 4.0);
-        position_y = height / 2.0 - ((temp_y + space) * scale);
+        position_x = (x_gap + temp_x + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + temp_y + origin_space_y) * y_scale);
         fprintf(fp, "<path d='M %le %le ", position_x, position_y);
         B_to_here += 4 * (DIMENSION + 1);
 
         temp_x = rot[0] * temp_B[B_to_here] + rot[1] * temp_B[B_to_here + 1];
         temp_y = rot[2] * temp_B[B_to_here] + rot[3] * temp_B[B_to_here + 1];
-        position_x = ((temp_x + space) * scale) + width * (1.0 / 4.0);
-        position_y = height / 2.0 - ((temp_y + space) * scale);
+        position_x = (x_gap + temp_x + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + temp_y + origin_space_y) * y_scale);
         fprintf(fp, "L %le %le ", position_x, position_y);
         B_to_here += 2 * (DIMENSION + 1);
 
         temp_x = rot[0] * temp_B[B_to_here] + rot[1] * temp_B[B_to_here + 1];
         temp_y = rot[2] * temp_B[B_to_here] + rot[3] * temp_B[B_to_here + 1];
-        position_x = ((temp_x + space) * scale) + width * (1.0 / 4.0);
-        position_y = height / 2.0 - ((temp_y + space) * scale);
+        position_x = (x_gap + temp_x + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + temp_y + origin_space_y) * y_scale);
         fprintf(fp, "L %le %le ", position_x, position_y);
         B_to_here += 2 * (DIMENSION + 1);
 
         temp_x = rot[0] * temp_B[B_to_here] + rot[1] * temp_B[B_to_here + 1];
         temp_y = rot[2] * temp_B[B_to_here] + rot[3] * temp_B[B_to_here + 1];
-        position_x = ((temp_x + space) * scale) + width * (1.0 / 4.0);
-        position_y = height / 2.0 - ((temp_y + space) * scale);
+        position_x = (x_gap + temp_x + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + temp_y + origin_space_y) * y_scale);
         fprintf(fp, "L %le %le ", position_x, position_y);
         B_to_here += 4 * (DIMENSION + 1);
 
-        fprintf(fp, "Z' fill='%s'/>\n", color_vec[temp_color_num % 10]);
+        fprintf(fp, "Z' fill='%s'/>\n", color_vec[temp_color_num % color_vec_size]);
         B_to_here += 4 * (DIMENSION + 1);
 
         temp_color_num++;
@@ -3810,10 +3817,10 @@ void Output_SVG(double *temp_B, double *temp_CP_result)
     // 点と番号を描画
     for (i = 0; i < (CP_result_to_here + 1) / 3; i++)
     {
-        position_x = (temp_CP_result[i * 3] + space) * scale + width * (1.0 / 4.0);
-        position_y = height / 2.0 - ((temp_CP_result[i * 3 + 1] + space) * scale);
-        fprintf(fp, "<circle cx='%le' cy='%le' r='2' fill='%s'/>\n", position_x, position_y, num_color);
-        fprintf(fp, "<text x='%le' y='%le' font-family='Verdana' font-size='6' fill='%s' font-weight='700'>\n", position_x + 2, position_y, num_color);
+        position_x = (x_gap + temp_CP_result[i * 3] + origin_space_x) * x_scale;
+        position_y = height - ((y_gap + temp_CP_result[i * 3 + 1] + origin_space_y) * y_scale);
+        fprintf(fp, "<circle cx='%le' cy='%le' r='%d' fill='%s'/>\n", position_x, position_y, point_size, num_color);
+        fprintf(fp, "<text x='%le' y='%le' font-family='Verdana' font-size='%d' fill='%s' font-weight='700'>\n", position_x + 2, position_y, font_size, num_color);
         fprintf(fp, "%d\n", i);
         fprintf(fp, "</text>\n");
     }

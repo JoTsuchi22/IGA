@@ -28,8 +28,8 @@ step1:	IGA_make_input_crack.x s_IGA_make_input.x
 	cd ./temp && ../IGA_make_input_crack.x ../input_crack.txt > temp.dat
 
 IGA_make_input_crack.x:	IGA_make_input_crack.c
-	$(CC) -o ./IGA_make_input_crack.x ./IGA_make_input_crack.c $(CFLAGS)
-	# $(CC) -o ./IGA_make_input_crack.x ./IGA_make_input_crack_v1_backup.c $(CFLAGS)
+	$(CC) -o ./IGA_make_input_crack.x ./IGA_make_input_crack_v1_backup.c $(CFLAGS)
+	# $(CC) -o ./IGA_make_input_crack.x ./IGA_make_input_crack.c $(CFLAGS)
 	# ↑パッチの形状をやや変更したversion
 
 s_IGA_make_input.x:	s_IGA_make_input.c
