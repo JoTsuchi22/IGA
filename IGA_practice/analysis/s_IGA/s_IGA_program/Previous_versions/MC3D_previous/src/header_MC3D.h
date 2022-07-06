@@ -13,15 +13,12 @@ struct information {
     double E_and_nu[2];
     int *disp_constraint_n;
     int *disp_constraint_face_edge_n;
-    int *disp_constraint_face_edge_n_del;
     double *disp_constraint_amount;
     int *disp_constraint;
-    int *disp_constraint_del;
     int distributed_load_n;
     double *distributed_load_info;
     int MAX_DISP_CONSTRAINT;
     int MAX_DISP_CONSTRAINT_FACE_EDGE;
-    int MAX_DISP_CONSTRAINT_FACE_EDGE_DEL;
 
     int *Order;
     int *KV_info;
@@ -54,8 +51,8 @@ void Make_connectivity_3D(int num, information *info);
 // output
 void Output_inputdata(int total_disp_constraint_n, const information *info);
 void Output_SVG(const information *info);
-// delete and heap sort
-void Delete_and_Sort(int n, information *info);
+// heap sort
+void Sort(int n, information *info);
 void swap(int *a, int *b);
 int getLeft(int parent);
 int getRight(int parent);
@@ -65,7 +62,5 @@ void removeHeap(int *a, int size);
 void makeHeap(int *a, int num);
 void heapSort(int *a, int num);
 void Dedupe(int *a, int *num, int *a_new, int *num_new, int n);
-void Dedupe_for_del(int *a, int num, int *a_new, int *num_new);
-void Delete(int *a, int *l, int *a_del, int l_del, int n);
 
 #endif
